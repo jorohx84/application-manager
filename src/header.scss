@@ -3,6 +3,8 @@
     height: 120px;
     display: flex;
     justify-content: center;
+    border-bottom: solid;
+    box-sizing: border-box;
 }
 .headerInner{
     width: 100%;
@@ -11,4 +13,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-sizing: border-box;
+    padding: 56px;
+    >span{
+        font-size: 40px;
+    }
 }

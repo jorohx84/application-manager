@@ -7,17 +7,21 @@ import Header from './header';
 import Login from './login';
 import Dashboard from './dashboard';
 import { UserProvider } from './userContext';
+import Application from './application';
+import Sidebar from './sidebar';
+
 
 
 function App() {
   return (
     <UserProvider>
-      <Router basename="/">
-        <Header />
+    
+      <Router basename="/"> 
         <Routes>
           <Route path="/" element={<SignUp />} />
           <Route path='/login' element={<Login />} />
           <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/application' element={<Application />} />
         </Routes>
       </Router>
 
