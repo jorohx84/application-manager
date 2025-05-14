@@ -1,0 +1,164 @@
+.appHeadline{
+    width: 100%;
+}
+
+.filter{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.applicationBoard{
+    width: 100%;
+    flex: 1;
+    display: flex;
+    gap: 56px;
+}
+.applicationDetails{
+    width: 100%;
+    max-width: 600px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-sizing: border-box;
+    padding: 16px;
+    border:solid 1px;
+    >h2{
+        margin: 0;
+    }
+}
+
+.companyInfos{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.city{
+    display: flex;
+    gap: 4px;
+}
+
+.contact{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+ 
+}
+.applicationList{
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.applicationCard{
+    width: 100%;
+    border: solid 1px ;
+    box-sizing: border-box;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    &:hover{
+        background-color: rgba(128, 128, 128, 0.591);
+    }
+}
+
+.cardContent{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.topper{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    >p{
+        font-size: 20px;
+        font-weight: 600;
+    }
+}
+
+.positionDetails{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+}
+
+.location{
+    
+    box-sizing: border-box;
+    padding: 8px;
+    background-color: rgba(128, 128, 128, 0.591);
+    border-radius: 4px;
+}
+
+p{
+    margin: 0;
+}
+.status{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.statusBtn{
+    background-color: transparent;
+    width: 30px;
+    height: 30px;
+    >img{
+        width: 25px;
+    }
+}
+
+.overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.254);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.editContainer{
+    width: 100%;
+    max-width: 600px;
+    height: 700px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 56px;
+}
+
+.statusBtnContainer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+
+.editBtnContainer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+}

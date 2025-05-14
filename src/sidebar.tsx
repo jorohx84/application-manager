@@ -19,10 +19,11 @@ const Sidebar = () => {
                 <p>{user?.displayName}</p>
             </div>
             <div className="newBtnContainer">
-                <button onClick={() => navigateTo('/application')}>neue Bewerbung</button>
+                <button onClick={() => navigateTo('/createapplication')}>neue Bewerbung</button>
             </div>
             <div className="sidbarLinks">
                <Link className="link" to='/Dashboard'>Dashboard</Link>
+               <Link className="link" to='/Applications'>Bewerbungen</Link>
             </div>
         </section>
     )

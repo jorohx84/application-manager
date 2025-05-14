@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import './application.scss';
+import './createapplication.scss';
 import Header from "./header";
 import Sidebar from "./sidebar";
-import { title } from "process";
-import { link } from "fs";
+
+
 import { useUser } from "./userContext";
 import { getFirestore, addDoc, collection } from "firebase/firestore";
-import { application } from "express";
 import firebase from "./firebase";
 import { useNavigate } from "react-router-dom";
 
-const Application = () => {
+const CreateApplication = () => {
     const [name, setName] = useState('');
     const [contactperson, setContactperson] = useState('');
     const [email, setEmail] = useState('');
@@ -21,7 +20,7 @@ const Application = () => {
     const [title, setTitle] = useState('');
     const [location, setLocation] = useState('');
     const [link, setLink] = useState('');
-    const [status, setStatus] = useState('eingereicht');
+    const [status, setStatus] = useState('Bewerbung gesendet');
     const [town, setTown] = useState('');
     const [source, setSource] = useState('');
 
@@ -126,4 +125,4 @@ navigate('/dashboard');
         </section>
     )
 }
-export default Application
+export default CreateApplication

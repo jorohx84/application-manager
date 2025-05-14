@@ -7,8 +7,9 @@ import Header from './header';
 import Login from './login';
 import Dashboard from './dashboard';
 import { UserProvider } from './userContext';
-import Application from './application';
+import CreateApplication from './createapplication';
 import Sidebar from './sidebar';
+import { Applications } from './applications';
 
 
 
@@ -21,7 +22,8 @@ function App() {
           <Route path="/" element={<SignUp />} />
           <Route path='/login' element={<Login />} />
           <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/application' element={<Application />} />
+          <Route path='/createapplication' element={<CreateApplication />} />
+          <Route path='/applications' element={<Applications />} />
         </Routes>
       </Router>
 

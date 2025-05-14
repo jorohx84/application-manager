@@ -4,7 +4,7 @@ import { useUser } from './userContext';
 
 const Header = () => {
     const { user, firestoreUser, loading } = useUser();
-    console.log(firestoreUser?.id);
+   
 
     const userID = user?.uid
 const currentUser=firestoreUser;
