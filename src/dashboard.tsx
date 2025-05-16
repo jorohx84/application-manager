@@ -139,7 +139,7 @@ const Dashboard = () => {
                             <h2>Nächste Termine</h2>
                             {nextSteps?.map((step, index) => (
                                 <div className="step" key={index}>
-                                    <span>{formatDateGermanShort(step.status.appointment)} Uhr:</span>
+                                    <span>{formatDateGermanShort(step.status.appointment,'time')} Uhr:</span>
                                     <b>{step.company.name} </b>
                                     <span> | {step.position.title} | </span>
                                     <span>{step.status.status},</span>

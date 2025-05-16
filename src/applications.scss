@@ -269,6 +269,23 @@ p {
     }
 }
 
+.appPosition{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    >div{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.statusContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+   
+}
+
 .deleteBtnContainer {
     width: 100%;
     display: flex;

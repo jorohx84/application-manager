@@ -49,6 +49,7 @@ export const Applications = () => {
             setbaseApplications(data);
         };
         loadData();
+     
 
     }, [loading, user, isUpdate]);
 
@@ -61,6 +62,7 @@ export const Applications = () => {
             console.log(details);
             setCurrentApplication(details);
         }
+      
     }
 
 
@@ -177,10 +179,10 @@ export const Applications = () => {
         console.log(location);
         const editRef = doc(firestore, `users/${userID}/applications/${appID}`);
         await updateDoc(editRef, editedApp);
-        setisUpdate(prev => prev + 1);
+        setisUpdate(prev => prev + 1);          
         setopenEditInfo(false);
 
-       
+
     }
 
     return (
@@ -212,7 +214,7 @@ export const Applications = () => {
                                                 <div className="cardContent">
                                                     <div className="topper">
                                                         <p>{app.company.name}, {app.company.town}</p>
-                                                        <span>gesendet am: {formatDateGermanShort(app.status.submitted)}</span>
+                                                        <span>gesendet am: {formatDateGermanShort(app.status.submitted, 'notime')}</span>
                                                     </div>
                                                     <div className="positionDetails">
                                                         <span>{app.position.title}</span>
@@ -221,7 +223,7 @@ export const Applications = () => {
                                                     <div className="status">
                                                         <p>Status: <b>{app.status.status}</b>  </p>
                                                         {(app.status.status === 'Interview' || app.status.status === 'Vorstellungsgespräch') && (
-                                                            <span>Datum: {formatDateGermanShort(app.status.appointment)} Uhr</span>
+                                                            <span>Datum: {formatDateGermanShort(app.status.appointment, 'widthtime')} Uhr</span>
                                                         )}
                                                         <div className="cardBtns">
 
@@ -264,6 +266,20 @@ export const Applications = () => {
                                                 <span>Telefon: {currentApplicaton?.company.phone}</span>
                                                 <span>E-Mail: {currentApplicaton?.company.email}</span>
                                                 <span>Homepage: {currentApplicaton?.company.website}</span>
+                                            </div>
+                                            <div className="appPosition">
+
+                                                <h3>{currentApplicaton.position.title}</h3>
+                                                <span>Ort: {currentApplicaton.position.location}</span>
+                                                <div>
+                                                    <b>Stellenbeschreibung:</b>
+                                                    <a href={currentApplicaton.position.link} target="_blank">{currentApplicaton.position.link}</a>
+
+                                                </div>
+                                            </div>
+                                            <div className="statusContainer">
+                                                <span>Status: {currentApplicaton.status.status}</span>
+                                                <span>Beworben am: {formatDateGermanShort(currentApplicaton.status.submitted, 'notime')}</span>
                                             </div>
 
                                         </div>
