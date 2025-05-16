@@ -4,7 +4,7 @@ import Sidebar from "./sidebar";
 import Header from "./header";
 import { fetchApplications, formatDateGermanShort } from './services/applicationService';
 import { useUser } from "./userContext";
-import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import firebase from "./firebase";
 
 
@@ -16,11 +16,26 @@ export const Applications = () => {
     const [currentApplicaton, setCurrentApplication] = useState<any | null>(null);
     const [openEdit, setOpenEdit] = useState(false);
     const [newStatus, setnewStatus] = useState('');
-    const [appIndex, setappIndex] = useState(-1);
     const [isUpdate, setisUpdate] = useState(0);
     const [date, setDate] = useState('');
     const [openDropdown, setopenDropdown] = useState(false);
-    const [headlineText, setheadlineText]=useState('Bewerbungen')
+    const [headlineText, setheadlineText] = useState('Bewerbungen')
+    const [deleteOpen, setDeleteOpen] = useState(false);
+    const [openEditInfos, setopenEditInfo] = useState(false);
+    const [appIndex, setappIndex] = useState(-1);
+    const [name, setName] = useState('');
+    const [contactperson, setContactperson] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [street, setStreet] = useState('');
+    const [areacode, setAreacode] = useState('');
+    const [website, setWebsite] = useState('');
+    const [title, setTitle] = useState('');
+    const [location, setLocation] = useState('');
+    const [link, setLink] = useState('');
+    const [status, setStatus] = useState('Bewerbung gesendet');
+    const [town, setTown] = useState('');
+    const [source, setSource] = useState('');
 
 
     useEffect(() => {
@@ -40,6 +55,7 @@ export const Applications = () => {
     const showDetails = (index: number) => {
         console.log(index);
         console.log(applications);
+        setappIndex(index);
         if (applications) {
             const details = applications[index];
             console.log(details);
@@ -57,7 +73,7 @@ export const Applications = () => {
         event.stopPropagation();
     }
 
-    const editApp = async () => {
+    const editAppStatus = async () => {
         const userID = user?.uid
         const appID = currentApplicaton.id
         const appRef = doc(firestore, `users/${userID}/applications/${appID}`);
@@ -74,10 +90,7 @@ export const Applications = () => {
     const changeStatus = (value: string, event: React.MouseEvent) => {
         setnewStatus(value);
         setopenDropdown(false);
-
-        console.log(openDropdown);
         event.stopPropagation();
-
     }
 
     const filterApps = (key: string) => {
@@ -93,8 +106,82 @@ export const Applications = () => {
         setheadlineText(key)
     }
 
+    const openDeleteOverlay = () => {
+        setDeleteOpen(true);
+    }
+
+    const deleteApp = async () => {
+        const appID = currentApplicaton.id;
+        const userID = user?.uid;
+        const deleteRef = doc(firestore, `users/${userID}/applications/${appID}`);
+        await deleteDoc(deleteRef);
+        setisUpdate(prev => prev + 1);
+        setDeleteOpen(false)
+    }
+
+    const openEditInfosOverlay = () => {
+
+        setName(currentApplicaton.company.name);
+        setContactperson(currentApplicaton.company.contactperson);
+        setEmail(currentApplicaton.company.email);
+        setPhone(currentApplicaton.company.phone);
+        setStreet(currentApplicaton.company.street);
+        setAreacode(currentApplicaton.company.areacode);
+        setTown(currentApplicaton.company.town);
+        setWebsite(currentApplicaton.company.website);
+        setTitle(currentApplicaton.position.title);
+        setLocation(currentApplicaton.position.location);
+        setLink(currentApplicaton.position.link);
+        setSource(currentApplicaton.position.source);
+        setopenEditInfo(true);
+        setStatus(currentApplicaton.status.status)
+    }
+
+    const newApplicationObject = () => {
+        return {
+            company: {
+                name: name,
+                contactperson: contactperson,
+                email: email,
+                phone: phone,
+                street: street,
+                areacode: areacode,
+                town: town,
+                website: website,
+
+            },
+            position: {
+                title: title,
+                location: location,
+                link: link,
+                source: source,
+
+            },
+            status: {
+                status: status,
+                submitted: currentApplicaton.status.submitted,
 
 
+            },
+
+        }
+    }
+
+    const saveEditedApp = async (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log('los');
+        const editedApp = newApplicationObject();
+        console.log(editedApp);
+        const userID = user?.uid;
+        const appID = currentApplicaton.id;
+        console.log(location);
+        const editRef = doc(firestore, `users/${userID}/applications/${appID}`);
+        await updateDoc(editRef, editedApp);
+        setisUpdate(prev => prev + 1);
+        setopenEditInfo(false);
+
+       
+    }
 
     return (
         <section className="applications">
@@ -136,8 +223,11 @@ export const Applications = () => {
                                                         {(app.status.status === 'Interview' || app.status.status === 'Vorstellungsgespräch') && (
                                                             <span>Datum: {formatDateGermanShort(app.status.appointment)} Uhr</span>
                                                         )}
+                                                        <div className="cardBtns">
 
-                                                        <button className="statusBtn" onClick={(e) => openOverlay(index, e)}><img src="./img/edit.svg" alt="" /></button>
+                                                            <button className="statusBtn" onClick={(e) => openOverlay(index, e)}><img src="./img/edit.svg" alt="" /></button>
+
+                                                        </div>
                                                     </div>
 
                                                 </div>
@@ -150,7 +240,15 @@ export const Applications = () => {
                                 </div>
                                 {currentApplicaton && (
                                     <div className="applicationDetails">
-                                        <h2>Informationen</h2>
+                                        <div className="detailsBtnContainer ">
+                                            <h2>Informationen</h2>
+                                            <div>
+                                                <button className="statusBtn" onClick={openEditInfosOverlay}><img src="./img/edit.svg" alt="" /></button>
+                                                <button className="statusBtn" onClick={(e) => openDeleteOverlay()}><img src="./img/trash.svg" alt="" /></button>
+                                            </div>
+
+                                        </div>
+
                                         <div className="companyInfos">
                                             <h3>{currentApplicaton?.company.name}</h3>
                                             <div className="adress">
@@ -169,12 +267,7 @@ export const Applications = () => {
                                             </div>
 
                                         </div>
-
-
                                     </div>
-
-
-
                                 )}
 
                             </div>
@@ -204,22 +297,79 @@ export const Applications = () => {
                                 </div>
 
                             )}
-
-
                         </div>
-
-
                         <input disabled={!(newStatus === 'Interview' || newStatus === 'Vorstellungsgespräch')} type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} />
 
                         <div className="editBtnContainer">
                             <button onClick={() => { setOpenEdit(false); setDate(''); setnewStatus('') }}>Abbrechen</button>
-                            <button onClick={() => { editApp(); setDate(''); setnewStatus('') }}>Speichern</button>
+                            <button onClick={() => { editAppStatus(); setDate(''); setnewStatus('') }}>Speichern</button>
                         </div>
                     </div>
                 </div>
 
             )}
 
+            {deleteOpen && (
+                <div className="overlay">
+                    <div className="deleteContainer">
+                        <h2>Bewerbung löschen?</h2>
+                        <div className="companyDetailsContainer">
+                            <h3>{currentApplicaton.company.name}</h3>
+                            <h4>{currentApplicaton.position.title}</h4>
+                        </div>
+
+                        <div className="deleteBtnContainer">
+                            <button onClick={() => setDeleteOpen(false)}>Nein</button>
+                            <button onClick={(e) => deleteApp()}>Ja</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {openEditInfos && (
+                <div className="overlay">
+                    <div className="editContainer" >
+                        <form className="applicationForm" onSubmit={saveEditedApp}>
+                            <div className="inputfields">
+                                <div className="companyData">
+                                    <h3>Firma</h3>
+                                    <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+                                    <input type="text" placeholder="Ansprechpartner" value={contactperson} onChange={(e) => setContactperson(e.target.value)} />
+                                    <input type="email" placeholder="E-Mail-Adresse" value={email} onChange={(e) => setEmail(e.target.value)} />
+                                    <input type="tel" placeholder="Telefon" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                                    <input type="text" placeholder="Straße" value={street} onChange={(e) => setStreet(e.target.value)} />
+                                    <input type="text" placeholder="Postleitzahl" value={areacode} onChange={(e) => setAreacode(e.target.value)} />
+                                    <input type="text" placeholder="Ort" value={town} onChange={(e) => setTown(e.target.value)} />
+                                    <input type="text" placeholder="Website-URL" value={website} onChange={(e) => setWebsite(e.target.value)} />
+
+
+                                </div>
+
+                                <div className="applicationData">
+                                    <h3>Position</h3>
+                                    <input type="text" placeholder="Stellenbezeichnung" value={title} onChange={(e) => setTitle(e.target.value)} />
+
+                                    <div className="workLocationContainer">
+                                        <span>Arbeitsort</span>
+                                        <div>
+                                            <button type="button" className={location === 'Firma' ? 'btnHighlight' : ''} onClick={() => setLocation('Firma')}>Firma</button>
+                                            <button type="button" className={location === 'Remote' ? 'btnHighlight' : ''} onClick={() => setLocation('Remote')}>Remote</button>
+                                            <button type="button" className={location === 'Hybrid' ? 'btnHighlight' : ''} onClick={() => setLocation('Hybrid')}>Hybrid</button>
+                                        </div>
+
+                                    </div>
+                                    <input type="text" placeholder="Link zu Stellenausschreibung" value={link} onChange={(e) => setLink(e.target.value)} />
+                                    <input type="text" placeholder="Quelle (LinkedIn, Stepstone...etc)" value={source} onChange={(e) => setSource(e.target.value)} />
+                                </div>
+                            </div>
+                            <div className="applicationBtnContainer">
+                                <button type="button" onClick={() => setopenEditInfo(false)}>Abbrechen</button>
+                                <button type="submit">Änderung speichern</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            )}
         </section>
     )
 }
