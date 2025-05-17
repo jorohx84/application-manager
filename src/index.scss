@@ -77,14 +77,15 @@ button {
   max-width: 1920px;
   box-sizing: border-box;
   padding: 24px 56px;
-
+position: relative;
 
   >div>h2 {
-    font-size: 32px;
+    font-size: 48px;
   }
 }
 
 :root {
-  --main: rgba(6, 115, 193, 0.724);
+  --main: #2682c5;
+  
   
 }

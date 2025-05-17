@@ -33,10 +33,11 @@ export const Applications = () => {
     const [title, setTitle] = useState('');
     const [location, setLocation] = useState('');
     const [link, setLink] = useState('');
+    const [salary, setSalary] = useState('');
     const [status, setStatus] = useState('Bewerbung gesendet');
     const [town, setTown] = useState('');
     const [source, setSource] = useState('');
-
+    const [showFilter, setshowFilter] = useState(false);
 
     useEffect(() => {
         if (loading) return;
@@ -49,7 +50,7 @@ export const Applications = () => {
             setbaseApplications(data);
         };
         loadData();
-     
+
 
     }, [loading, user, isUpdate]);
 
@@ -62,7 +63,7 @@ export const Applications = () => {
             console.log(details);
             setCurrentApplication(details);
         }
-      
+
     }
 
 
@@ -79,10 +80,18 @@ export const Applications = () => {
         const userID = user?.uid
         const appID = currentApplicaton.id
         const appRef = doc(firestore, `users/${userID}/applications/${appID}`);
+        const lastaction = new Date().toISOString()
         await updateDoc(appRef, {
             "status.status": newStatus,
             "status.appointment": date,
+            "status.lastaction": lastaction,
         })
+        currentApplicaton.status = {
+            ...currentApplicaton.status,
+            status: newStatus,
+            appointment: date,
+            lastaction: lastaction
+        };
         setisUpdate(prev => prev + 1);
         setOpenEdit(false);
 
@@ -118,11 +127,13 @@ export const Applications = () => {
         const deleteRef = doc(firestore, `users/${userID}/applications/${appID}`);
         await deleteDoc(deleteRef);
         setisUpdate(prev => prev + 1);
+        setCurrentApplication(null);
         setDeleteOpen(false)
     }
 
     const openEditInfosOverlay = () => {
-
+        const currentApp = applications?.[appIndex];
+        setCurrentApplication(currentApp);
         setName(currentApplicaton.company.name);
         setContactperson(currentApplicaton.company.contactperson);
         setEmail(currentApplicaton.company.email);
@@ -134,9 +145,10 @@ export const Applications = () => {
         setTitle(currentApplicaton.position.title);
         setLocation(currentApplicaton.position.location);
         setLink(currentApplicaton.position.link);
+        setSalary(currentApp.position.salary);
         setSource(currentApplicaton.position.source);
         setopenEditInfo(true);
-        setStatus(currentApplicaton.status.status)
+        setStatus(currentApplicaton.status.status);
     }
 
     const newApplicationObject = () => {
@@ -157,12 +169,13 @@ export const Applications = () => {
                 location: location,
                 link: link,
                 source: source,
-
+                salary: salary,
             },
             status: {
                 status: status,
+                appointment: currentApplicaton.status.appointment,
                 submitted: currentApplicaton.status.submitted,
-
+                lastaction: currentApplicaton.status.lastaction,
 
             },
 
@@ -179,7 +192,8 @@ export const Applications = () => {
         console.log(location);
         const editRef = doc(firestore, `users/${userID}/applications/${appID}`);
         await updateDoc(editRef, editedApp);
-        setisUpdate(prev => prev + 1);          
+        setCurrentApplication(editedApp);
+        setisUpdate(prev => prev + 1);
         setopenEditInfo(false);
 
 
@@ -196,6 +210,13 @@ export const Applications = () => {
                     <div className="component">
                         <div className="componentContent">
                             <div className="filter">
+                                <button className="filterBtn" onClick={() => setshowFilter(true)}><img src="./img/filter_white.svg" alt="" />Filter</button>
+                            </div>
+
+                            <div className={`filterSidebar ${showFilter ? 'transform' : ''} `}>
+                                <div className="closeBtnContainer">
+                                    <button onClick={()=>setshowFilter(false)} className="closeBtn"> <img src="./img/close_white.svg" alt="" /></button>
+                                </div>
                                 <button onClick={() => filterApps('all')}>Alle</button>
                                 <button onClick={() => filterApps('Bewerbung gesendet')}>Gesendet</button>
                                 <button onClick={() => filterApps('Eingang bestätigt')}>Rückmeldung</button>
@@ -203,6 +224,9 @@ export const Applications = () => {
                                 <button onClick={() => filterApps('Vorstellungsgespräch')}>Vorstellungsgespräch</button>
                                 <button onClick={() => filterApps('Absage')}>Absage</button>
                             </div>
+
+
+
                             <div className="componentHeadline">
                                 <h2>{headlineText}</h2>
                             </div>
@@ -271,6 +295,7 @@ export const Applications = () => {
 
                                                 <h3>{currentApplicaton.position.title}</h3>
                                                 <span>Ort: {currentApplicaton.position.location}</span>
+                                                <span>Gehaltsvorstellung: {currentApplicaton.position.salary}</span>
                                                 <div>
                                                     <b>Stellenbeschreibung:</b>
                                                     <a href={currentApplicaton.position.link} target="_blank">{currentApplicaton.position.link}</a>
@@ -278,8 +303,16 @@ export const Applications = () => {
                                                 </div>
                                             </div>
                                             <div className="statusContainer">
-                                                <span>Status: {currentApplicaton.status.status}</span>
+                                                <div className="appointmentContainer">
+                                                    <b>Status: {currentApplicaton.status.status}</b>
+                                                    {currentApplicaton.status.status === 'Interview' || currentApplicaton.status.status === 'Vorstellungsgespräch' && (
+                                                        <b>am {formatDateGermanShort(currentApplicaton.status.appointment, 'time')} Uhr</b>
+                                                    )}
+
+                                                </div>
+
                                                 <span>Beworben am: {formatDateGermanShort(currentApplicaton.status.submitted, 'notime')}</span>
+                                                <span>Letzter Kontakt: {formatDateGermanShort(currentApplicaton.status.lastaction, 'notime')}</span>
                                             </div>
 
                                         </div>
@@ -373,6 +406,7 @@ export const Applications = () => {
                                         </div>
 
                                     </div>
+                                    <input type="text" placeholder="Gehaltsvorstellung" value={salary} onChange={(e) => setSalary(e.target.value)} />
                                     <input type="text" placeholder="Link zu Stellenausschreibung" value={link} onChange={(e) => setLink(e.target.value)} />
                                     <input type="text" placeholder="Quelle (LinkedIn, Stepstone...etc)" value={source} onChange={(e) => setSource(e.target.value)} />
                                 </div>

@@ -23,7 +23,7 @@ const CreateApplication = () => {
     const [status, setStatus] = useState('Bewerbung gesendet');
     const [town, setTown] = useState('');
     const [source, setSource] = useState('');
-
+    const [salary, setSalary] = useState('');
     const { user } = useUser();
     const userID = user?.uid;
     const firestore = getFirestore(firebase);
@@ -37,7 +37,7 @@ const CreateApplication = () => {
         const appCollaction = collection(firestore, `users/${userID}/applications`);
         await addDoc(appCollaction, application);
         setTimeout(() => {
-            navigate('/dashboard');
+            navigate('/applications');
         }, 200);
 
     }
@@ -60,13 +60,14 @@ const CreateApplication = () => {
                 location: location,
                 link: link,
                 source: source,
+                salary: salary,
 
             },
             status: {
                 status: status,
+                appointment: '',
                 submitted: new Date().toISOString(),
-
-
+                lastaction: new Date().toISOString(),
             },
 
         }
@@ -116,6 +117,7 @@ const CreateApplication = () => {
                                             </div>
 
                                         </div>
+                                        <input type="text" placeholder="Gehaltsvorstellung" value={salary} onChange={(e) => setSalary(e.target.value)} />
                                         <input type="text" placeholder="Link zu Stellenausschreibung" value={link} onChange={(e) => setLink(e.target.value)} />
                                         <input type="text" placeholder="Quelle (LinkedIn, Stepstone...etc)" value={source} onChange={(e) => setSource(e.target.value)} />
                                     </div>

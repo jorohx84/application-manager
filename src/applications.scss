@@ -5,6 +5,7 @@
 .filter {
     width: 100%;
     display: flex;
+    justify-content: flex-end;
     align-items: center;
     gap: 16px;
     margin-top: 32px;
@@ -53,13 +54,83 @@
     gap: 4px;
 
 }
+.filterBtn{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ font-weight: bold;
+ font-size: 18px;
+ width: fit-content;
+ box-sizing: border-box;
+ padding: 0 24px;
+ gap: 8px;
+    >img{
+        width: 25px;
+    }
+    &:hover{
+        >img{
+            content:url(./../public/img/filter_blue.svg);
+        }
+    }
+}
 
+.filterSidebar{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    transform: translateX(100%);
+    background-color: white;
+
+    box-sizing: border-box;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+      box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.1);
+      border-radius: 6px;
+      transition: transform 0.5s ease-in-out;
+}
+
+
+
+.transform{
+    transform: translateX(0) !important;
+}
+
+.closeBtnContainer{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 32px;
+}
+.closeBtn{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    >img{
+        width: 20px;
+    }
+    &:hover{
+        >img{
+            content: url(./../public/img/close_blue.svg);
+        }
+    }
+}
 .applicationList {
     width: 100%;
     max-width: 600px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: 16px;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    padding: 8px;
 }
 
 .applicationCard {
@@ -220,6 +291,7 @@ p {
 
     >button {
         background-color: transparent;
+        color: black;
 
     }
 }
@@ -311,4 +383,9 @@ p {
         align-items: center;
         gap: 8px;
     }
+}
+
+.appointmentContainer{
+    display: flex;
+    gap: 4px;
 }
