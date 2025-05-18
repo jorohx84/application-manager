@@ -20,7 +20,7 @@ const CreateApplication = () => {
     const [title, setTitle] = useState('');
     const [location, setLocation] = useState('');
     const [link, setLink] = useState('');
-    const [status, setStatus] = useState('Bewerbung gesendet');
+    const [status, setStatus] = useState('Merkliste');
     const [town, setTown] = useState('');
     const [source, setSource] = useState('');
     const [salary, setSalary] = useState('');
@@ -120,6 +120,11 @@ const CreateApplication = () => {
                                         <input type="text" placeholder="Gehaltsvorstellung" value={salary} onChange={(e) => setSalary(e.target.value)} />
                                         <input type="text" placeholder="Link zu Stellenausschreibung" value={link} onChange={(e) => setLink(e.target.value)} />
                                         <input type="text" placeholder="Quelle (LinkedIn, Stepstone...etc)" value={source} onChange={(e) => setSource(e.target.value)} />
+                                        <p>Wurde bereits eine Bewerbung versendet?</p>
+                                        <div className="appCollactionDataBtns">
+                                            <button type="button" onClick={()=>setStatus('Bewerbung gesendet')}>Ja</button>
+                                            <button type="button" onClick={()=>setStatus('Merkliste')}>Nein</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="applicationBtnContainer">

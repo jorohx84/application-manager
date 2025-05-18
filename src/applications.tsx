@@ -46,7 +46,8 @@ export const Applications = () => {
         console.log(userID);
         const loadData = async () => {
             const data = await fetchApplications(userID);
-            setApplications(data);
+            const allApps = data.filter((app: any) => app.status.status !== 'Merkliste');
+            setApplications(allApps);
             setbaseApplications(data);
         };
         loadData();
@@ -94,8 +95,7 @@ export const Applications = () => {
         };
         setisUpdate(prev => prev + 1);
         setOpenEdit(false);
-
-
+        setheadlineText('Bewerbungen')
     }
 
     const changeStatus = (value: string, event: React.MouseEvent) => {
@@ -108,7 +108,8 @@ export const Applications = () => {
         setCurrentApplication(null)
         if (!baseApplications) return;
         if (key === 'all') {
-            setApplications(baseApplications);
+            const allApps = baseApplications.filter((app: any) => app.status.status !== 'Merkliste');
+            setApplications(allApps);
             setheadlineText('Bewerbungen')
             return
         }
@@ -210,12 +211,13 @@ export const Applications = () => {
                     <div className="component">
                         <div className="componentContent">
                             <div className="filter">
+                                <button className="filterBtn" onClick={() => filterApps('Merkliste')}>Merkliste</button>
                                 <button className="filterBtn" onClick={() => setshowFilter(true)}><img src="./img/filter_white.svg" alt="" />Filter</button>
                             </div>
 
                             <div className={`filterSidebar ${showFilter ? 'transform' : ''} `}>
                                 <div className="closeBtnContainer">
-                                    <button onClick={()=>setshowFilter(false)} className="closeBtn"> <img src="./img/close_white.svg" alt="" /></button>
+                                    <button onClick={() => setshowFilter(false)} className="closeBtn"> <img src="./img/close_white.svg" alt="" /></button>
                                 </div>
                                 <button onClick={() => filterApps('all')}>Alle</button>
                                 <button onClick={() => filterApps('Bewerbung gesendet')}>Gesendet</button>
@@ -338,6 +340,7 @@ export const Applications = () => {
                             <span>{newStatus || 'Status ändern'} </span>
                             {openDropdown && (
                                 <div className="statusDropdown">
+                                    <button onClick={(e) => { changeStatus('Bewerbung gesendet', e) }}>Bewerbung gesendet</button>
                                     <button onClick={(e) => { changeStatus('Eingang bestätigt', e) }}>Eingang bestätigt</button>
                                     <button onClick={(e) => { changeStatus('Interview', e) }}>Interview</button>
                                     <button onClick={(e) => { changeStatus('Vorstellungsgespräch', e) }}>Vorstellungsgespräch</button>
@@ -347,7 +350,7 @@ export const Applications = () => {
 
                             )}
                         </div>
-                        <input disabled={!(newStatus === 'Interview' || newStatus === 'Vorstellungsgespräch')} type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} />
+                        <input disabled={!(newStatus === 'Interview' || newStatus === 'Vorstellungsgespräch' || newStatus === 'Bewerbung gesendet')} type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} />
 
                         <div className="editBtnContainer">
                             <button onClick={() => { setOpenEdit(false); setDate(''); setnewStatus('') }}>Abbrechen</button>

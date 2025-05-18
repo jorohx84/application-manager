@@ -66,3 +66,14 @@ padding: 32px;
     border: solid 1px rgba(6, 115, 193, 0.724);
 }
 
+.applicationData{
+    >p{
+        margin-block: 16px;
+    }
+}
+.appCollactionDataBtns{
+    width: 100%;
+    display: flex;
+    gap: 16px;
+}
+
