@@ -77,3 +77,16 @@ padding: 32px;
     gap: 16px;
 }
 
+.notesContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+    >textarea{
+        height: 150px;
+        box-sizing: border-box;
+        padding: 16px;
+        
+    }
+}
+

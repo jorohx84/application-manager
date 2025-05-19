@@ -10,6 +10,7 @@ import { UserProvider } from './userContext';
 import CreateApplication from './createapplication';
 import Sidebar from './sidebar';
 import { Applications } from './applications';
+import Watchlist from './watchlist';
 
 
 
@@ -25,6 +26,7 @@ function App() {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/createapplication' element={<CreateApplication />} />
           <Route path='/applications' element={<Applications />} />
+           <Route path='/watchlist' element={<Watchlist />} />
         </Routes>
       </Router>
 

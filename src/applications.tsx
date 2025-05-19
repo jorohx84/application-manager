@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import './applications.scss';
 import Sidebar from "./sidebar";
 import Header from "./header";
-import { fetchApplications, formatDateGermanShort } from './services/applicationService';
+import { fetchApplications, formatDateGermanShort, fetchWatchlist } from './services/applicationService';
 import { useUser } from "./userContext";
 import { getFirestore, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import firebase from "./firebase";
@@ -38,6 +38,7 @@ export const Applications = () => {
     const [town, setTown] = useState('');
     const [source, setSource] = useState('');
     const [showFilter, setshowFilter] = useState(false);
+    const [notes, setNotes] = useState('');
 
     useEffect(() => {
         if (loading) return;
@@ -46,14 +47,13 @@ export const Applications = () => {
         console.log(userID);
         const loadData = async () => {
             const data = await fetchApplications(userID);
-            const allApps = data.filter((app: any) => app.status.status !== 'Merkliste');
-            setApplications(allApps);
+            setApplications(data);
             setbaseApplications(data);
+
         };
         loadData();
-
-
     }, [loading, user, isUpdate]);
+
 
     const showDetails = (index: number) => {
         console.log(index);
@@ -108,8 +108,7 @@ export const Applications = () => {
         setCurrentApplication(null)
         if (!baseApplications) return;
         if (key === 'all') {
-            const allApps = baseApplications.filter((app: any) => app.status.status !== 'Merkliste');
-            setApplications(allApps);
+            setApplications(baseApplications);
             setheadlineText('Bewerbungen')
             return
         }
@@ -150,6 +149,7 @@ export const Applications = () => {
         setSource(currentApplicaton.position.source);
         setopenEditInfo(true);
         setStatus(currentApplicaton.status.status);
+        setNotes(currentApplicaton.notes);
     }
 
     const newApplicationObject = () => {
@@ -179,7 +179,7 @@ export const Applications = () => {
                 lastaction: currentApplicaton.status.lastaction,
 
             },
-
+            notes: notes,
         }
     }
 
@@ -200,6 +200,7 @@ export const Applications = () => {
 
     }
 
+
     return (
         <section className="applications">
             <section className="main">
@@ -211,7 +212,6 @@ export const Applications = () => {
                     <div className="component">
                         <div className="componentContent">
                             <div className="filter">
-                                <button className="filterBtn" onClick={() => filterApps('Merkliste')}>Merkliste</button>
                                 <button className="filterBtn" onClick={() => setshowFilter(true)}><img src="./img/filter_white.svg" alt="" />Filter</button>
                             </div>
 
@@ -251,11 +251,11 @@ export const Applications = () => {
                                                         {(app.status.status === 'Interview' || app.status.status === 'Vorstellungsgespräch') && (
                                                             <span>Datum: {formatDateGermanShort(app.status.appointment, 'widthtime')} Uhr</span>
                                                         )}
+
                                                         <div className="cardBtns">
-
                                                             <button className="statusBtn" onClick={(e) => openOverlay(index, e)}><img src="./img/edit.svg" alt="" /></button>
-
                                                         </div>
+
                                                     </div>
 
                                                 </div>
@@ -315,6 +315,11 @@ export const Applications = () => {
 
                                                 <span>Beworben am: {formatDateGermanShort(currentApplicaton.status.submitted, 'notime')}</span>
                                                 <span>Letzter Kontakt: {formatDateGermanShort(currentApplicaton.status.lastaction, 'notime')}</span>
+                                            </div>
+
+                                            <div className="notesDetails">
+                                                <span>Notizen</span>
+                                                <p>{currentApplicaton.notes}</p>
                                             </div>
 
                                         </div>
@@ -412,7 +417,12 @@ export const Applications = () => {
                                     <input type="text" placeholder="Gehaltsvorstellung" value={salary} onChange={(e) => setSalary(e.target.value)} />
                                     <input type="text" placeholder="Link zu Stellenausschreibung" value={link} onChange={(e) => setLink(e.target.value)} />
                                     <input type="text" placeholder="Quelle (LinkedIn, Stepstone...etc)" value={source} onChange={(e) => setSource(e.target.value)} />
+                                    <div className="notesContainer">
+                                        <span>Notizen</span>
+                                        <textarea name="notes" value={notes} placeholder="Notizen" onChange={(e) => setNotes(e.target.value)}></textarea>
+                                    </div>
                                 </div>
+
                             </div>
                             <div className="applicationBtnContainer">
                                 <button type="button" onClick={() => setopenEditInfo(false)}>Abbrechen</button>

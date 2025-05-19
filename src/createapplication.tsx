@@ -2,44 +2,57 @@ import React, { useState } from "react";
 import './createapplication.scss';
 import Header from "./header";
 import Sidebar from "./sidebar";
-
-
 import { useUser } from "./userContext";
-import { getFirestore, addDoc, collection } from "firebase/firestore";
+import { getFirestore, addDoc, doc, collection, deleteDoc } from "firebase/firestore";
 import firebase from "./firebase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const CreateApplication = () => {
-    const [name, setName] = useState('');
+    const linkLocation = useLocation();
+    const currentAdvertisement = linkLocation.state?.adv;
+    const [name, setName] = useState(currentAdvertisement?.name || '');
     const [contactperson, setContactperson] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [street, setStreet] = useState('');
     const [areacode, setAreacode] = useState('');
     const [website, setWebsite] = useState('');
-    const [title, setTitle] = useState('');
-    const [location, setLocation] = useState('');
-    const [link, setLink] = useState('');
-    const [status, setStatus] = useState('Merkliste');
-    const [town, setTown] = useState('');
+    const [title, setTitle] = useState(currentAdvertisement?.position || '');
+    const [location, setLocation] = useState(currentAdvertisement?.location || '');
+    const [link, setLink] = useState(currentAdvertisement?.link || '');
+    const [status, setStatus] = useState('');
+    const [town, setTown] = useState(currentAdvertisement?.town || '');
     const [source, setSource] = useState('');
     const [salary, setSalary] = useState('');
     const { user } = useUser();
+    const [notes, setNotes] = useState('');
     const userID = user?.uid;
     const firestore = getFirestore(firebase);
     const navigate = useNavigate();
 
     const createNewApplication = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Hallo');
         const application = newApplicationObject();
-        console.log(application);
+
         const appCollaction = collection(firestore, `users/${userID}/applications`);
         await addDoc(appCollaction, application);
         setTimeout(() => {
             navigate('/applications');
         }, 200);
+        if (currentAdvertisement) {
+            console.log(currentAdvertisement.id);
+            console.log('hallo');
 
+            await deleteAdvertisement();
+        }
+
+    }
+
+    const deleteAdvertisement = async () => {
+        const advID = currentAdvertisement.id
+        const userID = user?.uid
+        const docRef = doc(firestore, `users/${userID}/watchlist/${advID}`);
+        await deleteDoc(docRef);
     }
 
     const newApplicationObject = () => {
@@ -69,6 +82,7 @@ const CreateApplication = () => {
                 submitted: new Date().toISOString(),
                 lastaction: new Date().toISOString(),
             },
+            notes: notes,
 
         }
     }
@@ -120,14 +134,15 @@ const CreateApplication = () => {
                                         <input type="text" placeholder="Gehaltsvorstellung" value={salary} onChange={(e) => setSalary(e.target.value)} />
                                         <input type="text" placeholder="Link zu Stellenausschreibung" value={link} onChange={(e) => setLink(e.target.value)} />
                                         <input type="text" placeholder="Quelle (LinkedIn, Stepstone...etc)" value={source} onChange={(e) => setSource(e.target.value)} />
-                                        <p>Wurde bereits eine Bewerbung versendet?</p>
-                                        <div className="appCollactionDataBtns">
-                                            <button type="button" onClick={()=>setStatus('Bewerbung gesendet')}>Ja</button>
-                                            <button type="button" onClick={()=>setStatus('Merkliste')}>Nein</button>
+                                        <div className="notesContainer">
+                                            <span>Notizen</span>
+                                            <textarea name="notes" value={notes} placeholder="Notizen" onChange={(e) => setNotes(e.target.value)}></textarea>
                                         </div>
+
                                     </div>
                                 </div>
                                 <div className="applicationBtnContainer">
+                                    <button type="button" onClick={()=>window.history.back()}>Abbrechen</button>
                                     <button type="submit">Bewerbung anlegen</button>
                                 </div>
 

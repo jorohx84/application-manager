@@ -31,6 +31,7 @@ const Header = () => {
 
                     <Link className="link" to='/Dashboard'>Dashboard</Link>
                     <Link className="link" to='/Applications'>Bewerbungen</Link>
+                    <Link className="link" to='/Watchlist'>Merkliste</Link>
                     <button className="logoutBtn" onClick={logoutUser} >Logout</button>
                     <button className="createBtn" onClick={() => navigateTo('/createapplication')}>neue Bewerbung</button>
 

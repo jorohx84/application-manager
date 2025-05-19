@@ -90,7 +90,7 @@ const Dashboard = () => {
                     <div className="componentContent">
                         <div className="dashboardHeadline">
                             <p>Hallo {user?.displayName},</p>
-                            <span>aktuell hast du {applications?.length} {applications?.length === 1 ? 'Bewerbung' : 'Bewerbungen'} in der Pipeline</span>
+                            <span>aktuell hast du {applications?.length} laufende {applications?.length === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
                         </div>
                         <div className="divider"></div>
                         <div className="dashboardCards">

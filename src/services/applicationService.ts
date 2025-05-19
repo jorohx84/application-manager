@@ -11,6 +11,16 @@ const fetchApplications = async (userID: string) => {
     }));
 };
 
+const fetchWatchlist = async (userID: string) => {
+    const firestore = getFirestore(firebase);
+    const appCollection = collection(firestore, `users/${userID}/watchlist`);
+    const snapshot = await getDocs(appCollection);
+    return snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+    }));
+};
+
 
 const formatDateGermanShort = (dateString: string, time: string) => {
     const date = new Date(dateString);
@@ -26,4 +36,4 @@ const formatDateGermanShort = (dateString: string, time: string) => {
     }
 
 };
-export { fetchApplications, formatDateGermanShort };
+export { fetchApplications, formatDateGermanShort, fetchWatchlist };
