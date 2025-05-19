@@ -291,7 +291,8 @@ export const Applications = () => {
                                                 <span>Kontakt: {currentApplicaton?.company.contactperson}</span>
                                                 <span>Telefon: {currentApplicaton?.company.phone}</span>
                                                 <span>E-Mail: {currentApplicaton?.company.email}</span>
-                                                <span>Homepage: {currentApplicaton?.company.website}</span>
+                                                <span>Homepage</span>
+                                               <a href={currentApplicaton?.company.website} target="_blank">{currentApplicaton?.company.website}</a>
                                             </div>
                                             <div className="appPosition">
 

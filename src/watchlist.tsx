@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "./userContext";
 import { fetchWatchlist, formatDateGermanShort } from "./services/applicationService";
 import firebase from "./firebase";
-import { getFirestore, addDoc, doc, collection } from "firebase/firestore";
+import { getFirestore, addDoc, doc, collection, deleteDoc } from "firebase/firestore";
 
 
 const Watchlist = () => {
@@ -77,6 +77,19 @@ const Watchlist = () => {
         navigate("/createapplication", { state: { adv: currentAdvertisement } })
     }
 
+    const deleteAdvertisement = async (index: number) => {
+        console.log(index);
+        const currentAdvertisement = advertisements?.[index];
+        console.log(currentAdvertisement);
+        const advID = currentAdvertisement.id;
+        console.log(advID);
+        const userID = user?.uid;
+        console.log(userID);
+        const docRef = doc(firestore, `users/${userID}/watchlist/${advID}`);
+        await deleteDoc(docRef);
+        setisUpdated(prev => prev + 1)
+    }
+
     return (
         <section className="applications">
             <section className="main">
@@ -103,13 +116,17 @@ const Watchlist = () => {
                                             <span>|</span>
                                             <span>{adv.location}</span>
                                             <span>|</span>
-                                            <b>Ausschreibung eingestellt am: {formatDateGermanShort(adv.posted, 'notime')}</b>
+                                            {adv.posted !== '' ? (
+                                                <b>Ausschreibung vom: {formatDateGermanShort(adv.posted, 'notime')}</b>
+                                            ) : (
+                                                <span></span>
+                                            )}
                                         </div>
 
-
                                         <div>
-                                            <a href={adv.link}>Infos</a>
+                                            <a href={adv.link} target="_blank">Infos</a>
                                             <button onClick={() => { exportAdvertisement(index) }}>jetzt bewerben</button>
+                                            <button onClick={() => { deleteAdvertisement(index) }} className="trashBtn"><img src="./img/trash.svg" alt="" /></button>
                                         </div>
 
 
