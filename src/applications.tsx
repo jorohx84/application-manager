@@ -43,35 +43,28 @@ export const Applications = () => {
     const [search, setsearch] = useState('');
     const [isfiltered, setisFiltered] = useState(false);
     const [currentFilter, setcurrentFilter] = useState('');
+    const [detailsOpen, setdetailsOpen] = useState(false);
 
     const dashboardLocation = useLocation();
 
     useEffect(() => {
         console.log(dashboardLocation.state.trigger);
-
         if (dashboardLocation.state?.trigger && baseApplications) {
             console.log(baseApplications);
             filterApps(dashboardLocation.state.key);
-
         }
 
     }, [baseApplications]);
 
 
-    // useEffect(() => {
-    //     console.log(currentFilter);
-    //     if (currentFilter) {
-    //         if (currentFilter === '') {
-    //             setcurrentFilter('all');
-    //         }
-    //         filterApps(currentFilter);
-    //     } else {
-    //         setApplications(baseApplications);
-    //     }
-
-
-
-    // }, [baseApplications])
+    useEffect(() => {
+        console.log(currentFilter);
+        if (isfiltered) {
+            filterApps(currentFilter);
+        } else {
+            setApplications(baseApplications);
+        }
+    }, [currentApplicaton])
 
 
     useEffect(() => {
@@ -82,7 +75,12 @@ export const Applications = () => {
         const loadData = async () => {
             const data = await fetchApplications(userID);
             setbaseApplications(data);
-            setApplications(data);
+            if (isfiltered) {
+                filterApps(currentFilter);
+            } else {
+                setApplications(data);
+            }
+
 
 
 
@@ -93,26 +91,21 @@ export const Applications = () => {
 
 
     const showDetails = (index: number) => {
-        console.log(index);
-        console.log(applications);
+        setdetailsOpen(true);
         setappIndex(index);
         if (applications) {
             const details = applications[index];
-            console.log(details);
             setCurrentApplication(details);
         }
-
-
     }
+
 
     const openOverlay = (index: number, event: React.MouseEvent) => {
         setOpenEdit(true);
-
         const currentApp = applications?.[index];
         setnewStatus(currentApp.status.status);
         setDate(currentApp.status.appointment);
         setCurrentApplication(currentApp);
-
         event.stopPropagation();
     }
 
@@ -135,7 +128,10 @@ export const Applications = () => {
         };
         setisUpdate(prev => prev + 1);
         setOpenEdit(false);
-        setheadlineText('Bewerbungen')
+        if (isfiltered) {
+            setdetailsOpen(false);
+        }
+
     }
 
     const changeStatus = (value: string, event: React.MouseEvent) => {
@@ -145,7 +141,6 @@ export const Applications = () => {
     }
 
     const filterApps = (key: string) => {
-        setCurrentApplication(null)
         setcurrentFilter(key);
         console.log(baseApplications);
 
@@ -281,11 +276,11 @@ export const Applications = () => {
                                     <button onClick={() => setshowFilter(false)} className="closeBtn"> <img src="./img/close_blue.svg" alt="" /></button>
                                 </div>
 
-                                <button onClick={() => filterApps('Bewerbung gesendet')}>Gesendet</button>
-                                <button onClick={() => filterApps('Eingang bestätigt')}>Rückmeldung</button>
-                                <button onClick={() => filterApps('Interview')}>Interview</button>
-                                <button onClick={() => filterApps('Vorstellungsgespräch')}>Vorstellungsgespräch</button>
-                                <button onClick={() => filterApps('Absage')}>Absage</button>
+                                <button onClick={() => { filterApps('Bewerbung gesendet'); setdetailsOpen(false) }}>Gesendet</button>
+                                <button onClick={() => { filterApps('Eingang bestätigt'); setdetailsOpen(false) }}>Rückmeldung</button>
+                                <button onClick={() => { filterApps('Interview'); setdetailsOpen(false) }}>Interview</button>
+                                <button onClick={() => { filterApps('Vorstellungsgespräch'); setdetailsOpen(false) }}>Vorstellungsgespräch</button>
+                                <button onClick={() => { filterApps('Absage'); setdetailsOpen(false) }}>Absage</button>
                             </div>
 
 
@@ -327,7 +322,7 @@ export const Applications = () => {
 
                                     )}
                                 </div>
-                                {currentApplicaton && (
+                                {detailsOpen && (
                                     <div className="applicationDetails">
                                         <div className="detailsBtnContainer ">
                                             <h2>Informationen</h2>
