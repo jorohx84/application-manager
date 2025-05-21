@@ -106,7 +106,10 @@ const Dashboard = () => {
 
                 <div className="component">
                     <div className="componentContent">
-                        <div className="dashboardHeadline">
+                        {applications ? (
+                            <div>
+
+<div className="dashboardHeadline">
                             <p>Hallo {user?.displayName},</p>
                             <span>aktuell hast du {applications?.length} laufende {applications?.length === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
                         </div>
@@ -181,6 +184,11 @@ const Dashboard = () => {
                                 ))}
                             </div>
                         </div>
+
+                            </div>
+                        ) : (<p>Lade Dashboard ...</p>)}
+
+                        
 
                     </div>
                 </div>
