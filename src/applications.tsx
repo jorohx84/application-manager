@@ -42,7 +42,7 @@ export const Applications = () => {
     const [notes, setNotes] = useState('');
     const [search, setsearch] = useState('');
     const [isfiltered, setisFiltered] = useState(false);
-    const [currentFilter, setcurrentFilter] = useState<any[] | null>(null);
+    const [currentFilter, setcurrentFilter] = useState('');
 
     const dashboardLocation = useLocation();
 
@@ -57,6 +57,23 @@ export const Applications = () => {
 
     }, [baseApplications]);
 
+
+    // useEffect(() => {
+    //     console.log(currentFilter);
+    //     if (currentFilter) {
+    //         if (currentFilter === '') {
+    //             setcurrentFilter('all');
+    //         }
+    //         filterApps(currentFilter);
+    //     } else {
+    //         setApplications(baseApplications);
+    //     }
+
+
+
+    // }, [baseApplications])
+
+
     useEffect(() => {
         if (loading) return;
         if (!user) return;
@@ -64,8 +81,10 @@ export const Applications = () => {
         console.log(userID);
         const loadData = async () => {
             const data = await fetchApplications(userID);
-            setApplications(data);
             setbaseApplications(data);
+            setApplications(data);
+
+
 
         };
         loadData();
@@ -127,7 +146,7 @@ export const Applications = () => {
 
     const filterApps = (key: string) => {
         setCurrentApplication(null)
-       
+        setcurrentFilter(key);
         console.log(baseApplications);
 
         if (!baseApplications) return;
