@@ -36,6 +36,11 @@ const Dashboard = () => {
         loadData();
     }, [loading]);
 
+    useEffect(() => {
+        setDashboardCards();
+        getNextSteps();
+    }, [applications, advertisements])
+
 
     const countApps = (key: string) => {
         const countedApps = applications?.filter(app => app.status.status === key)
@@ -61,11 +66,16 @@ const Dashboard = () => {
 
     }
 
-    countApps('Bewerbung gesendet');
-    countApps('Eingang bestätigt');
-    countApps('Interview');
-    countApps('Vorstellungsgespräch');
-    countApps('Absage');
+    const setDashboardCards = () => {
+        countApps('Bewerbung gesendet');
+        countApps('Eingang bestätigt');
+        countApps('Interview');
+        countApps('Vorstellungsgespräch');
+        countApps('Absage');
+
+    }
+
+
 
 
     const getNextSteps = () => {
@@ -84,7 +94,7 @@ const Dashboard = () => {
 
 
 
-    getNextSteps();
+
 
     const navigateTo = (path: string) => {
         navigate(path);
@@ -109,86 +119,86 @@ const Dashboard = () => {
                         {applications ? (
                             <div>
 
-<div className="dashboardHeadline">
-                            <p>Hallo {user?.displayName},</p>
-                            <span>aktuell hast du {applications?.length} laufende {applications?.length === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
-                        </div>
-                        <div className="divider"></div>
-                        <div className="dashboardCards">
-                            <div className="dashboardCard" onClick={() => { navigateWithState('Bewerbung gesendet') }}>
-                                <div className="count">
-                                    <p>{sendCount}</p>
-                                    <span>{sendCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
+                                <div className="dashboardHeadline">
+                                    <p>Hallo {user?.displayName},</p>
+                                    <span>aktuell hast du {applications?.length} laufende {applications?.length === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
                                 </div>
+                                <div className="divider"></div>
+                                <div className="dashboardCards">
+                                    <div className="dashboardCard" onClick={() => { navigateWithState('Bewerbung gesendet') }}>
+                                        <div className="count">
+                                            <p>{sendCount}</p>
+                                            <span>{sendCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
+                                        </div>
 
-                                <h2>Gesendet</h2>
-                            </div>
-                            <div className="dashboardCard" onClick={() => { navigateWithState('Eingang bestätigt') }}>
-                                <div className="count">
-                                    <p>{recieptCount}</p>
-                                    <span>{recieptCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
-                                </div>
-
-                                <h2>bestätigt</h2>
-                            </div>
-                            <div className="dashboardCard" onClick={() => { navigateWithState('Interview') }}>
-                                <div className="count">
-                                    <p>{interviewCount}</p>
-                                    <span>{interviewCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
-                                </div>
-
-                                <h2>Interview</h2>
-                            </div>
-                            <div className="dashboardCard" onClick={() => { navigateWithState('Vorstellungsgespräch') }}>
-                                <div className="count">
-                                    <p>{jobInterviewCount}</p>
-                                    <span>{jobInterviewCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
-                                </div>
-
-                                <h2>Vorstellungsgespräch</h2>
-                            </div>
-                            <div className="dashboardCard" onClick={() => { navigateWithState('Absage') }}>
-                                <div className="count">
-                                    <p>{cancelCount}</p>
-                                    <span>{cancelCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
-                                </div>
-
-                                <h2>Absage</h2>
-                            </div>
-                        </div>
-                        <div className="overview">
-                            <div className="nextSteps" onClick={() => navigateTo('/applications')}>
-                                <h2>Nächste Termine</h2>
-                                {nextSteps?.map((step, index) => (
-                                    <div className="step" key={index}>
-                                        <span>{formatDateGermanShort(step.status.appointment, 'time')} Uhr:</span>
-                                        <b>{step.company.name} </b>
-                                        <span> | {step.position.title} | </span>
-                                        <span>{step.status.status},</span>
-
+                                        <h2>Gesendet</h2>
                                     </div>
-                                ))}
-                            </div>
-                            <div className="watchlist" onClick={() => navigateTo('/watchlist')}>
-                                <h2>Merkliste</h2>
-                                {advertisements?.map((adv, index) => (
-                                    <div className="step" key={index}>
-                                        <div className={`dot ${adv.prio === 'hoch' ? 'high' : adv.prio === 'mittel' ? 'medium' : 'low'}`}></div>
-                                        <b>{adv.name} </b>
-                                        <span>{adv.town} | </span>
-                                        <span>{adv.position} - </span>
-                                        <span>{adv.location}</span>
+                                    <div className="dashboardCard" onClick={() => { navigateWithState('Eingang bestätigt') }}>
+                                        <div className="count">
+                                            <p>{recieptCount}</p>
+                                            <span>{recieptCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
+                                        </div>
 
-
+                                        <h2>bestätigt</h2>
                                     </div>
-                                ))}
-                            </div>
-                        </div>
+                                    <div className="dashboardCard" onClick={() => { navigateWithState('Interview') }}>
+                                        <div className="count">
+                                            <p>{interviewCount}</p>
+                                            <span>{interviewCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
+                                        </div>
+
+                                        <h2>Interview</h2>
+                                    </div>
+                                    <div className="dashboardCard" onClick={() => { navigateWithState('Vorstellungsgespräch') }}>
+                                        <div className="count">
+                                            <p>{jobInterviewCount}</p>
+                                            <span>{jobInterviewCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
+                                        </div>
+
+                                        <h2>Vorstellungsgespräch</h2>
+                                    </div>
+                                    <div className="dashboardCard" onClick={() => { navigateWithState('Absage') }}>
+                                        <div className="count">
+                                            <p>{cancelCount}</p>
+                                            <span>{cancelCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
+                                        </div>
+
+                                        <h2>Absage</h2>
+                                    </div>
+                                </div>
+                                <div className="overview">
+                                    <div className="nextSteps" onClick={() => navigateTo('/applications')}>
+                                        <h2>Nächste Termine</h2>
+                                        {nextSteps?.map((step, index) => (
+                                            <div className="step" key={index}>
+                                                <span>{formatDateGermanShort(step.status.appointment, 'time')} Uhr:</span>
+                                                <b>{step.company.name} </b>
+                                                <span> | {step.position.title} | </span>
+                                                <span>{step.status.status},</span>
+
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="watchlist" onClick={() => navigateTo('/watchlist')}>
+                                        <h2>Merkliste</h2>
+                                        {advertisements?.map((adv, index) => (
+                                            <div className="step" key={index}>
+                                                <div className={`dot ${adv.prio === 'hoch' ? 'high' : adv.prio === 'mittel' ? 'medium' : 'low'}`}></div>
+                                                <b>{adv.name} </b>
+                                                <span>{adv.town} | </span>
+                                                <span>{adv.position} - </span>
+                                                <span>{adv.location}</span>
+
+
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
 
                             </div>
                         ) : (<p>Lade Dashboard ...</p>)}
 
-                        
+
 
                     </div>
                 </div>

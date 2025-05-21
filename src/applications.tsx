@@ -48,23 +48,16 @@ export const Applications = () => {
     const dashboardLocation = useLocation();
 
     useEffect(() => {
-        console.log(dashboardLocation.state.trigger);
         if (dashboardLocation.state?.trigger && baseApplications) {
             console.log(baseApplications);
             filterApps(dashboardLocation.state.key);
-        }
-
-    }, [baseApplications]);
-
-
-    useEffect(() => {
-        console.log(currentFilter);
-        if (isfiltered) {
+        } else if (isfiltered) {
             filterApps(currentFilter);
         } else {
             setApplications(baseApplications);
         }
-    }, [currentApplicaton])
+    }, [baseApplications]);
+
 
 
     useEffect(() => {
@@ -168,7 +161,8 @@ export const Applications = () => {
         await deleteDoc(deleteRef);
         setisUpdate(prev => prev + 1);
         setCurrentApplication(null);
-        setDeleteOpen(false)
+        setDeleteOpen(false);
+        setdetailsOpen(false);
     }
 
     const openEditInfosOverlay = () => {
@@ -352,31 +346,31 @@ export const Applications = () => {
                                             </div>
                                             <div className="appPosition">
 
-                                                <h3>{currentApplicaton.position.title}</h3>
-                                                <span>Ort: {currentApplicaton.position.location}</span>
-                                                <span>Gehaltsvorstellung: {currentApplicaton.position.salary}</span>
+                                                <h3>{currentApplicaton?.position.title}</h3>
+                                                <span>Ort: {currentApplicaton?.position.location}</span>
+                                                <span>Gehaltsvorstellung: {currentApplicaton?.position.salary}</span>
                                                 <div>
                                                     <b>Stellenbeschreibung:</b>
-                                                    <a href={currentApplicaton.position.link} target="_blank">{currentApplicaton.position.link}</a>
+                                                    <a href={currentApplicaton?.position.link} target="_blank">{currentApplicaton?.position.link}</a>
 
                                                 </div>
                                             </div>
                                             <div className="statusContainer">
                                                 <div className="appointmentContainer">
-                                                    <b>Status: {currentApplicaton.status.status}</b>
-                                                    {(currentApplicaton.status.status === 'Interview' || currentApplicaton.status.status === 'Vorstellungsgespräch') && (
-                                                        <b>am {formatDateGermanShort(currentApplicaton.status.appointment, 'time')} Uhr</b>
+                                                    <b>Status: {currentApplicaton?.status.status}</b>
+                                                    {(currentApplicaton?.status.status === 'Interview' || currentApplicaton?.status.status === 'Vorstellungsgespräch') && (
+                                                        <b>am {formatDateGermanShort(currentApplicaton?.status.appointment, 'time')} Uhr</b>
                                                     )}
 
                                                 </div>
 
-                                                <span>Beworben am: {formatDateGermanShort(currentApplicaton.status.submitted, 'notime')}</span>
-                                                <span>Letzter Kontakt: {formatDateGermanShort(currentApplicaton.status.lastaction, 'notime')}</span>
+                                                <span>Beworben am: {formatDateGermanShort(currentApplicaton?.status.submitted, 'notime')}</span>
+                                                <span>Letzter Kontakt: {formatDateGermanShort(currentApplicaton?.status.lastaction, 'notime')}</span>
                                             </div>
 
                                             <div className="notesDetails">
                                                 <span>Notizen</span>
-                                                <p>{currentApplicaton.notes}</p>
+                                                <p>{currentApplicaton?.notes}</p>
                                             </div>
 
                                         </div>
