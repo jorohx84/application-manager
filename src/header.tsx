@@ -22,6 +22,10 @@ const Header = () => {
         navigateTo('/login');
     }
 
+    const navigateWithState = (path: string) => {
+        navigate(path, { state: { key: 'all', trigger: false } })
+    }
+
     return (
         <section className="header">
             <div className="headerInner">
@@ -30,8 +34,9 @@ const Header = () => {
 
 
                     <Link className="link" to='/Dashboard'>Dashboard</Link>
-                    <Link className="link" to='/Applications'>Bewerbungen</Link>
+                    <button className="logoutBtn" onClick={() => navigateWithState('/Applications')} >Bewerbungen</button>
                     <Link className="link" to='/Watchlist'>Merkliste</Link>
+
                     <button className="logoutBtn" onClick={logoutUser} >Logout</button>
                     <button className="createBtn" onClick={() => navigateTo('/createapplication')}>neue Bewerbung</button>
 

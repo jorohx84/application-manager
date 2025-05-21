@@ -36,4 +36,11 @@ const formatDateGermanShort = (dateString: string, time: string) => {
     }
 
 };
-export { fetchApplications, formatDateGermanShort, fetchWatchlist };
+
+const findSearchedData = (input: string, dataArray: any[]) => {
+    const inputValue = input.toLowerCase();
+    const filteredData = dataArray?.filter((adv: any) => adv?.name?.toLowerCase().includes(inputValue) || adv?.company?.name?.toLowerCase().includes(inputValue));
+    return filteredData;
+}
+
+export { fetchApplications, formatDateGermanShort, fetchWatchlist, findSearchedData };

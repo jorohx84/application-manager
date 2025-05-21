@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import './applications.scss';
 import Sidebar from "./sidebar";
 import Header from "./header";
-import { fetchApplications, formatDateGermanShort, fetchWatchlist } from './services/applicationService';
+import { fetchApplications, formatDateGermanShort, findSearchedData } from './services/applicationService';
 import { useUser } from "./userContext";
 import { getFirestore, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import firebase from "./firebase";
+import { useLocation } from "react-router-dom";
 
 
 export const Applications = () => {
@@ -39,6 +40,22 @@ export const Applications = () => {
     const [source, setSource] = useState('');
     const [showFilter, setshowFilter] = useState(false);
     const [notes, setNotes] = useState('');
+    const [search, setsearch] = useState('');
+    const [isfiltered, setisFiltered] = useState(false);
+    const [currentFilter, setcurrentFilter] = useState<any[] | null>(null);
+
+    const dashboardLocation = useLocation();
+
+    useEffect(() => {
+        console.log(dashboardLocation.state.trigger);
+
+        if (dashboardLocation.state?.trigger && baseApplications) {
+            console.log(baseApplications);
+            filterApps(dashboardLocation.state.key);
+
+        }
+
+    }, [baseApplications]);
 
     useEffect(() => {
         if (loading) return;
@@ -52,6 +69,7 @@ export const Applications = () => {
 
         };
         loadData();
+
     }, [loading, user, isUpdate]);
 
 
@@ -65,19 +83,22 @@ export const Applications = () => {
             setCurrentApplication(details);
         }
 
+
     }
-
-
 
     const openOverlay = (index: number, event: React.MouseEvent) => {
         setOpenEdit(true);
+
         const currentApp = applications?.[index];
+        setnewStatus(currentApp.status.status);
+        setDate(currentApp.status.appointment);
         setCurrentApplication(currentApp);
 
         event.stopPropagation();
     }
 
     const editAppStatus = async () => {
+        dashboardLocation.state.trigger = false;
         const userID = user?.uid
         const appID = currentApplicaton.id
         const appRef = doc(firestore, `users/${userID}/applications/${appID}`);
@@ -106,15 +127,20 @@ export const Applications = () => {
 
     const filterApps = (key: string) => {
         setCurrentApplication(null)
+       
+        console.log(baseApplications);
+
         if (!baseApplications) return;
         if (key === 'all') {
             setApplications(baseApplications);
             setheadlineText('Bewerbungen')
+            setisFiltered(false);
             return
         }
         const filteredApps = baseApplications?.filter((app: any) => app.status.status === key);
         setApplications(filteredApps);
         setheadlineText(key)
+        setisFiltered(true);
     }
 
     const openDeleteOverlay = () => {
@@ -185,6 +211,7 @@ export const Applications = () => {
 
     const saveEditedApp = async (e: React.FormEvent) => {
         e.preventDefault();
+        dashboardLocation.state.trigger = false;
         console.log('los');
         const editedApp = newApplicationObject();
         console.log(editedApp);
@@ -197,7 +224,18 @@ export const Applications = () => {
         setisUpdate(prev => prev + 1);
         setopenEditInfo(false);
 
+    }
 
+    const findApplications = (input: string) => {
+
+        if (input.length >= 3 && baseApplications) {
+            const filteredData = findSearchedData(input, baseApplications);
+            if (filteredData) {
+                setApplications(filteredData)
+            }
+        } else {
+            setApplications(baseApplications);
+        }
     }
 
 
@@ -212,14 +250,18 @@ export const Applications = () => {
                     <div className="component">
                         <div className="componentContent">
                             <div className="filter">
-                                <button className="filterBtn" onClick={() => setshowFilter(true)}><img src="./img/filter_white.svg" alt="" />Filter</button>
+
+                                <button disabled={!isfiltered} className={`resetBtn ${isfiltered ? '' : 'opacity'}`} onClick={() => filterApps('all')}><img src="./img/reload_blue.svg" alt="" /></button>
+
+                                <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findApplications(e.target.value) }} />
+                                <button className="filterBtn" onClick={() => setshowFilter(true)}><img src="./img/filter_blue.svg" alt="" />Filter</button>
                             </div>
 
                             <div className={`filterSidebar ${showFilter ? 'transform' : ''} `}>
                                 <div className="closeBtnContainer">
-                                    <button onClick={() => setshowFilter(false)} className="closeBtn"> <img src="./img/close_white.svg" alt="" /></button>
+                                    <button onClick={() => setshowFilter(false)} className="closeBtn"> <img src="./img/close_blue.svg" alt="" /></button>
                                 </div>
-                                <button onClick={() => filterApps('all')}>Alle</button>
+
                                 <button onClick={() => filterApps('Bewerbung gesendet')}>Gesendet</button>
                                 <button onClick={() => filterApps('Eingang bestätigt')}>Rückmeldung</button>
                                 <button onClick={() => filterApps('Interview')}>Interview</button>
@@ -247,14 +289,14 @@ export const Applications = () => {
                                                         <span className="location">{app.position.location}</span>
                                                     </div>
                                                     <div className="status">
-                                                        <p>Status: <b>{app.status.status}</b>  </p>
+                                                        <p className="statusChanger" onClick={(e) => openOverlay(index, e)}><b>{app.status.status}</b>  </p>
                                                         {(app.status.status === 'Interview' || app.status.status === 'Vorstellungsgespräch') && (
-                                                            <span>Datum: {formatDateGermanShort(app.status.appointment, 'widthtime')} Uhr</span>
+                                                            <span>am: {formatDateGermanShort(app.status.appointment, 'widthtime')} Uhr</span>
                                                         )}
 
-                                                        <div className="cardBtns">
-                                                            <button className="statusBtn" onClick={(e) => openOverlay(index, e)}><img src="./img/edit.svg" alt="" /></button>
-                                                        </div>
+                                                        {/* <div className="cardBtns">
+                                                            <button className="statusBtn" onClick={(e) => openOverlay(index, e)}><img src="./img/edit_blue.svg" alt="" /></button>
+                                                        </div> */}
 
                                                     </div>
 
@@ -271,8 +313,8 @@ export const Applications = () => {
                                         <div className="detailsBtnContainer ">
                                             <h2>Informationen</h2>
                                             <div>
-                                                <button className="statusBtn" onClick={openEditInfosOverlay}><img src="./img/edit.svg" alt="" /></button>
-                                                <button className="statusBtn" onClick={(e) => openDeleteOverlay()}><img src="./img/trash.svg" alt="" /></button>
+                                                <button className="statusBtn" onClick={openEditInfosOverlay}><img src="./img/edit_blue.svg" alt="" /></button>
+                                                <button className="statusBtn" onClick={(e) => openDeleteOverlay()}><img src="./img/trash_blue.svg" alt="" /></button>
                                             </div>
 
                                         </div>
@@ -292,7 +334,7 @@ export const Applications = () => {
                                                 <span>Telefon: {currentApplicaton?.company.phone}</span>
                                                 <span>E-Mail: {currentApplicaton?.company.email}</span>
                                                 <span>Homepage</span>
-                                               <a href={currentApplicaton?.company.website} target="_blank">{currentApplicaton?.company.website}</a>
+                                                <a href={currentApplicaton?.company.website} target="_blank">{currentApplicaton?.company.website}</a>
                                             </div>
                                             <div className="appPosition">
 
@@ -308,7 +350,7 @@ export const Applications = () => {
                                             <div className="statusContainer">
                                                 <div className="appointmentContainer">
                                                     <b>Status: {currentApplicaton.status.status}</b>
-                                                    {currentApplicaton.status.status === 'Interview' || currentApplicaton.status.status === 'Vorstellungsgespräch' && (
+                                                    {(currentApplicaton.status.status === 'Interview' || currentApplicaton.status.status === 'Vorstellungsgespräch') && (
                                                         <b>am {formatDateGermanShort(currentApplicaton.status.appointment, 'time')} Uhr</b>
                                                     )}
 
@@ -346,7 +388,6 @@ export const Applications = () => {
                             <span>{newStatus || 'Status ändern'} </span>
                             {openDropdown && (
                                 <div className="statusDropdown">
-                                    <button onClick={(e) => { changeStatus('Bewerbung gesendet', e) }}>Bewerbung gesendet</button>
                                     <button onClick={(e) => { changeStatus('Eingang bestätigt', e) }}>Eingang bestätigt</button>
                                     <button onClick={(e) => { changeStatus('Interview', e) }}>Interview</button>
                                     <button onClick={(e) => { changeStatus('Vorstellungsgespräch', e) }}>Vorstellungsgespräch</button>
@@ -356,7 +397,7 @@ export const Applications = () => {
 
                             )}
                         </div>
-                        <input disabled={!(newStatus === 'Interview' || newStatus === 'Vorstellungsgespräch' || newStatus === 'Bewerbung gesendet')} type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} />
+                        <input disabled={!(newStatus === 'Interview' || newStatus === 'Vorstellungsgespräch')} type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} />
 
                         <div className="editBtnContainer">
                             <button onClick={() => { setOpenEdit(false); setDate(''); setnewStatus('') }}>Abbrechen</button>

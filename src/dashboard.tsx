@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useUser } from './userContext';
 import Header from "./header";
 import Sidebar from "./sidebar";
 import './dashboard.scss';
-import { fetchApplications, formatDateGermanShort } from './services/applicationService';
+import { fetchApplications, fetchWatchlist, formatDateGermanShort } from './services/applicationService';
+
 
 const Dashboard = () => {
     // const location = useLocation();
     // const userID = location.state?.uid;
+    const navigate = useNavigate();
     const [applications, setApplications] = useState<any[] | null>(null);
     const { user, loading } = useUser();
     const [sendCount, setsendCount] = useState(0);
@@ -17,14 +19,19 @@ const Dashboard = () => {
     const [cancelCount, setcancelCount] = useState(0);
     const [jobInterviewCount, setjobInterviewCount] = useState(0);
     const [nextSteps, setnextSteps] = useState<any[] | null>(null);
+    const [advertisements, setadvertisements] = useState<any[] | null>(null);
+
     useEffect(() => {
         if (loading) return
         if (!user) return
         const userID = user?.uid;
         const loadData = async () => {
             const data = await fetchApplications(userID);
+            const watchData = await fetchWatchlist(userID);
+            setadvertisements(watchData);
             console.log(data);
             setApplications(data);
+
         };
         loadData();
     }, [loading]);
@@ -75,7 +82,18 @@ const Dashboard = () => {
 
     }
 
+
+
     getNextSteps();
+
+    const navigateTo = (path: string) => {
+        navigate(path);
+    }
+
+    const navigateWithState = (filterKey: string) => {
+        console.log(filterKey);
+        navigate('/applications', { state: { key: filterKey, trigger: true } })
+    }
 
     return (
 
@@ -94,7 +112,7 @@ const Dashboard = () => {
                         </div>
                         <div className="divider"></div>
                         <div className="dashboardCards">
-                            <div className="dashboardCard">
+                            <div className="dashboardCard" onClick={() => { navigateWithState('Bewerbung gesendet') }}>
                                 <div className="count">
                                     <p>{sendCount}</p>
                                     <span>{sendCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
@@ -102,7 +120,7 @@ const Dashboard = () => {
 
                                 <h2>Gesendet</h2>
                             </div>
-                            <div className="dashboardCard">
+                            <div className="dashboardCard" onClick={() => { navigateWithState('Eingang bestätigt') }}>
                                 <div className="count">
                                     <p>{recieptCount}</p>
                                     <span>{recieptCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
@@ -110,7 +128,7 @@ const Dashboard = () => {
 
                                 <h2>bestätigt</h2>
                             </div>
-                            <div className="dashboardCard">
+                            <div className="dashboardCard" onClick={() => { navigateWithState('Interview') }}>
                                 <div className="count">
                                     <p>{interviewCount}</p>
                                     <span>{interviewCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
@@ -118,7 +136,7 @@ const Dashboard = () => {
 
                                 <h2>Interview</h2>
                             </div>
-                            <div className="dashboardCard">
+                            <div className="dashboardCard" onClick={() => { navigateWithState('Vorstellungsgespräch') }}>
                                 <div className="count">
                                     <p>{jobInterviewCount}</p>
                                     <span>{jobInterviewCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
@@ -126,7 +144,7 @@ const Dashboard = () => {
 
                                 <h2>Vorstellungsgespräch</h2>
                             </div>
-                            <div className="dashboardCard">
+                            <div className="dashboardCard" onClick={() => { navigateWithState('Absage') }}>
                                 <div className="count">
                                     <p>{cancelCount}</p>
                                     <span>{cancelCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
@@ -135,18 +153,35 @@ const Dashboard = () => {
                                 <h2>Absage</h2>
                             </div>
                         </div>
-                        <div className="nextSteps">
-                            <h2>Nächste Termine</h2>
-                            {nextSteps?.map((step, index) => (
-                                <div className="step" key={index}>
-                                    <span>{formatDateGermanShort(step.status.appointment,'time')} Uhr:</span>
-                                    <b>{step.company.name} </b>
-                                    <span> | {step.position.title} | </span>
-                                    <span>{step.status.status},</span>
+                        <div className="overview">
+                            <div className="nextSteps" onClick={() => navigateTo('/applications')}>
+                                <h2>Nächste Termine</h2>
+                                {nextSteps?.map((step, index) => (
+                                    <div className="step" key={index}>
+                                        <span>{formatDateGermanShort(step.status.appointment, 'time')} Uhr:</span>
+                                        <b>{step.company.name} </b>
+                                        <span> | {step.position.title} | </span>
+                                        <span>{step.status.status},</span>
 
-                                </div>
-                            ))}
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="watchlist" onClick={() => navigateTo('/watchlist')}>
+                                <h2>Merkliste</h2>
+                                {advertisements?.map((adv, index) => (
+                                    <div className="step" key={index}>
+                                        <div className={`dot ${adv.prio === 'hoch' ? 'high' : adv.prio === 'mittel' ? 'medium' : 'low'}`}></div>
+                                        <b>{adv.name} </b>
+                                        <span>{adv.town} | </span>
+                                        <span>{adv.position} - </span>
+                                        <span>{adv.location}</span>
+
+
+                                    </div>
+                                ))}
+                            </div>
                         </div>
+
                     </div>
                 </div>
 

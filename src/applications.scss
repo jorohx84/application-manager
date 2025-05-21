@@ -8,12 +8,12 @@
     justify-content: flex-end;
     align-items: center;
     gap: 16px;
-    margin-top: 32px;
+
 }
 
 .applicationBoard {
     width: 100%;
-    flex: 1;
+    height: calc(100vh - 400px);
     display: flex;
     gap: 56px;
 }
@@ -54,32 +54,58 @@
     gap: 4px;
 
 }
-.filterBtn{
- display: flex;
- justify-content: center;
- align-items: center;
- font-weight: bold;
- font-size: 18px;
- width: fit-content;
- box-sizing: border-box;
- padding: 0 24px;
- gap: 8px;
-    >img{
+
+.filterBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    width: fit-content;
+    box-sizing: border-box;
+    padding: 0 24px;
+    gap: 8px;
+
+    >img {
         width: 25px;
     }
-    &:hover{
-        >img{
-            content:url(./../public/img/filter_blue.svg);
+
+    &:hover {
+        >img {
+            content: url(./../public/img/filter_white.svg);
         }
     }
 }
 
-.filterSidebar{
+.resetBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    width: fit-content;
+    box-sizing: border-box;
+    padding: 0 24px;
+    gap: 8px;
+
+    >img {
+        width: 25px;
+    }
+
+    &:hover {
+        >img {
+            content: url(./../public/img/reload_white.svg);
+        }
+    }
+}
+
+
+.filterSidebar {
     position: absolute;
-    top: 0;
+    top: 120px;
     right: 0;
     width: 300px;
-    transform: translateX(100%);
+    transform: translateX(100vw);
     background-color: white;
 
     box-sizing: border-box;
@@ -88,39 +114,42 @@
     flex-direction: column;
     align-items: center;
     gap: 4px;
-      box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.1);
-      border-radius: 6px;
-      transition: transform 0.5s ease-in-out;
+    box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    transition: transform 0.5s ease-in-out;
 }
 
 
 
-.transform{
+.transform {
     transform: translateX(0) !important;
 }
 
-.closeBtnContainer{
+.closeBtnContainer {
     width: 100%;
     display: flex;
     justify-content: flex-end;
     margin-bottom: 32px;
 }
-.closeBtn{
+
+.closeBtn {
     width: 30px;
     height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    
-    >img{
+
+    >img {
         width: 20px;
     }
-    &:hover{
-        >img{
-            content: url(./../public/img/close_blue.svg);
+
+    &:hover {
+        >img {
+            content: url(./../public/img/close_white.svg);
         }
     }
 }
+
 .applicationList {
     width: 100%;
     max-width: 600px;
@@ -140,11 +169,11 @@
     box-sizing: border-box;
     padding: 24px;
     cursor: pointer;
-    // transition: background-color 0.1s ease-in-out;
+    transition: transform 0.2s ease-in-out;
 
     &:hover {
-        border: solid 1px var(--main);
-        box-shadow: unset;
+
+        transform: scale(1.02);
     }
 }
 
@@ -181,7 +210,8 @@
 
     box-sizing: border-box;
     padding: 8px;
-    background-color: rgba(128, 128, 128, 0.591);
+    background-color: var(--main);
+    color: white;
     border-radius: 4px;
 }
 
@@ -193,12 +223,32 @@ p {
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 16px;
+}
+
+.statusChanger {
+    display: flex;
+    border: solid 1px var(--main);
+    gap: 4px;
+    box-sizing: border-box;
+    padding: 8px;
+    border-radius: 6px;
+    color: var(--main);
+
+    &:hover {
+        background-color: var(--main);
+        color: white;
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
 }
 
 .statusBtn {
     background-color: transparent;
+    border: none;
     width: 30px;
     height: 30px;
     display: flex;
@@ -211,11 +261,7 @@ p {
     }
 
     &:hover {
-        background-color: gray;
-
-        >img {
-            filter: invert(100%);
-        }
+        background-color: transparent;
     }
 }
 
@@ -329,33 +375,35 @@ p {
     border-radius: 6px;
     box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.1);
 
-   
+
 }
 
 .companyDetailsContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-     >h4 {
+
+    >h4 {
         margin: 0;
     }
 }
 
-.appPosition{
+.appPosition {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    >div{
+
+    >div {
         display: flex;
         flex-direction: column;
     }
 }
 
-.statusContainer{
+.statusContainer {
     display: flex;
     flex-direction: column;
     gap: 4px;
-   
+
 }
 
 .deleteBtnContainer {
@@ -378,14 +426,15 @@ p {
     >h2 {
         margin: 0;
     }
-    >div{
+
+    >div {
         display: flex;
         align-items: center;
         gap: 8px;
     }
 }
 
-.appointmentContainer{
+.appointmentContainer {
     display: flex;
     gap: 4px;
 }

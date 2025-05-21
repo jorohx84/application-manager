@@ -20,7 +20,7 @@ const CreateApplication = () => {
     const [title, setTitle] = useState(currentAdvertisement?.position || '');
     const [location, setLocation] = useState(currentAdvertisement?.location || '');
     const [link, setLink] = useState(currentAdvertisement?.link || '');
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('Bewerbung gesendet');
     const [town, setTown] = useState(currentAdvertisement?.town || '');
     const [source, setSource] = useState('');
     const [salary, setSalary] = useState('');
@@ -37,7 +37,7 @@ const CreateApplication = () => {
         const appCollaction = collection(firestore, `users/${userID}/applications`);
         await addDoc(appCollaction, application);
         setTimeout(() => {
-            navigate('/applications');
+            navigate('/applications', { state: { key: 'all', trigger: false } });
         }, 200);
         if (currentAdvertisement) {
             console.log(currentAdvertisement.id);
@@ -142,7 +142,7 @@ const CreateApplication = () => {
                                     </div>
                                 </div>
                                 <div className="applicationBtnContainer">
-                                    <button type="button" onClick={()=>window.history.back()}>Abbrechen</button>
+                                    <button type="button" onClick={() => window.history.back()}>Abbrechen</button>
                                     <button type="submit">Bewerbung anlegen</button>
                                 </div>
 

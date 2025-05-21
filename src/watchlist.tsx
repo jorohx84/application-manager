@@ -3,14 +3,15 @@ import './watchlist.scss';
 import Header from "./header";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "./userContext";
-import { fetchWatchlist, formatDateGermanShort } from "./services/applicationService";
+import { fetchWatchlist, formatDateGermanShort, findSearchedData } from "./services/applicationService";
 import firebase from "./firebase";
-import { getFirestore, addDoc, doc, collection, deleteDoc } from "firebase/firestore";
+import { getFirestore, addDoc, doc, collection, deleteDoc, updateDoc } from "firebase/firestore";
 
 
 const Watchlist = () => {
     const navigate = useNavigate();
     const [advertisements, setadvertisements] = useState<any[] | null>(null);
+    const [baseAdverstisements, setbaseAdvertisements] = useState<any[] | null>(null);
     const [name, setName] = useState('');
     const [town, settown] = useState('');
     const [position, setposition] = useState('');
@@ -22,6 +23,9 @@ const Watchlist = () => {
     const { user, loading } = useUser();
     const firestore = getFirestore(firebase);
     const [isUpdated, setisUpdated] = useState(0);
+    const [isEdit, setisEdit] = useState(false);
+    const [advID, setadvID] = useState('');
+    const [search, setsearch] = useState('');
 
     useEffect(() => {
         if (loading) return;
@@ -30,6 +34,7 @@ const Watchlist = () => {
         const loadData = async () => {
             const data = await fetchWatchlist(userID);
             setadvertisements(data);
+            setbaseAdvertisements(data);
         };
         loadData();
     }, [loading, user, isUpdated]);
@@ -40,8 +45,17 @@ const Watchlist = () => {
         e.preventDefault();
         const advertise = getAdvertisementObject();
         const userID = user?.uid;
-        const collectionRef = collection(firestore, `users/${userID}/watchlist`);
-        await addDoc(collectionRef, advertise);
+        if (isEdit) {
+            const editRef = doc(firestore, `users/${userID}/watchlist/${advID}`);
+            await updateDoc(editRef, advertise);
+            setisEdit(false)
+        } else {
+            const collectionRef = collection(firestore, `users/${userID}/watchlist`);
+            await addDoc(collectionRef, advertise);
+            console.log('SAVE');
+
+        }
+
         setisOpen(false);
         resetInputfields();
         setisUpdated(prev => prev + 1);
@@ -90,6 +104,38 @@ const Watchlist = () => {
         setisUpdated(prev => prev + 1)
     }
 
+    const editAdvertisement = (index: number) => {
+        setisEdit(true);
+        console.log(index);
+        const currentAdvertisement = advertisements?.[index];
+        console.log(currentAdvertisement);
+        setadvID(currentAdvertisement.id);
+        setValues(currentAdvertisement);
+        setisOpen(true);
+    }
+
+    const setValues = (adv: any) => {
+        setName(adv.name);
+        settown(adv.town);
+        setposition(adv.position);
+        setlocation(adv.location);
+        setposted(adv.posted);
+        setprio(adv.prio);
+        setlink(adv.link);
+    }
+
+    const findAdvertisement = (input: string) => {
+        
+        if (input.length >= 3 && baseAdverstisements) {
+           const filteredData=findSearchedData(input, baseAdverstisements);
+            if (filteredData) {
+                setadvertisements(filteredData)
+            }
+        } else {
+            setadvertisements(baseAdverstisements);
+        }
+    }
+
     return (
         <section className="applications">
             <section className="main">
@@ -101,7 +147,8 @@ const Watchlist = () => {
                     <div className="component">
                         <div className="componentContent">
                             <div className="watchlistBtns">
-                                <button onClick={() => setisOpen(!isOpen)}>{isOpen ? 'Abbrechen' : 'Hinzufügen'}</button>
+                                <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findAdvertisement(e.target.value) }} />
+                                <button onClick={() => { setisOpen(!isOpen); setisEdit(false) }}>{isOpen ? 'Abbrechen' : 'Hinzufügen'}</button>
                             </div>
                             <div className="componentHeadline">
                                 <h2>Merkliste</h2>
@@ -110,6 +157,9 @@ const Watchlist = () => {
                                 {advertisements ? advertisements.map((adv, index) => (
                                     <div className="listRow" key={index}>
                                         <div>
+                                            <div className={`prioFlag ${adv.prio === 'hoch' ? 'flagHigh' : adv.prio === 'mittel' ? 'flagMedium' : 'flagLow'}`}>
+                                                {/* <span>{adv.prio}</span> */}
+                                            </div>
                                             <span>{adv.name}, {adv.town}</span>
                                             <span>|</span>
                                             <span>{adv.position}</span>
@@ -121,12 +171,16 @@ const Watchlist = () => {
                                             ) : (
                                                 <span></span>
                                             )}
+                                            {/* <div className={`prioFlag ${adv.prio === 'hoch' ? 'flagHigh' : adv.prio === 'mittel' ? 'flagMedium' : 'flagLow'}`}>
+                                                <span>{adv.prio}</span>
+                                            </div> */}
                                         </div>
 
-                                        <div>
-                                            <a href={adv.link} target="_blank">Infos</a>
-                                            <button onClick={() => { exportAdvertisement(index) }}>jetzt bewerben</button>
-                                            <button onClick={() => { deleteAdvertisement(index) }} className="trashBtn"><img src="./img/trash.svg" alt="" /></button>
+                                        <div className="watchlistRowBtns">
+                                            <a className="infoLink" href={adv.link} target="_blank">Stellenbeschreibung</a>
+                                            <button onClick={() => { exportAdvertisement(index) }}>bewerben</button>
+                                            <button className="editBtn" onClick={() => { editAdvertisement(index) }}><img src="./img/edit_blue.svg" alt="" /></button>
+                                            <button onClick={() => { deleteAdvertisement(index) }} className="trashBtn"><img src="./img/trash_blue.svg" alt="" /></button>
                                         </div>
 
 
@@ -160,9 +214,9 @@ const Watchlist = () => {
                                 <div className="inputContainer">
                                     <span>Priorität</span>
                                     <div className="prioBtns">
-                                        <button onClick={() => setprio('hoch')} className={prio === 'hoch' ? 'btnHighlight' : ''} type="button">Hoch</button>
-                                        <button onClick={() => setprio('mittel')} className={prio === 'mittel' ? 'btnHighlight' : ''} type="button">Mittel</button>
-                                        <button onClick={() => setprio('niedrig')} className={prio === 'niedrig' ? 'btnHighlight' : ''} type="button">Niedrig</button>
+                                        <button onClick={() => setprio('hoch')} className={` prioHigh ${prio === 'hoch' ? 'btnHighActive' : ''}`} type="button">Hoch</button>
+                                        <button onClick={() => setprio('mittel')} className={`prioMedium ${prio === 'mittel' ? 'btnMediumActive' : ''}`} type="button">Mittel</button>
+                                        <button onClick={() => setprio('niedrig')} className={`prioLow ${prio === 'niedrig' ? 'btnLowActive' : ''}`} type="button">Niedrig</button>
                                     </div>
                                 </div>
                                 <input type="text" value={link} placeholder="Link" onChange={(e) => setlink(e.target.value)} />

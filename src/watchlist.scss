@@ -1,9 +1,11 @@
-.watchlistBtns{
+.watchlistBtns {
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    gap: 16px;
 }
-.inputfieldSlider{
+
+.inputfieldSlider {
     width: 320px;
     display: flex;
     flex-direction: column;
@@ -11,49 +13,52 @@
     gap: 16px;
     border-radius: 6px;
     background-color: white;
-     box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.1);
-     box-sizing: border-box;
-     padding: 32px;
-     position: absolute;
-     top: 90px;
-     right: 0;
-     transform: translateX(100%);
-     transition: transform 0.5s ease-in-out;
+    box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    padding: 32px;
+    position: absolute;
+    top: 90px;
+    right: 0;
+    transform: translateX(100vw);
+    transition: transform 0.5s ease-in-out;
 }
 
-.transform{
+.transform {
     transform: translateX(0) !important;
 }
-.inputContainer{
+
+.inputContainer {
     display: flex;
     flex-direction: column;
     gap: 8px;
 
 }
 
-.prioBtns{
+.prioBtns {
     display: flex;
-  
+    gap: 8px;
 
-   gap: 8px;
->button{width: 80px;}
+    >button {
+        width: 80px;
+    }
 }
 
-.saveBtn{
-width: 100%;
-display: flex;
-justify-content: center;
-margin-top: 32px;
+.saveBtn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
 }
 
-.advertisementsList{
+.advertisementsList {
     width: 100%;
     display: flex;
     flex-direction: column;
     border-bottom: solid 1px;
-    
+
 }
-.listRow{
+
+.listRow {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -61,31 +66,169 @@ margin-top: 32px;
     border-top: solid 1px;
     box-sizing: border-box;
     padding: 32px 16px;
- 
-    >div{
+
+    >div {
         display: flex;
         justify-content: flex-start;
         align-items: center;
         gap: 16px;
-           >span{
-        font-size: 20px;
-        
+
+        >span {
+            font-size: 20px;
+
+        }
     }
-    }
-  
+
 }
 
-.trashBtn{
+.trashBtn {
     width: 50px;
     height: 50px;
-    >img{
+
+    >img {
         width: 25px;
-        filter: invert(100%);
+      
     }
-    &:hover{
-        >img{
-     filter: unset;
+
+    &:hover {
+        >img {
+           content: url(./../public/img/trash-white.svg);
         }
-   
+
     }
 }
+
+.editBtn{
+       width: 50px;
+    height: 50px;
+
+    >img {
+        width: 25px;
+      
+    }
+
+    &:hover {
+        >img {
+           content: url(./../public/img/edit_white.svg);
+        }
+
+    } 
+}
+
+.prioHigh {
+    border: solid;
+    border-color: var(--high);
+    color: var(--high);
+    background-color: transparent;
+
+    &:hover {
+        border: none;
+        background-color: var(--high);
+        color: white;
+    }
+}
+
+.btnHighActive {
+    border: none;
+    background-color: var(--high);
+    color: white;
+}
+
+.prioMedium {
+    border: solid;
+    border-color: var(--medium);
+    color: var(--medium);
+    background-color: transparent;
+
+    &:hover {
+        border: none;
+        background-color: var(--medium);
+        color: white;
+    }
+}
+
+.btnMediumActive {
+    border: none;
+    background-color: var(--medium);
+    color: white;
+}
+
+.prioLow {
+    border: solid;
+    border-color: var(--low);
+    color: var(--low);
+    background-color: transparent;
+
+    &:hover {
+        border: none;
+        background-color: var(--low);
+        color: white;
+    }
+}
+
+.btnLowActive {
+    border: none;
+    background-color: var(--low);
+    color: white;
+}
+
+.prioFlag {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+.flagHigh {
+    background-color: var(--high);
+}
+
+.flagMedium {
+    background-color: var(--medium);
+}
+
+.flagLow {
+    background-color: var(--low);
+}
+
+.infoLink{
+    text-decoration: none;
+    color: black;
+    border: solid 1px var(--main);
+    color: var(--main);
+    width: fit-content;
+    box-sizing: border-box;
+    padding: 16px;
+    height: 50px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+     transition: background-color 0.3s ease-in-out, color 0.5s ease-in-out;
+    &:hover{
+        border: none;
+        background-color: var(--main);
+        color: white;
+    }
+}
+
+.watchlistRowBtns{
+    >button{
+        width: fit-content;
+        box-sizing: border-box;
+        padding: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.searchInput{
+    width: 100%;
+    max-width: 300px;
+}
+
