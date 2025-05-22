@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import './applications.scss';
 import Sidebar from "./sidebar";
 import Header from "./header";
-import { fetchApplications, formatDateGermanShort, findSearchedData } from './services/applicationService';
+import { fetchApplications, formatDateGermanShort, findSearchedData, saveToLocalStorage, getFromLocalStorage } from './services/applicationService';
 import { useUser } from "./userContext";
 import { getFirestore, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import firebase from "./firebase";
@@ -20,7 +20,7 @@ export const Applications = () => {
     const [isUpdate, setisUpdate] = useState(0);
     const [date, setDate] = useState('');
     const [openDropdown, setopenDropdown] = useState(false);
-    const [headlineText, setheadlineText] = useState('Bewerbungen')
+    const [headlineText, setheadlineText] = useState('')
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [openEditInfos, setopenEditInfo] = useState(false);
     const [appIndex, setappIndex] = useState(-1);
@@ -44,12 +44,32 @@ export const Applications = () => {
     const [isfiltered, setisFiltered] = useState(false);
     const [currentFilter, setcurrentFilter] = useState('');
     const [detailsOpen, setdetailsOpen] = useState(false);
+    const [isTriggered, setisTriggered] = useState(false);
 
     const dashboardLocation = useLocation();
 
     useEffect(() => {
+        const filterKey = getFromLocalStorage('isfiltered');
+        if (filterKey) {
+            setisFiltered(filterKey)
+        }
+        const filterData = getFromLocalStorage('currentFilter');
+        if (filterData) {
+            setcurrentFilter(filterData);
+        }
+        const storedApplication = getFromLocalStorage('currentApplicaton');
+        if (storedApplication) {
+            setCurrentApplication(storedApplication);
+        }
+        const storedDetailsKey = getFromLocalStorage('detailsOpen');
+        if (storedDetailsKey) {
+            setdetailsOpen(storedDetailsKey);
+        }
+    }, []);
+
+    useEffect(() => {
         if (dashboardLocation.state?.trigger && baseApplications) {
-            console.log(baseApplications);
+            setdetailsOpen(false);
             filterApps(dashboardLocation.state.key);
         } else if (isfiltered) {
             filterApps(currentFilter);
@@ -58,7 +78,16 @@ export const Applications = () => {
         }
     }, [baseApplications]);
 
+    useEffect(() => {
+        saveToLocalStorage('isfiltered', isfiltered);
+        saveToLocalStorage('currentFilter', currentFilter);
 
+    }, [isfiltered, currentFilter]);
+
+    useEffect(() => {
+        saveToLocalStorage('currentApplicaton', currentApplicaton);
+        saveToLocalStorage('detailsOpen', detailsOpen);
+    }, [currentApplicaton, detailsOpen]);
 
     useEffect(() => {
         if (loading) return;
@@ -70,17 +99,15 @@ export const Applications = () => {
             setbaseApplications(data);
             if (isfiltered) {
                 filterApps(currentFilter);
-            } else {
+            } else if (!dashboardLocation.state.trigger) {
                 setApplications(data);
             }
-
-
-
-
         };
         loadData();
 
     }, [loading, user, isUpdate]);
+
+
 
 
     const showDetails = (index: number) => {
@@ -121,10 +148,12 @@ export const Applications = () => {
         };
         setisUpdate(prev => prev + 1);
         setOpenEdit(false);
-        if (isfiltered) {
-            setdetailsOpen(false);
-        }
-
+        // if (isfiltered) {
+        //     setdetailsOpen(false);
+        // }
+        setisFiltered(true);
+        setcurrentFilter(newStatus);
+        filterApps(newStatus);
     }
 
     const changeStatus = (value: string, event: React.MouseEvent) => {
@@ -136,7 +165,7 @@ export const Applications = () => {
     const filterApps = (key: string) => {
         setcurrentFilter(key);
         console.log(baseApplications);
-
+        dashboardLocation.state.trigger = false;
         if (!baseApplications) return;
         if (key === 'all') {
             setApplications(baseApplications);
@@ -235,13 +264,15 @@ export const Applications = () => {
     }
 
     const findApplications = (input: string) => {
-
+       
         if (input.length >= 3 && baseApplications) {
+ setheadlineText('Suche nach' + ' ' + '"' + input + '"');
             const filteredData = findSearchedData(input, baseApplications);
             if (filteredData) {
                 setApplications(filteredData)
             }
         } else {
+            setheadlineText('Bewerbungen')
             setApplications(baseApplications);
         }
     }
@@ -258,11 +289,19 @@ export const Applications = () => {
                     <div className="component">
                         <div className="componentContent">
                             <div className="filter">
+                                <div className="filterBtns">
+                                    <button className={currentFilter === 'Bewerbung gesendet' ? 'btnHighlight' : ''} onClick={() => { filterApps('Bewerbung gesendet'); setdetailsOpen(false) }}>Gesendet</button>
+                                    <button className={currentFilter === 'Eingang bestätigt' ? 'btnHighlight' : ''} onClick={() => { filterApps('Eingang bestätigt'); setdetailsOpen(false) }}>Eingang bestätigt</button>
+                                    <button className={currentFilter === 'Interview' ? 'btnHighlight' : ''} onClick={() => { filterApps('Interview'); setdetailsOpen(false) }}>Interview</button>
+                                    <button className={currentFilter === 'Vorstellungsgespräch' ? 'btnHighlight' : ''} onClick={() => { filterApps('Vorstellungsgespräch'); setdetailsOpen(false) }}>Vorstellungsgespräch</button>
+                                    <button className={currentFilter === 'Absage' ? 'btnHighlight' : ''} onClick={() => { filterApps('Absage'); setdetailsOpen(false) }}>Absage</button>
+                                </div>
+                                <div className="menubar">
+                                    <button disabled={!isfiltered} className={`resetBtn ${isfiltered ? '' : 'opacity'}`} onClick={() => filterApps('all')}><img src="./img/reload_blue.svg" alt="" /></button>
+                                    <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findApplications(e.target.value) }} />
+                                    <button className="filterBtn" onClick={() => setshowFilter(true)}><img src="./img/filter_blue.svg" alt="" />Filter</button>
+                                </div>
 
-                                <button disabled={!isfiltered} className={`resetBtn ${isfiltered ? '' : 'opacity'}`} onClick={() => filterApps('all')}><img src="./img/reload_blue.svg" alt="" /></button>
-
-                                <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findApplications(e.target.value) }} />
-                                <button className="filterBtn" onClick={() => setshowFilter(true)}><img src="./img/filter_blue.svg" alt="" />Filter</button>
                             </div>
 
                             <div className={`filterSidebar ${showFilter ? 'transform' : ''} `}>
@@ -270,11 +309,11 @@ export const Applications = () => {
                                     <button onClick={() => setshowFilter(false)} className="closeBtn"> <img src="./img/close_blue.svg" alt="" /></button>
                                 </div>
 
-                                <button onClick={() => { filterApps('Bewerbung gesendet'); setdetailsOpen(false) }}>Gesendet</button>
-                                <button onClick={() => { filterApps('Eingang bestätigt'); setdetailsOpen(false) }}>Rückmeldung</button>
-                                <button onClick={() => { filterApps('Interview'); setdetailsOpen(false) }}>Interview</button>
-                                <button onClick={() => { filterApps('Vorstellungsgespräch'); setdetailsOpen(false) }}>Vorstellungsgespräch</button>
-                                <button onClick={() => { filterApps('Absage'); setdetailsOpen(false) }}>Absage</button>
+                                <button className={currentFilter === 'Bewerbung gesendet' ? 'btnHighlight' : ''} onClick={() => { filterApps('Bewerbung gesendet'); setdetailsOpen(false) }}>Gesendet</button>
+                                <button className={currentFilter === 'Eingang bestätigt' ? 'btnHighlight' : ''} onClick={() => { filterApps('Eingang bestätigt'); setdetailsOpen(false) }}>Eingang bestätigt</button>
+                                <button className={currentFilter === 'Interview' ? 'btnHighlight' : ''} onClick={() => { filterApps('Interview'); setdetailsOpen(false) }}>Interview</button>
+                                <button className={currentFilter === 'Vorstellungsgespräch' ? 'btnHighlight' : ''} onClick={() => { filterApps('Vorstellungsgespräch'); setdetailsOpen(false) }}>Vorstellungsgespräch</button>
+                                <button className={currentFilter === 'Absage' ? 'btnHighlight' : ''} onClick={() => { filterApps('Absage'); setdetailsOpen(false) }}>Absage</button>
                             </div>
 
 
@@ -302,9 +341,6 @@ export const Applications = () => {
                                                             <span>am: {formatDateGermanShort(app.status.appointment, 'widthtime')} Uhr</span>
                                                         )}
 
-                                                        {/* <div className="cardBtns">
-                                                            <button className="statusBtn" onClick={(e) => openOverlay(index, e)}><img src="./img/edit_blue.svg" alt="" /></button>
-                                                        </div> */}
 
                                                     </div>
 
@@ -316,7 +352,7 @@ export const Applications = () => {
 
                                     )}
                                 </div>
-                                {detailsOpen && (
+                                {detailsOpen && applications && (
                                     <div className="applicationDetails">
                                         <div className="detailsBtnContainer ">
                                             <h2>Informationen</h2>
@@ -326,9 +362,10 @@ export const Applications = () => {
                                             </div>
 
                                         </div>
-
+                                        <div className="detailsDivider"></div>
                                         <div className="companyInfos">
                                             <h3>{currentApplicaton?.company.name}</h3>
+
                                             <div className="adress">
                                                 <span>{currentApplicaton?.company.street}</span>
                                                 <div className="city">
@@ -369,7 +406,7 @@ export const Applications = () => {
                                             </div>
 
                                             <div className="notesDetails">
-                                                <span>Notizen</span>
+                                                <span>Notizen:</span>
                                                 <p>{currentApplicaton?.notes}</p>
                                             </div>
 
@@ -468,7 +505,7 @@ export const Applications = () => {
                                     <input type="text" placeholder="Link zu Stellenausschreibung" value={link} onChange={(e) => setLink(e.target.value)} />
                                     <input type="text" placeholder="Quelle (LinkedIn, Stepstone...etc)" value={source} onChange={(e) => setSource(e.target.value)} />
                                     <div className="notesContainer">
-                                        <span>Notizen</span>
+                                        <span>Notizen:</span>
                                         <textarea name="notes" value={notes} placeholder="Notizen" onChange={(e) => setNotes(e.target.value)}></textarea>
                                     </div>
                                 </div>

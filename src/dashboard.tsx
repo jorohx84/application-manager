@@ -100,7 +100,7 @@ const Dashboard = () => {
         navigate(path);
     }
 
-    const navigateWithState = (filterKey: string) => {
+    const navigateWithState = (filterKey: string, triggerKey: boolean) => {
         console.log(filterKey);
         navigate('/applications', { state: { key: filterKey, trigger: true } })
     }
@@ -117,7 +117,7 @@ const Dashboard = () => {
                 <div className="component">
                     <div className="componentContent">
                         {applications ? (
-                            <div>
+                            <div className="dashboard">
 
                                 <div className="dashboardHeadline">
                                     <p>Hallo {user?.displayName},</p>
@@ -125,7 +125,7 @@ const Dashboard = () => {
                                 </div>
                                 <div className="divider"></div>
                                 <div className="dashboardCards">
-                                    <div className="dashboardCard" onClick={() => { navigateWithState('Bewerbung gesendet') }}>
+                                    <div className="dashboardCard" onClick={() => { navigateWithState('Bewerbung gesendet', true) }}>
                                         <div className="count">
                                             <p>{sendCount}</p>
                                             <span>{sendCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
@@ -133,7 +133,7 @@ const Dashboard = () => {
 
                                         <h2>Gesendet</h2>
                                     </div>
-                                    <div className="dashboardCard" onClick={() => { navigateWithState('Eingang bestätigt') }}>
+                                    <div className="dashboardCard" onClick={() => { navigateWithState('Eingang bestätigt', true) }}>
                                         <div className="count">
                                             <p>{recieptCount}</p>
                                             <span>{recieptCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
@@ -141,7 +141,7 @@ const Dashboard = () => {
 
                                         <h2>bestätigt</h2>
                                     </div>
-                                    <div className="dashboardCard" onClick={() => { navigateWithState('Interview') }}>
+                                    <div className="dashboardCard" onClick={() => { navigateWithState('Interview', true) }}>
                                         <div className="count">
                                             <p>{interviewCount}</p>
                                             <span>{interviewCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
@@ -149,7 +149,7 @@ const Dashboard = () => {
 
                                         <h2>Interview</h2>
                                     </div>
-                                    <div className="dashboardCard" onClick={() => { navigateWithState('Vorstellungsgespräch') }}>
+                                    <div className="dashboardCard" onClick={() => { navigateWithState('Vorstellungsgespräch', true) }}>
                                         <div className="count">
                                             <p>{jobInterviewCount}</p>
                                             <span>{jobInterviewCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
@@ -157,7 +157,7 @@ const Dashboard = () => {
 
                                         <h2>Vorstellungsgespräch</h2>
                                     </div>
-                                    <div className="dashboardCard" onClick={() => { navigateWithState('Absage') }}>
+                                    <div className="dashboardCard" onClick={() => { navigateWithState('Absage', true) }}>
                                         <div className="count">
                                             <p>{cancelCount}</p>
                                             <span>{cancelCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
@@ -167,7 +167,7 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                                 <div className="overview">
-                                    <div className="nextSteps" onClick={() => navigateTo('/applications')}>
+                                    <div className="nextSteps" onClick={() => { navigateWithState('all', false) }}>
                                         <h2>Nächste Termine</h2>
                                         {nextSteps?.map((step, index) => (
                                             <div className="step" key={index}>
@@ -179,7 +179,7 @@ const Dashboard = () => {
                                             </div>
                                         ))}
                                     </div>
-                                    <div className="watchlist" onClick={() => navigateTo('/watchlist')}>
+                                    <div className="watchlist" onClick={()=>navigateTo('/watchlist')}>
                                         <h2>Merkliste</h2>
                                         {advertisements?.map((adv, index) => (
                                             <div className="step" key={index}>

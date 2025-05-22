@@ -1,6 +1,8 @@
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import firebase from "../firebase";
 
+
+
 const fetchApplications = async (userID: string) => {
     const firestore = getFirestore(firebase);
     const appCollection = collection(firestore, `users/${userID}/applications`);
@@ -43,4 +45,25 @@ const findSearchedData = (input: string, dataArray: any[]) => {
     return filteredData;
 }
 
-export { fetchApplications, formatDateGermanShort, fetchWatchlist, findSearchedData };
+const saveToLocalStorage = (local: string, data: any) => {
+    if (typeof data === 'string') {
+        localStorage.setItem(local, data);
+    } else {
+        localStorage.setItem(local, JSON.stringify(data));
+    }
+}
+
+const getFromLocalStorage = (local: string) => {
+    console.log(local);
+    const storedData = localStorage.getItem(local);
+    if (storedData) {
+        try {
+            return JSON.parse(storedData);
+        } catch(e) {
+            return storedData;
+        }
+    }
+
+}
+
+export { fetchApplications, formatDateGermanShort, fetchWatchlist, findSearchedData, saveToLocalStorage, getFromLocalStorage };
