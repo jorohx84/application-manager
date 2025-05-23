@@ -54,7 +54,6 @@ const saveToLocalStorage = (local: string, data: any) => {
 }
 
 const getFromLocalStorage = (local: string) => {
-    console.log(local);
     const storedData = localStorage.getItem(local);
     if (storedData) {
         try {
