@@ -74,7 +74,7 @@ export const Applications = () => {
         } else if (isfiltered) {
             filterApps(currentFilter);
         } else {
-            setApplications(baseApplications);
+          setApplications(baseApplications);
         }
     }, [baseApplications]);
 
@@ -89,6 +89,7 @@ export const Applications = () => {
         saveToLocalStorage('detailsOpen', detailsOpen);
     }, [currentApplicaton, detailsOpen]);
 
+
     useEffect(() => {
         if (loading) return;
         if (!user) return;
@@ -101,6 +102,9 @@ export const Applications = () => {
                 filterApps(currentFilter);
             } else if (!dashboardLocation.state.trigger) {
                 setApplications(data);
+                setheadlineText('Bewerbungen');
+                setcurrentFilter('');
+                setisFiltered(false);
             }
         };
         loadData();
@@ -163,10 +167,11 @@ export const Applications = () => {
     }
 
     const filterApps = (key: string) => {
+
         setcurrentFilter(key);
         console.log(baseApplications);
         dashboardLocation.state.trigger = false;
-        if (!baseApplications) return;
+                if (!baseApplications) return;
         if (key === 'all') {
             setApplications(baseApplications);
             setheadlineText('Bewerbungen')
