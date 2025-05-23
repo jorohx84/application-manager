@@ -45,10 +45,7 @@ const Dashboard = () => {
 
     const countApps = (key: string) => {
         const countedApps = applications?.filter(app => app.status.status === key)
-        console.log(countedApps?.length);
         const length = countedApps?.length
-        console.log(length);
-
         if (key === 'Bewerbung gesendet' && length && sendCount != length) {
             setsendCount(length);
         }

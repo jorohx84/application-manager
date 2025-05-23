@@ -18,8 +18,17 @@ const Header = () => {
     const auth = getAuth();
 
     const logoutUser = () => {
+        removeLocalStorage();
         signOut(auth);
         navigateTo('/login');
+    }
+
+    const removeLocalStorage = () => {
+        localStorage.removeItem('isfiltered');
+        localStorage.removeItem('currentFilter');
+        localStorage.removeItem('currentApplicaton');
+        localStorage.removeItem('detailsOpen');
+
     }
 
     const navigateWithState = (path: string) => {

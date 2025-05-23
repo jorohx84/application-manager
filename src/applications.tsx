@@ -79,9 +79,19 @@ export const Applications = () => {
         saveToLocalStorage('detailsOpen', detailsOpen);
     }, [currentApplicaton, detailsOpen]);
 
+    useEffect(() => {
+        if (dashboardLocation.state.trigger) {
+            setisTriggered(true);
+        } else {
+            setisTriggered(false);
+            removeFilter();
+        }
+
+    }, [dashboardLocation.state]);
+
 
     useEffect(() => {
-        if (dashboardLocation.state?.trigger && baseApplications) {
+        if (isTriggered && baseApplications) {
             setdetailsOpen(false);
             filterApps(dashboardLocation.state.key);
             console.log('location');
@@ -93,10 +103,11 @@ export const Applications = () => {
 
         } else {
             console.log('normal');
-
+            setheadlineText('Bewerbungen');
             setApplications(baseApplications);
         }
     }, [baseApplications]);
+
 
 
 
@@ -108,19 +119,13 @@ export const Applications = () => {
             const data = await fetchApplications(userID);
             setbaseApplications(data);
             if (isfiltered) {
-                filterApps(currentFilter);
-            } else {
-                setApplications(data);
-                setheadlineText('Bewerbungen');
-                setcurrentFilter('');
-                setisFiltered(false);
+                setisTriggered(false);
             }
+
         };
         loadData();
 
     }, [loading, user, isUpdate]);
-
-
 
 
     const showDetails = (index: number) => {
@@ -143,7 +148,7 @@ export const Applications = () => {
     }
 
     const editAppStatus = async () => {
-        dashboardLocation.state.trigger = false;
+        setisTriggered(false);
         const userID = user?.uid
         const appID = currentApplicaton.id
         const appRef = doc(firestore, `users/${userID}/applications/${appID}`);
@@ -177,17 +182,20 @@ export const Applications = () => {
 
     const filterApps = (key: string) => {
         setcurrentFilter(key);
-        dashboardLocation.state.trigger = false;
+        setisTriggered(false);
         if (!baseApplications) return;
-        if (key === 'all') {
-            setApplications(baseApplications);
-            setheadlineText('Bewerbungen')
-            return
-        }
         const filteredApps = baseApplications?.filter((app: any) => app.status.status === key);
         setApplications(filteredApps);
         setheadlineText(key)
         setisFiltered(true);
+    }
+
+    const removeFilter = () => {
+        setisTriggered(false);
+        setisFiltered(false);
+        setcurrentFilter('');
+        setheadlineText('Bewerbungen');
+        setApplications(baseApplications);
     }
 
     const openDeleteOverlay = () => {
@@ -306,7 +314,7 @@ export const Applications = () => {
                                     <button className={currentFilter === 'Absage' ? 'btnHighlight' : ''} onClick={() => { filterApps('Absage'); setdetailsOpen(false) }}>Absage</button>
                                 </div>
                                 <div className="menubar">
-                                    <button disabled={!isfiltered} className={`resetBtn ${isfiltered ? '' : 'opacity'}`} onClick={() => filterApps('all')}><img src="./img/reload_blue.svg" alt="" /></button>
+                                    <button disabled={!isfiltered} className={`resetBtn ${isfiltered ? '' : 'opacity'}`} onClick={() => removeFilter()}><img src="./img/reload_blue.svg" alt="" /></button>
                                     <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findApplications(e.target.value) }} />
                                     {/* <button className="filterBtn" onClick={() => setshowFilter(true)}><img src="./img/filter_blue.svg" alt="" />Filter</button> */}
                                 </div>
@@ -328,7 +336,7 @@ export const Applications = () => {
 
 
                             <div className="componentHeadline">
-                                <h2>{headlineText}</h2>
+                                <h2>{applications ? headlineText : ''}</h2>
                             </div>
                             <div className="applicationBoard">
                                 <div className="applicationList">
