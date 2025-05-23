@@ -5,6 +5,7 @@ import Header from "./header";
 import Sidebar from "./sidebar";
 import './dashboard.scss';
 import { fetchApplications, fetchWatchlist, formatDateGermanShort } from './services/applicationService';
+import Footer from "./footer";
 
 
 const Dashboard = () => {
@@ -112,7 +113,7 @@ const Dashboard = () => {
                 <Sidebar />
             </div> */}
             <div className="content">
-                <Header />
+           
 
                 <div className="component">
                     <div className="componentContent">
@@ -179,7 +180,7 @@ const Dashboard = () => {
                                             </div>
                                         ))}
                                     </div>
-                                    <div className="watchlist" onClick={()=>navigateTo('/watchlist')}>
+                                    <div className="watchlist" onClick={() => navigateTo('/watchlist')}>
                                         <h2>Merkliste</h2>
                                         {advertisements?.map((adv, index) => (
                                             <div className="step" key={index}>
@@ -202,7 +203,7 @@ const Dashboard = () => {
 
                     </div>
                 </div>
-
+         
             </div>
 
         </section>

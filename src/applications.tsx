@@ -7,7 +7,7 @@ import { useUser } from "./userContext";
 import { getFirestore, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import firebase from "./firebase";
 import { useLocation } from "react-router-dom";
-
+import Footer from "./footer";
 
 export const Applications = () => {
     const firestore = getFirestore(firebase);
@@ -264,9 +264,10 @@ export const Applications = () => {
     }
 
     const findApplications = (input: string) => {
-       
+
         if (input.length >= 3 && baseApplications) {
- setheadlineText('Suche nach' + ' ' + '"' + input + '"');
+            setdetailsOpen(false);
+            setheadlineText('Suche nach' + ' ' + '"' + input + '"');
             const filteredData = findSearchedData(input, baseApplications);
             if (filteredData) {
                 setApplications(filteredData)
@@ -285,7 +286,7 @@ export const Applications = () => {
                     <Sidebar />
                 </div> */}
                 <div className="content">
-                    <Header />
+                  
                     <div className="component">
                         <div className="componentContent">
                             <div className="filter">
@@ -299,7 +300,7 @@ export const Applications = () => {
                                 <div className="menubar">
                                     <button disabled={!isfiltered} className={`resetBtn ${isfiltered ? '' : 'opacity'}`} onClick={() => filterApps('all')}><img src="./img/reload_blue.svg" alt="" /></button>
                                     <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findApplications(e.target.value) }} />
-                                    <button className="filterBtn" onClick={() => setshowFilter(true)}><img src="./img/filter_blue.svg" alt="" />Filter</button>
+                                    {/* <button className="filterBtn" onClick={() => setshowFilter(true)}><img src="./img/filter_blue.svg" alt="" />Filter</button> */}
                                 </div>
 
                             </div>
@@ -417,6 +418,7 @@ export const Applications = () => {
                             </div>
                         </div>
                     </div>
+                       
                 </div>
 
             </section>

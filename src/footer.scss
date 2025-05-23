@@ -1,0 +1,25 @@
+.footer{
+    border-top: solid 1px;
+    width: 100%;
+    min-height: 120px;
+    max-height: 120px;
+    display: flex;
+   justify-content: center;
+}
+
+.footerContent{
+    width: 100%;
+    max-width: 1920px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 0 56px;
+}
+
+.legal{
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+}

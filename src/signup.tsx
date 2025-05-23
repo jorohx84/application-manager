@@ -15,7 +15,7 @@ const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     const createUser = async (e: React.FormEvent) => {
         e.preventDefault();
         console.log(name);
@@ -68,8 +68,11 @@ const SignUp = () => {
                         <input className='checkbox' type="checkbox" required />
                         <span>Ich stimme den <a href="">Datenschutzbestimmungen</a> zu</span>
                     </div>
+                    <div className='signupBtns'>
+                        <button type='button' onClick={() => navigate('/login')}>zurück</button>
+                        <button type='submit'>Registrieren</button>
+                    </div>
 
-                    <button type='submit'>Registrieren</button>
                 </form>
             </div>
         </section>

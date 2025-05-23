@@ -95,7 +95,7 @@ const CreateApplication = () => {
                 <Sidebar />
             </div> */}
             <div className="content">
-                <Header />
+                
                 <div className="component">
                     <div className="componentContent">
                         <section className="applicationContainer">
