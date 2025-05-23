@@ -161,9 +161,9 @@ export const Applications = () => {
         };
         setisUpdate(prev => prev + 1);
         setOpenEdit(false);
-        // if (isfiltered) {
-        //     setdetailsOpen(false);
-        // }
+        if (isfiltered) {
+            setdetailsOpen(false);
+        }
         setisFiltered(true);
         setcurrentFilter(newStatus);
         filterApps(newStatus);
