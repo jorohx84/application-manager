@@ -4,7 +4,7 @@ import { useUser } from './userContext';
 import Header from "./header";
 import Sidebar from "./sidebar";
 import './dashboard.scss';
-import { fetchApplications, fetchWatchlist, formatDateGermanShort } from './services/applicationService';
+import { fetchApplications, fetchWatchlist, formatDateGermanShort, saveToLocalStorage } from './services/applicationService';
 import Footer from "./footer";
 
 
@@ -103,6 +103,12 @@ const Dashboard = () => {
         navigate('/applications', { state: { key: filterKey, trigger: true } })
     }
 
+    const navigateAndSaveKey = (key: string) => {
+        saveToLocalStorage('currentFilter', key)
+        saveToLocalStorage('isfiltered', true);
+        navigate('/applications');
+    }
+
     return (
 
         <section className="main">
@@ -110,7 +116,7 @@ const Dashboard = () => {
                 <Sidebar />
             </div> */}
             <div className="content">
-           
+
 
                 <div className="component">
                     <div className="componentContent">
@@ -123,7 +129,7 @@ const Dashboard = () => {
                                 </div>
                                 <div className="divider"></div>
                                 <div className="dashboardCards">
-                                    <div className="dashboardCard" onClick={() => { navigateWithState('Bewerbung gesendet', true) }}>
+                                    <div className="dashboardCard" onClick={() => { navigateAndSaveKey('Bewerbung gesendet') }}>
                                         <div className="count">
                                             <p>{sendCount}</p>
                                             <span>{sendCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
@@ -131,7 +137,7 @@ const Dashboard = () => {
 
                                         <h2>Gesendet</h2>
                                     </div>
-                                    <div className="dashboardCard" onClick={() => { navigateWithState('Eingang bestätigt', true) }}>
+                                    <div className="dashboardCard" onClick={() => { navigateAndSaveKey('Eingang bestätigt') }}>
                                         <div className="count">
                                             <p>{recieptCount}</p>
                                             <span>{recieptCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
@@ -139,7 +145,7 @@ const Dashboard = () => {
 
                                         <h2>bestätigt</h2>
                                     </div>
-                                    <div className="dashboardCard" onClick={() => { navigateWithState('Interview', true) }}>
+                                    <div className="dashboardCard" onClick={() => { navigateAndSaveKey('Interview') }}>
                                         <div className="count">
                                             <p>{interviewCount}</p>
                                             <span>{interviewCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
@@ -147,7 +153,7 @@ const Dashboard = () => {
 
                                         <h2>Interview</h2>
                                     </div>
-                                    <div className="dashboardCard" onClick={() => { navigateWithState('Vorstellungsgespräch', true) }}>
+                                    <div className="dashboardCard" onClick={() => { navigateAndSaveKey('Vorstellungsgespräch') }}>
                                         <div className="count">
                                             <p>{jobInterviewCount}</p>
                                             <span>{jobInterviewCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
@@ -155,7 +161,7 @@ const Dashboard = () => {
 
                                         <h2>Vorstellungsgespräch</h2>
                                     </div>
-                                    <div className="dashboardCard" onClick={() => { navigateWithState('Absage', true) }}>
+                                    <div className="dashboardCard" onClick={() => { navigateAndSaveKey('Absage') }}>
                                         <div className="count">
                                             <p>{cancelCount}</p>
                                             <span>{cancelCount === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
@@ -200,7 +206,7 @@ const Dashboard = () => {
 
                     </div>
                 </div>
-         
+
             </div>
 
         </section>

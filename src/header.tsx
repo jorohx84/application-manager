@@ -3,7 +3,7 @@ import './header.scss';
 import { useUser } from './userContext';
 import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
-
+import { saveToLocalStorage } from "./services/applicationService";
 
 const Header = () => {
     const { user, firestoreUser, loading } = useUser();
@@ -31,8 +31,12 @@ const Header = () => {
 
     }
 
-    const navigateWithState = (path: string) => {
-        navigate(path, { state: { key: 'all', trigger: false } })
+      const navigateAndSaveKey = () => {
+        localStorage.removeItem('currentfilter')
+        saveToLocalStorage('isfiltered', false);
+        saveToLocalStorage('detailsOpen', false);
+        saveToLocalStorage('currentApplicaton', null);
+        navigate('/applications');
     }
 
     return (
@@ -43,7 +47,7 @@ const Header = () => {
 
 
                     <Link className="link" to='/Dashboard'>Dashboard</Link>
-                    <button className="logoutBtn" onClick={() => navigateWithState('/Applications')} >Bewerbungen</button>
+                    <button className="logoutBtn" onClick={() => navigateAndSaveKey()} >Bewerbungen</button>
                     <Link className="link" to='/Watchlist'>Merkliste</Link>
 
                     <button className="logoutBtn" onClick={logoutUser} >Logout</button>

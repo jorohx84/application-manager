@@ -44,10 +44,11 @@ export const Applications = () => {
     const [isfiltered, setisFiltered] = useState(false);
     const [currentFilter, setcurrentFilter] = useState('');
     const [detailsOpen, setdetailsOpen] = useState(false);
-    const [isTriggered, setisTriggered] = useState(false);
 
-    const dashboardLocation = useLocation();
-    console.log(dashboardLocation.state.trigger);
+
+
+
+
 
     useEffect(() => {
         const filterKey = getFromLocalStorage('isfiltered');
@@ -68,47 +69,30 @@ export const Applications = () => {
         }
     }, []);
 
+
     useEffect(() => {
         saveToLocalStorage('isfiltered', isfiltered);
         saveToLocalStorage('currentFilter', currentFilter);
 
     }, [isfiltered, currentFilter]);
 
+
     useEffect(() => {
         saveToLocalStorage('currentApplicaton', currentApplicaton);
         saveToLocalStorage('detailsOpen', detailsOpen);
     }, [currentApplicaton, detailsOpen]);
 
-    useEffect(() => {
-        if (dashboardLocation.state.trigger) {
-            setisTriggered(true);
-        } else {
-            setisTriggered(false);
-            removeFilter();
-        }
 
-    }, [dashboardLocation.state]);
 
 
     useEffect(() => {
-        if (isTriggered && baseApplications) {
-            setdetailsOpen(false);
-            filterApps(dashboardLocation.state.key);
-            console.log('location');
-
-
-        } else if (isfiltered) {
-            filterApps(currentFilter);
-            console.log('filter');
-
+        if (isfiltered) {
+            filterApps(currentFilter)
         } else {
-            console.log('normal');
-            setheadlineText('Bewerbungen');
             setApplications(baseApplications);
+            setheadlineText('Bewerbungen');
         }
-    }, [baseApplications]);
-
-
+    }, [baseApplications])
 
 
     useEffect(() => {
@@ -118,9 +102,6 @@ export const Applications = () => {
         const loadData = async () => {
             const data = await fetchApplications(userID);
             setbaseApplications(data);
-            if (isfiltered) {
-                setisTriggered(false);
-            }
 
         };
         loadData();
@@ -148,7 +129,7 @@ export const Applications = () => {
     }
 
     const editAppStatus = async () => {
-        setisTriggered(false);
+
         const userID = user?.uid
         const appID = currentApplicaton.id
         const appRef = doc(firestore, `users/${userID}/applications/${appID}`);
@@ -181,9 +162,8 @@ export const Applications = () => {
     }
 
     const filterApps = (key: string) => {
-        setcurrentFilter(key);
-        setisTriggered(false);
         if (!baseApplications) return;
+        setcurrentFilter(key);
         const filteredApps = baseApplications?.filter((app: any) => app.status.status === key);
         setApplications(filteredApps);
         setheadlineText(key)
@@ -191,11 +171,10 @@ export const Applications = () => {
     }
 
     const removeFilter = () => {
-        setisTriggered(false);
+        setcurrentFilter('')
         setisFiltered(false);
-        setcurrentFilter('');
-        setheadlineText('Bewerbungen');
         setApplications(baseApplications);
+        setheadlineText('Bewerbungen');
     }
 
     const openDeleteOverlay = () => {
@@ -267,7 +246,6 @@ export const Applications = () => {
 
     const saveEditedApp = async (e: React.FormEvent) => {
         e.preventDefault();
-        dashboardLocation.state.trigger = false;
         const editedApp = newApplicationObject();
         const userID = user?.uid;
         const appID = currentApplicaton.id;
