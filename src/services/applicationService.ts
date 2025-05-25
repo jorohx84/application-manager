@@ -67,4 +67,6 @@ const getFromLocalStorage = (local: string) => {
 
 
 
+
+
 export { fetchApplications, formatDateGermanShort, fetchWatchlist, findSearchedData, saveToLocalStorage, getFromLocalStorage };

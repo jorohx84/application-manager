@@ -3,7 +3,7 @@ import './watchlist.scss';
 import Header from "./header";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "./userContext";
-import { fetchWatchlist, formatDateGermanShort, findSearchedData } from "./services/applicationService";
+import { fetchWatchlist, formatDateGermanShort, findSearchedData, saveToLocalStorage, getFromLocalStorage } from "./services/applicationService";
 import firebase from "./firebase";
 import { getFirestore, addDoc, doc, collection, deleteDoc, updateDoc } from "firebase/firestore";
 
@@ -26,6 +26,8 @@ const Watchlist = () => {
     const [isEdit, setisEdit] = useState(false);
     const [advID, setadvID] = useState('');
     const [search, setsearch] = useState('');
+    const [prioFilter, setprioFilter] = useState('');
+    const [isfiltered, setisFiltered] = useState(false);
 
     useEffect(() => {
         if (loading) return;
@@ -33,12 +35,35 @@ const Watchlist = () => {
         const userID = user.uid;
         const loadData = async () => {
             const data = await fetchWatchlist(userID);
-            setadvertisements(data);
+            // setadvertisements(data);
             setbaseAdvertisements(data);
         };
         loadData();
     }, [loading, user, isUpdated]);
 
+    useEffect(() => {
+        const priofilterData = getFromLocalStorage('prioFilter');
+        if (priofilterData) {
+            setprioFilter(priofilterData);
+        };
+        const filterKey = getFromLocalStorage('isfiltered');
+        if (filterKey) {
+            setisFiltered(filterKey);
+        };
+    }, []);
+
+    useEffect(() => {
+        saveToLocalStorage('prioFilter', prioFilter);
+        saveToLocalStorage('isfiltered', isfiltered);
+    }, [prioFilter, isfiltered]);
+
+    useEffect(() => {
+        if (isfiltered) {
+            filterAdvertisements(prioFilter);
+        } else {
+            setadvertisements(baseAdverstisements);
+        }
+    }, [baseAdverstisements]);
 
 
     const newAdvertisement = async (e: React.FormEvent) => {
@@ -52,13 +77,12 @@ const Watchlist = () => {
         } else {
             const collectionRef = collection(firestore, `users/${userID}/watchlist`);
             await addDoc(collectionRef, advertise);
-            console.log('SAVE');
-
         }
-
         setisOpen(false);
         resetInputfields();
         setisUpdated(prev => prev + 1);
+        setisFiltered(false);
+        setprioFilter('');
     }
 
     const resetInputfields = () => {
@@ -80,16 +104,15 @@ const Watchlist = () => {
             posted: posted,
             prio: prio,
             link: link,
-
         }
     }
 
     const exportAdvertisement = (index: number) => {
         const currentAdvertisement = advertisements?.[index];
         console.log(currentAdvertisement);
-
         navigate("/createapplication", { state: { adv: currentAdvertisement } })
     }
+
 
     const deleteAdvertisement = async (index: number) => {
         console.log(index);
@@ -106,9 +129,7 @@ const Watchlist = () => {
 
     const editAdvertisement = (index: number) => {
         setisEdit(true);
-        console.log(index);
         const currentAdvertisement = advertisements?.[index];
-        console.log(currentAdvertisement);
         setadvID(currentAdvertisement.id);
         setValues(currentAdvertisement);
         setisOpen(true);
@@ -125,9 +146,8 @@ const Watchlist = () => {
     }
 
     const findAdvertisement = (input: string) => {
-        
         if (input.length >= 3 && baseAdverstisements) {
-           const filteredData=findSearchedData(input, baseAdverstisements);
+            const filteredData = findSearchedData(input, baseAdverstisements);
             if (filteredData) {
                 setadvertisements(filteredData)
             }
@@ -136,22 +156,43 @@ const Watchlist = () => {
         }
     }
 
+    const filterAdvertisements = (key: string) => {
+        if (!baseAdverstisements) return
+        setprioFilter(key);
+        setisFiltered(true);
+        const filtered = baseAdverstisements.filter(adv => adv.prio === key);
+        setadvertisements(filtered);
+    }
+
+    const removeFilter = () => {
+
+        setprioFilter('');
+        setisFiltered(false);
+        setadvertisements(baseAdverstisements);
+    }
+
     return (
         <section className="applications">
             <section className="main">
-                {/* <div className="sidebarContainer">
-                    <Sidebar />
-                </div> */}
                 <div className="content">
-                
+
                     <div className="component">
                         <div className="componentContent">
-                            <div className="watchlistBtns">
-                                <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findAdvertisement(e.target.value) }} />
-                                <button onClick={() => { setisOpen(!isOpen); setisEdit(false) }}>{isOpen ? 'Abbrechen' : 'Hinzufügen'}</button>
+                            <div className="watchlistMenu">
+                                <div className="watchlistFilterBtns">
+                                    <button className={`highBtn ${prioFilter === 'hoch' ? 'btnHighActive' : ''}`} onClick={() => { filterAdvertisements('hoch') }}>Hoch</button>
+                                    <button className={`mediumBtn ${prioFilter === 'mittel' ? 'btnMediumActive' : ''}`} onClick={() => { filterAdvertisements('mittel') }}>Mittel</button>
+                                    <button className={`lowBtn ${prioFilter === 'niedrig' ? 'btnLowActive' : ''}`} onClick={() => { filterAdvertisements('niedrig') }}>Niedrig</button>
+                                </div>
+                                <div className="watchlistBtns">
+                                    <button className="reloadBtn" onClick={() => { removeFilter() }}> <img src="./img/reload_blue.svg" alt="" /></button>
+                                    <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findAdvertisement(e.target.value) }} />
+                                    <button onClick={() => { setisOpen(!isOpen); setisEdit(false); resetInputfields() }}>{isOpen ? 'Abbrechen' : 'Hinzufügen'}</button>
+                                </div>
                             </div>
+
                             <div className="componentHeadline">
-                                <h2>Merkliste</h2>
+                                <h2>{isfiltered? `Priorität: ${prioFilter.toUpperCase()}`: 'Merkliste'}</h2>
                             </div>
                             <div className="advertisementsList">
                                 {advertisements ? advertisements.map((adv, index) => (

@@ -1,3 +1,5 @@
+
+
 .watchlistBtns {
     width: 100%;
     display: flex;
@@ -26,6 +28,71 @@
 .transform {
     transform: translateX(0) !important;
 }
+
+.watchlistMenu{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.watchlistFilterBtns{
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.reloadBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    width: fit-content;
+    box-sizing: border-box;
+    padding: 0 24px;
+    gap: 8px;
+
+    >img {
+        width: 25px;
+    }
+
+    &:hover {
+        >img {
+            content: url(./../public/img/reload_white.svg);
+        }
+    }
+}
+
+.highBtn{
+    border-color: red;
+    color: red;
+    &:hover{
+        background-color: red;
+        color: white;
+    }
+}
+
+.mediumBtn{
+    border-color: orange;
+    color: orange;
+    &:hover{
+        background-color: orange;
+        color: white;
+    }
+}
+
+.lowBtn{
+    border-color: gray;
+    color: gray;
+    &:hover{
+        background-color: gray;
+        color: white;
+    }
+}
+
+
+
 
 .inputContainer {
     display: flex;

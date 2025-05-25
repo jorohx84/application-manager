@@ -129,7 +129,6 @@ export const Applications = () => {
     }
 
     const editAppStatus = async () => {
-
         const userID = user?.uid
         const appID = currentApplicaton.id
         const appRef = doc(firestore, `users/${userID}/applications/${appID}`);
@@ -159,6 +158,7 @@ export const Applications = () => {
         setnewStatus(value);
         setopenDropdown(false);
         event.stopPropagation();
+        setDate('');
     }
 
     const filterApps = (key: string) => {

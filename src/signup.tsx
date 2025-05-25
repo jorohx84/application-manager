@@ -57,7 +57,7 @@ const SignUp = () => {
 
     }
     return (
-        <section>
+        <section className='signup'>
             <div className='signupContainer'>
                 <h2>Registrieren</h2>
                 <form onSubmit={createUser}>
@@ -69,7 +69,6 @@ const SignUp = () => {
                         <span>Ich stimme den <a href="">Datenschutzbestimmungen</a> zu</span>
                     </div>
                     <div className='signupBtns'>
-                        <button type='button' onClick={() => navigate('/login')}>zurück</button>
                         <button type='submit'>Registrieren</button>
                     </div>
 

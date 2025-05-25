@@ -106,6 +106,7 @@ const Dashboard = () => {
     const navigateAndSaveKey = (key: string) => {
         saveToLocalStorage('currentFilter', key)
         saveToLocalStorage('isfiltered', true);
+        saveToLocalStorage('detailsOpen', false);
         navigate('/applications');
     }
 
@@ -116,16 +117,18 @@ const Dashboard = () => {
                 <Sidebar />
             </div> */}
             <div className="content">
-
+    {/* <Header/> */}
 
                 <div className="component">
+                   
                     <div className="componentContent">
+                     
                         {applications ? (
                             <div className="dashboard">
 
                                 <div className="dashboardHeadline">
                                     <p>Hallo {user?.displayName},</p>
-                                    <span>aktuell hast du {applications?.length} laufende {applications?.length === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
+                                    <span>aktuell hast du <b>{applications?.length}</b> laufende {applications?.length === 1 ? 'Bewerbung' : 'Bewerbungen'}</span>
                                 </div>
                                 <div className="divider"></div>
                                 <div className="dashboardCards">

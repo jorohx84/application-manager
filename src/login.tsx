@@ -46,8 +46,8 @@ const Login = () => {
                 <form onSubmit={loginUser}>
                     <input type="email" value={email} placeholder="E-Mail-Adresse" onChange={(e) => setEmail(e.target.value)} required />
                     <input type="password" value={password} placeholder="Passwort" onChange={(e) => setPassword(e.target.value)} required />
-                    <Link to="/signup">Noch keine Account? Hier Registieren</Link>
-                    <div>
+                   
+                    <div className="loginBtns">
                         <button type="submit">Einloggen</button>
                         <button type="button" onClick={guestLogin}>Gäste-Login</button>
                     </div>
