@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import './header.scss';
 import { useUser } from './userContext';
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ const Header = () => {
     const userID = user?.uid
     const currentUser = firestoreUser;
     const auth = getAuth();
+    const [burgerOpen, setburgerOpen] = useState(false);
 
     const logoutUser = () => {
         removeLocalStorage();
@@ -28,6 +29,9 @@ const Header = () => {
         localStorage.removeItem('currentFilter');
         localStorage.removeItem('currentApplicaton');
         localStorage.removeItem('detailsOpen');
+        localStorage.removeItem('watchlistFiltered');
+        localStorage.removeItem('prioFilter');
+
 
     }
 
@@ -43,24 +47,45 @@ const Header = () => {
         <section className="header">
             <div className="headerInner">
                 <span>Bewerbungsmanager</span>
-                <div>
+                <div className="linkContainer">
                     {(location.pathname !== '/login' && location.pathname !== '/signup') && (
                         <nav >
-                            <Link className="link" to='/Dashboard'>Dashboard</Link>
+                            <button className="logoutBtn" onClick={() => { navigateTo('/dashboard') }}>Dashboard</button>
                             <button className="logoutBtn" onClick={() => navigateAndSaveKey()} >Bewerbungen</button>
-                            <Link className="link" to='/Watchlist'>Merkliste</Link>
-
+                            <button className="logoutBtn" onClick={() => { navigateTo('/watchlist') }}>Merkliste</button>
                             <button className="logoutBtn" onClick={logoutUser} >Logout</button>
                             <button className="createBtn" onClick={() => navigateTo('/createapplication')}>neue Bewerbung</button>
                         </nav>
                     )}
 
-                    {location.pathname==='/login' &&(
-                         <Link className="headerLink" to="/signup">Noch keine Account? Hier Registieren</Link>
+                    {location.pathname === '/login' && (
+                        <div className="signupLinkHeader">
+                            <span>Noch keinen Account?</span>
+                            <button onClick={() => navigate('/signup')}>Registrieren</button>
+                        </div>
                     )}
-                    {location.pathname==='/signup' &&(
+                    {location.pathname === '/signup' && (
                         <Link className="headerLink" to="/login">zurück zum Login</Link>
                     )}
+
+
+
+                </div>
+                {(location.pathname !== '/login' && location.pathname !== '/signup') && (
+                    <div onClick={() => setburgerOpen(!burgerOpen)} className={`burger ${burgerOpen ? 'transformBurger' : 'resetBurger'}`}>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                )}
+                <div className={`respMenu ${burgerOpen ? 'transform' : ''}`}>
+                    <div>
+                        <button className="logoutBtn" onClick={() => { navigateTo('/dashboard') }}>Dashboard</button>
+                        <button className="logoutBtn" onClick={() => navigateAndSaveKey()} >Bewerbungen</button>
+                        <button className="logoutBtn" onClick={() => { navigateTo('/watchlist') }}>Merkliste</button>
+                        <button className="logoutBtn" onClick={logoutUser} >Logout</button>
+
+                    </div>
 
                 </div>
 

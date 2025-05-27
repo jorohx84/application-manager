@@ -24,3 +24,22 @@
     justify-content: center;
     gap: 32px;
 }
+@media(max-width: 680px){
+    .footer{
+        min-height: 100px;
+        max-height: 100px;
+    }
+
+    .footerContent{
+        gap: 16px;
+    }
+}
+@media(max-width: 500px){
+.footerContent{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+}
+
+}

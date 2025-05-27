@@ -46,7 +46,10 @@ const Login = () => {
                 <form onSubmit={loginUser}>
                     <input type="email" value={email} placeholder="E-Mail-Adresse" onChange={(e) => setEmail(e.target.value)} required />
                     <input type="password" value={password} placeholder="Passwort" onChange={(e) => setPassword(e.target.value)} required />
-                   
+                 <div className="signupLinkContainer">
+                    <span>Noch keinen Account?</span>
+                    <button onClick={()=>navigate('/signup')}>Registrieren</button>
+                 </div>
                     <div className="loginBtns">
                         <button type="submit">Einloggen</button>
                         <button type="button" onClick={guestLogin}>Gäste-Login</button>
@@ -55,7 +58,7 @@ const Login = () => {
                 </form>
 
             </div>
-
+            {/* <Link className="signupLink" to="/signup">Noch keine Account? Hier Registieren</Link> */}
         </section>
     )
 }

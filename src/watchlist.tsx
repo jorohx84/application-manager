@@ -27,7 +27,7 @@ const Watchlist = () => {
     const [advID, setadvID] = useState('');
     const [search, setsearch] = useState('');
     const [prioFilter, setprioFilter] = useState('');
-    const [isfiltered, setisFiltered] = useState(false);
+    const [watchlistFiltered, setwatchlistFiltered] = useState(false);
 
     useEffect(() => {
         if (loading) return;
@@ -46,19 +46,19 @@ const Watchlist = () => {
         if (priofilterData) {
             setprioFilter(priofilterData);
         };
-        const filterKey = getFromLocalStorage('isfiltered');
+        const filterKey = getFromLocalStorage('watchlistFiltered');
         if (filterKey) {
-            setisFiltered(filterKey);
+            setwatchlistFiltered(filterKey);
         };
     }, []);
 
     useEffect(() => {
         saveToLocalStorage('prioFilter', prioFilter);
-        saveToLocalStorage('isfiltered', isfiltered);
-    }, [prioFilter, isfiltered]);
+        saveToLocalStorage('watchlistFiltered', watchlistFiltered);
+    }, [prioFilter, watchlistFiltered]);
 
     useEffect(() => {
-        if (isfiltered) {
+        if (watchlistFiltered) {
             filterAdvertisements(prioFilter);
         } else {
             setadvertisements(baseAdverstisements);
@@ -81,7 +81,7 @@ const Watchlist = () => {
         setisOpen(false);
         resetInputfields();
         setisUpdated(prev => prev + 1);
-        setisFiltered(false);
+        setwatchlistFiltered(false);
         setprioFilter('');
     }
 
@@ -159,7 +159,7 @@ const Watchlist = () => {
     const filterAdvertisements = (key: string) => {
         if (!baseAdverstisements) return
         setprioFilter(key);
-        setisFiltered(true);
+        setwatchlistFiltered(true);
         const filtered = baseAdverstisements.filter(adv => adv.prio === key);
         setadvertisements(filtered);
     }
@@ -167,7 +167,7 @@ const Watchlist = () => {
     const removeFilter = () => {
 
         setprioFilter('');
-        setisFiltered(false);
+        setwatchlistFiltered(false);
         setadvertisements(baseAdverstisements);
     }
 
@@ -192,7 +192,7 @@ const Watchlist = () => {
                             </div>
 
                             <div className="componentHeadline">
-                                <h2>{isfiltered? `Priorität: ${prioFilter.toUpperCase()}`: 'Merkliste'}</h2>
+                                <h2>{watchlistFiltered? `Priorität: ${prioFilter.toUpperCase()}`: 'Merkliste'}</h2>
                             </div>
                             <div className="advertisementsList">
                                 {advertisements ? advertisements.map((adv, index) => (

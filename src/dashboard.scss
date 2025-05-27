@@ -1,6 +1,7 @@
-.dashboard{
+.dashboard {
     width: 100%;
 }
+
 .dashboardCards {
     width: 100%;
     display: flex;
@@ -23,9 +24,10 @@
     box-sizing: border-box;
     padding: 32px;
     border-radius: 6px;
-     cursor: pointer;
+    cursor: pointer;
     transition: box-shadow 0.3s ease-in-out;
-    &:hover{
+
+    &:hover {
         box-shadow: 0px 0px 6px 2px var(--main);
     }
 }
@@ -81,9 +83,10 @@
 
     border-radius: 6px;
     overflow-y: scroll;
-     cursor: pointer;
+    cursor: pointer;
     transition: box-shadow 0.3s ease-in-out;
-    &:hover{
+
+    &:hover {
         box-shadow: 0px 0px 6px 2px var(--main);
     }
 }
@@ -120,7 +123,8 @@
     overflow-y: scroll;
     cursor: pointer;
     transition: box-shadow 0.3s ease-in-out;
-    &:hover{
+
+    &:hover {
         box-shadow: 0px 0px 6px 2px var(--main);
     }
 }
@@ -142,4 +146,70 @@
 
 .low {
     background-color: var(--low);
+}
+
+
+
+@media(max-width: 640px) {
+    .dashboardHeadline {
+        gap: 24px;
+
+        >span {
+            font-size: 16px;
+        }
+
+        >p {
+            font-size: 32px;
+        }
+    }
+
+    .dashboardCard {
+        height: 180px;
+        padding: 16px;
+
+    }
+
+    .count {
+        >p {
+            font-size: 40px;
+        }
+    }
+
+}
+
+@media(max-width: 1690px) {
+    .dashboardCards {
+        justify-content: flex-start;
+    }
+}
+
+@media(max-width: 1690px) {
+    .dashboardCards {
+        justify-content: center;
+    }
+}
+
+@media(max-width: 640px) {
+    .overview {
+        flex-direction: column;
+    }
+
+    .step {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nextSteps {
+        height: fit-content;
+    }
+
+    .dot {
+        border-radius: 6px;
+        width: 100px;
+        height: 12px;
+    }
+
+    .watchlist {
+        height: fit-content;
+    }
 }

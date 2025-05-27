@@ -1,14 +1,15 @@
-.header{
+.header {
     width: 100%;
     min-height: 120px;
     max-height: 120px;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 12px 0px 6px 2px rgba(0,0,0,0.1);
+    box-shadow: 12px 0px 6px 2px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
 }
-.headerInner{
+
+.headerInner {
     width: 100%;
     max-width: 1920px;
     height: 100%;
@@ -17,45 +18,241 @@
     align-items: center;
     box-sizing: border-box;
     padding: 0 56px;
-    >span{
+    position: relative;
+
+    >span {
         font-size: 40px;
     }
 }
 
-nav{
+.linkContainer {
+    height: 100%;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+}
+
+nav {
     display: flex;
     align-items: center;
     gap: 32px;
 }
 
-.link{
+.link {
     color: black;
     text-decoration: none;
-    &:hover{
-        color:var(--main)
+
+    &:hover {
+        color: var(--main)
     }
 }
 
-.headerLink{
+.headerLink {
     color: var(--main);
     text-decoration: none;
     font-weight: 500;
-    &:hover{
-      
-    }
-    
 }
 
-.logoutBtn{
+.signupLinkHeader {
+    width: fit-content;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    box-sizing: border-box;
+    padding: 0 20px;
+
+
+    >button {
+        width: fit-content;
+        padding: 8px;
+    }
+}
+
+.logoutBtn {
     background-color: transparent;
     color: black;
     width: fit-content;
     transition: unset;
     border: none;
     font-size: 16px;
-    &:hover{
-       background-color: transparent;
-       color: var(--main);
+
+    &:hover {
+        background-color: transparent;
+        color: var(--main);
     }
-    
+
+}
+
+.respMenu {
+    position: absolute;
+    top: 120px;
+    right: 0;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 32px 0px;
+    border: solid 1px;
+    border-radius: 6px;
+    transform: translateX(100vw);
+    transition: transform 0.5s ease-in-out;
+    background-color: white;
+    z-index: 1;
+
+    >div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+    }
+
+}
+
+.transform {
+    transform: translateX(0);
+}
+
+.burger {
+    width: 30px;
+    height: 20px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+
+    >div {
+        width: 100%;
+        height: 4px;
+        background-color: var(--main);
+        border-radius: 6px;
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        transform-origin: center;
+    }
+
+    &.transformBurger {
+        >div:nth-child(1) {
+            animation: slideAndRotate1 0.8s forwards;
+        }
+
+        >div:nth-child(2) {
+            opacity: 0;
+        }
+
+        >div:nth-child(3) {
+            animation: slideAndRotate3 0.8s forwards;
+        }
+    }
+}
+
+@keyframes slideAndRotate1 {
+    0% {
+        transform: translateY(0) rotate(0);
+    }
+
+    50% {
+        transform: translateY(10px) rotate(0);
+    }
+
+    100% {
+        transform: translateY(9px) rotate(45deg);
+    }
+}
+
+@keyframes slideAndRotate3 {
+    0% {
+        transform: translateY(0) rotate(0);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(0);
+    }
+
+    100% {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+}
+
+
+.resetBurger {
+    >div:nth-child(1) {
+        animation: slideBack1 0.8s forwards;
+    }
+
+    >div:nth-child(2) {
+        opacity: 1;
+    }
+
+    >div:nth-child(3) {
+        animation: slideBack2 0.8s forwards;
+    }
+}
+
+@keyframes slideBack1 {
+    0% {
+        transform: translateY(9px) rotate(45deg);
+    }
+
+    50% {
+        transform: translateY(10px) rotate(0);
+    }
+
+    100% {
+        transform: translateY(0) rotate(0);
+    }
+}
+
+@keyframes slideBack2{
+        0% {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(0);
+    }
+
+    100% {
+        transform: translateY(0) rotate(0);
+    }
+}
+
+
+@media(max-width: 1160px) {
+    .linkContainer {
+        display: none;
+    }
+}
+
+@media(min-width: 1160px) {
+    .burger {
+        display: none;
+    }
+}
+
+@media(max-width: 680px) {
+    .headerInner {
+        >span {
+            font-size: 32px;
+        }
+    }
+
+    .header {
+        min-height: 100px;
+        max-height: 100px;
+    }
+}
+
+@media(max-width: 500px) {
+    .headerInner {
+        padding: 0 32px;
+
+        >span {
+            font-size: 24px;
+        }
+    }
+
 }

@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword, getAuth, updateProfile } from "firebase
 import firebase from "./firebase";
 import './signup.scss';
 import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Login from './login';
 
 
@@ -69,11 +69,13 @@ const SignUp = () => {
                         <span>Ich stimme den <a href="">Datenschutzbestimmungen</a> zu</span>
                     </div>
                     <div className='signupBtns'>
+                        <button className='respBtn' onClick={()=>navigate('/login')}>Abbrechen</button>
                         <button type='submit'>Registrieren</button>
                     </div>
 
                 </form>
             </div>
+            
         </section>
     )
 }
