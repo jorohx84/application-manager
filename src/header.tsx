@@ -8,15 +8,18 @@ import { saveToLocalStorage } from "./services/applicationService";
 const Header = () => {
     const { user, firestoreUser, loading } = useUser();
     const navigate = useNavigate();
-    const navigateTo = (path: string) => {
-        console.log(path);
-        navigate(path);
-    }
+
+
     const location = useLocation();
     const userID = user?.uid
     const currentUser = firestoreUser;
     const auth = getAuth();
     const [burgerOpen, setburgerOpen] = useState(false);
+
+    const navigateTo = (path: string) => {
+        setburgerOpen(false);
+        navigate(path);
+    }
 
     const logoutUser = () => {
         removeLocalStorage();
@@ -40,6 +43,7 @@ const Header = () => {
         // saveToLocalStorage('isfiltered', false);
         // saveToLocalStorage('detailsOpen', false);
         // saveToLocalStorage('currentApplicaton', null);
+        setburgerOpen(false);
         navigate('/applications');
     }
 
@@ -81,9 +85,9 @@ const Header = () => {
                 <div className={`respMenu ${burgerOpen ? 'transform' : ''}`}>
                     <div>
                         <button className="logoutBtn" onClick={() => { navigateTo('/dashboard') }}>Dashboard</button>
-                        <button className="logoutBtn" onClick={() => navigateAndSaveKey()} >Bewerbungen</button>
+                        <button className="logoutBtn" onClick={() => { navigateAndSaveKey() }} >Bewerbungen</button>
                         <button className="logoutBtn" onClick={() => { navigateTo('/watchlist') }}>Merkliste</button>
-                        <button className="logoutBtn" onClick={logoutUser} >Logout</button>
+                        <button className="logoutBtn" onClick={() => { logoutUser(); setburgerOpen(false) }} >Logout</button>
 
                     </div>
 

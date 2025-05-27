@@ -28,6 +28,7 @@ const Watchlist = () => {
     const [search, setsearch] = useState('');
     const [prioFilter, setprioFilter] = useState('');
     const [watchlistFiltered, setwatchlistFiltered] = useState(false);
+    const [watchlistHeadline, setWatchlistHeadline] = useState('')
 
     useEffect(() => {
         if (loading) return;
@@ -60,8 +61,11 @@ const Watchlist = () => {
     useEffect(() => {
         if (watchlistFiltered) {
             filterAdvertisements(prioFilter);
+            const headline = `Priortät: ${prioFilter.toUpperCase()}`
+            setWatchlistHeadline(headline);
         } else {
             setadvertisements(baseAdverstisements);
+            setWatchlistHeadline('Merkliste');
         }
     }, [baseAdverstisements]);
 
@@ -146,6 +150,8 @@ const Watchlist = () => {
     }
 
     const findAdvertisement = (input: string) => {
+        const headline = `Suche nach: ${input}`;
+        setWatchlistHeadline(headline);
         if (input.length >= 3 && baseAdverstisements) {
             const filteredData = findSearchedData(input, baseAdverstisements);
             if (filteredData) {
@@ -153,12 +159,15 @@ const Watchlist = () => {
             }
         } else {
             setadvertisements(baseAdverstisements);
+            setWatchlistHeadline('Merkliste')
         }
     }
 
     const filterAdvertisements = (key: string) => {
         if (!baseAdverstisements) return
         setprioFilter(key);
+        const headline = `Priorität: ${key.toUpperCase()}`
+        setWatchlistHeadline(headline);
         setwatchlistFiltered(true);
         const filtered = baseAdverstisements.filter(adv => adv.prio === key);
         setadvertisements(filtered);
@@ -169,6 +178,7 @@ const Watchlist = () => {
         setprioFilter('');
         setwatchlistFiltered(false);
         setadvertisements(baseAdverstisements);
+        setWatchlistHeadline('Merkliste')
     }
 
     return (
@@ -192,7 +202,8 @@ const Watchlist = () => {
                             </div>
 
                             <div className="componentHeadline">
-                                <h2>{watchlistFiltered? `Priorität: ${prioFilter.toUpperCase()}`: 'Merkliste'}</h2>
+                                {/* <h2>{watchlistFiltered ? `Priorität: ${prioFilter.toUpperCase()}` : 'Merkliste'}</h2> */}
+                                <h2>{baseAdverstisements ? watchlistHeadline : ''}</h2>
                             </div>
                             <div className="advertisementsList">
                                 {advertisements ? advertisements.map((adv, index) => (
