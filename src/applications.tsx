@@ -6,7 +6,7 @@ import { fetchApplications, formatDateGermanShort, findSearchedData, saveToLocal
 import { useUser } from "./userContext";
 import { getFirestore, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import firebase from "./firebase";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "./footer";
 
 export const Applications = () => {
@@ -44,7 +44,7 @@ export const Applications = () => {
     const [isfiltered, setisFiltered] = useState(false);
     const [currentFilter, setcurrentFilter] = useState('');
     const [detailsOpen, setdetailsOpen] = useState(false);
-
+    const navigate = useNavigate();
 
 
 
@@ -307,6 +307,11 @@ export const Applications = () => {
                             </div>
 
                             <div className={`filterSidebar ${showFilter ? 'transform' : ''} `}>
+
+                                <div className="sidebarCloseBtn">
+                                    <button onClick={() => setshowFilter(false)}><img src="./img/close_blue.svg" alt="" /></button>
+                                </div>
+                                <h2>Filtern</h2>
                                 <button className={currentFilter === 'Bewerbung gesendet' ? 'btnHighlight' : ''} onClick={() => { filterApps('Bewerbung gesendet'); setdetailsOpen(false) }}>Gesendet</button>
                                 <button className={currentFilter === 'Eingang bestätigt' ? 'btnHighlight' : ''} onClick={() => { filterApps('Eingang bestätigt'); setdetailsOpen(false) }}>Eingang bestätigt</button>
                                 <button className={currentFilter === 'Interview' ? 'btnHighlight' : ''} onClick={() => { filterApps('Interview'); setdetailsOpen(false) }}>Interview</button>
@@ -418,6 +423,7 @@ export const Applications = () => {
                                 {/* )} */}
 
                             </div>
+
                         </div>
                     </div>
 
@@ -524,6 +530,7 @@ export const Applications = () => {
                     </div>
                 </div>
             )}
+            <button className="respAddBtn" onClick={() => { navigate('/createapplication') }}><img src="./img/add_white.svg" alt="" /></button>
         </section>
     )
 }
