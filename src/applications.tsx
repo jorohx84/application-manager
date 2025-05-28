@@ -168,6 +168,7 @@ export const Applications = () => {
         setApplications(filteredApps);
         setheadlineText(key)
         setisFiltered(true);
+        setshowFilter(false);
     }
 
     const removeFilter = () => {
@@ -294,16 +295,18 @@ export const Applications = () => {
                                 <div className="menubar">
                                     <button disabled={!isfiltered} className={`resetBtn ${isfiltered ? '' : 'opacity'}`} onClick={() => removeFilter()}><img src="./img/reload_blue.svg" alt="" /></button>
                                     <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findApplications(e.target.value) }} />
-                                    {/* <button className="filterBtn" onClick={() => setshowFilter(true)}><img src="./img/filter_blue.svg" alt="" />Filter</button> */}
+                                    {showFilter ? (
+                                        <button className="filterBtnClose" onClick={() => setshowFilter(!showFilter)}><img src="./img/close_blue.svg" alt="" /></button>
+                                    ) : (
+                                        <button className="filterBtn" onClick={() => setshowFilter(!showFilter)}><img src="./img/filter_blue.svg" alt="" /></button>
+                                    )}
+
+
                                 </div>
 
                             </div>
 
                             <div className={`filterSidebar ${showFilter ? 'transform' : ''} `}>
-                                <div className="closeBtnContainer">
-                                    <button onClick={() => setshowFilter(false)} className="closeBtn"> <img src="./img/close_blue.svg" alt="" /></button>
-                                </div>
-
                                 <button className={currentFilter === 'Bewerbung gesendet' ? 'btnHighlight' : ''} onClick={() => { filterApps('Bewerbung gesendet'); setdetailsOpen(false) }}>Gesendet</button>
                                 <button className={currentFilter === 'Eingang bestätigt' ? 'btnHighlight' : ''} onClick={() => { filterApps('Eingang bestätigt'); setdetailsOpen(false) }}>Eingang bestätigt</button>
                                 <button className={currentFilter === 'Interview' ? 'btnHighlight' : ''} onClick={() => { filterApps('Interview'); setdetailsOpen(false) }}>Interview</button>
@@ -330,6 +333,7 @@ export const Applications = () => {
                                                         <span>{app.position.title}</span>
                                                         <span className="location">{app.position.location}</span>
                                                     </div>
+                                                    <div className="cardDivider"></div>
                                                     <div className="status">
                                                         <p className="statusChanger" onClick={(e) => openOverlay(index, e)}><b>{app.status.status}</b>  </p>
                                                         {(app.status.status === 'Interview' || app.status.status === 'Vorstellungsgespräch') && (
@@ -347,67 +351,71 @@ export const Applications = () => {
 
                                     )}
                                 </div>
-                                {detailsOpen && applications && (
-                                    <div className="applicationDetails">
-                                        <div className="detailsBtnContainer ">
-                                            <h2>Informationen</h2>
-                                            <div>
-                                                <button className="statusBtn" onClick={openEditInfosOverlay}><img src="./img/edit_blue.svg" alt="" /></button>
-                                                <button className="statusBtn" onClick={(e) => openDeleteOverlay()}><img src="./img/trash_blue.svg" alt="" /></button>
-                                            </div>
-
-                                        </div>
-                                        <div className="detailsDivider"></div>
-                                        <div className="companyInfos">
-                                            <h3>{currentApplicaton?.company.name}</h3>
-
-                                            <div className="adress">
-                                                <span>{currentApplicaton?.company.street}</span>
-                                                <div className="city">
-                                                    <span>{currentApplicaton?.company.areacode}</span>
-                                                    <span>{currentApplicaton?.company.town}</span>
-                                                </div>
-                                            </div>
-
-                                            <div className="contact">
-                                                <span>Kontakt: {currentApplicaton?.company.contactperson}</span>
-                                                <span>Telefon: {currentApplicaton?.company.phone}</span>
-                                                <span>E-Mail: {currentApplicaton?.company.email}</span>
-                                                <span>Homepage</span>
-                                                <a href={currentApplicaton?.company.website} target="_blank">{currentApplicaton?.company.website}</a>
-                                            </div>
-                                            <div className="appPosition">
-
-                                                <h3>{currentApplicaton?.position.title}</h3>
-                                                <span>Ort: {currentApplicaton?.position.location}</span>
-                                                <span>Gehaltsvorstellung: {currentApplicaton?.position.salary}</span>
-                                                <div>
-                                                    <b>Stellenbeschreibung:</b>
-                                                    <a href={currentApplicaton?.position.link} target="_blank">{currentApplicaton?.position.link}</a>
-
-                                                </div>
-                                            </div>
-                                            <div className="statusContainer">
-                                                <div className="appointmentContainer">
-                                                    <b>Status: {currentApplicaton?.status.status}</b>
-                                                    {(currentApplicaton?.status.status === 'Interview' || currentApplicaton?.status.status === 'Vorstellungsgespräch') && (
-                                                        <b>am {formatDateGermanShort(currentApplicaton?.status.appointment, 'time')} Uhr</b>
-                                                    )}
-
-                                                </div>
-
-                                                <span>Beworben am: {formatDateGermanShort(currentApplicaton?.status.submitted, 'notime')}</span>
-                                                <span>Letzter Kontakt: {formatDateGermanShort(currentApplicaton?.status.lastaction, 'notime')}</span>
-                                            </div>
-
-                                            <div className="notesDetails">
-                                                <span>Notizen:</span>
-                                                <p>{currentApplicaton?.notes}</p>
-                                            </div>
-
-                                        </div>
+                                {/* {detailsOpen && applications && ( */}
+                                <div className={`applicationDetails ${detailsOpen ? 'transform' : ''}`}>
+                                    <div className="closeContainer">
+                                        <button onClick={() => setdetailsOpen(false)}><img src="./img/close_blue.svg" alt="" /></button>
                                     </div>
-                                )}
+                                    <div className="detailsBtnContainer ">
+
+                                        <h2>Informationen</h2>
+                                        <div>
+                                            <button className="statusBtn" onClick={openEditInfosOverlay}><img src="./img/edit_blue.svg" alt="" /></button>
+                                            <button className="statusBtn" onClick={(e) => openDeleteOverlay()}><img src="./img/trash_blue.svg" alt="" /></button>
+                                        </div>
+
+                                    </div>
+                                    <div className="detailsDivider"></div>
+                                    <div className="companyInfos">
+                                        <h3>{currentApplicaton?.company.name}</h3>
+
+                                        <div className="adress">
+                                            <span>{currentApplicaton?.company.street}</span>
+                                            <div className="city">
+                                                <span>{currentApplicaton?.company.areacode}</span>
+                                                <span>{currentApplicaton?.company.town}</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="contact">
+                                            <span>Kontakt: {currentApplicaton?.company.contactperson}</span>
+                                            <span>Telefon: {currentApplicaton?.company.phone}</span>
+                                            <span>E-Mail: {currentApplicaton?.company.email}</span>
+                                            <span>Homepage</span>
+                                            <a href={currentApplicaton?.company.website} target="_blank">{currentApplicaton?.company.website}</a>
+                                        </div>
+                                        <div className="appPosition">
+
+                                            <h3>{currentApplicaton?.position.title}</h3>
+                                            <span>Ort: {currentApplicaton?.position.location}</span>
+                                            <span>Gehaltsvorstellung: {currentApplicaton?.position.salary}</span>
+                                            <div>
+                                                <b>Stellenbeschreibung:</b>
+                                                <a href={currentApplicaton?.position.link} target="_blank">{currentApplicaton?.position.link}</a>
+
+                                            </div>
+                                        </div>
+                                        <div className="statusContainer">
+                                            <div className="appointmentContainer">
+                                                <b>Status: {currentApplicaton?.status.status}</b>
+                                                {(currentApplicaton?.status.status === 'Interview' || currentApplicaton?.status.status === 'Vorstellungsgespräch') && (
+                                                    <b>am {formatDateGermanShort(currentApplicaton?.status.appointment, 'time')} Uhr</b>
+                                                )}
+
+                                            </div>
+
+                                            <span>Beworben am: {formatDateGermanShort(currentApplicaton?.status.submitted, 'notime')}</span>
+                                            <span>Letzter Kontakt: {formatDateGermanShort(currentApplicaton?.status.lastaction, 'notime')}</span>
+                                        </div>
+
+                                        <div className="notesDetails">
+                                            <span>Notizen:</span>
+                                            <p>{currentApplicaton?.notes}</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                {/* )} */}
 
                             </div>
                         </div>

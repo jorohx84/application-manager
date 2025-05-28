@@ -176,6 +176,24 @@ form {
   }
 
   .componentContent{
-    padding: 24px;
+    padding: 16px;
   }
+
+.componentHeadline{
+  min-height: unset;
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  >h2{
+    font-size: 32px;
+  }
+}
+}
+@media(max-width:370px) {
+  .componentHeadline{
+    
+  >h2{
+    font-size: 28px;
+  }
+}
 }

@@ -300,3 +300,10 @@
     max-width: 300px;
 }
 
+@media(max-width:500px){
+    .searchInput{
+        max-width: 100%;
+        min-width: 260px;
+    }
+}
+
