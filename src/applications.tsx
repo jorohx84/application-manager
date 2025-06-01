@@ -359,15 +359,16 @@ export const Applications = () => {
                                 </div>
                                 {/* {detailsOpen && applications && ( */}
                                 <div className={`applicationDetails ${detailsOpen ? 'transform' : ''}`}>
-                                    <div className="closeContainer">
+                                    {/* <div className="closeContainer">
                                         <button onClick={() => setdetailsOpen(false)}><img src="./img/close_blue.svg" alt="" /></button>
-                                    </div>
+                                    </div> */}
                                     <div className="detailsBtnContainer ">
 
                                         <h2>Informationen</h2>
                                         <div>
                                             <button className="statusBtn" onClick={openEditInfosOverlay}><img src="./img/edit_blue.svg" alt="" /></button>
                                             <button className="statusBtn" onClick={(e) => openDeleteOverlay()}><img src="./img/trash_blue.svg" alt="" /></button>
+                                            <button className="statusBtn" onClick={() => setdetailsOpen(false)}><img src="./img/close_blue.svg" alt="" /></button>
                                         </div>
 
                                     </div>

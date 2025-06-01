@@ -212,7 +212,7 @@ const Watchlist = () => {
                                    
                                 </div>
                                 <div className="watchlistBtns">
-                                    <button className="reloadBtn" onClick={() => { removeFilter() }}> <img src="./img/reload_blue.svg" alt="" /></button>
+                                    <button className="reloadBtn" onClick={() => { removeFilter();setsearch('') }}> <img src="./img/reload_blue.svg" alt="" /></button>
                                     <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findAdvertisement(e.target.value) }} onClick={(e)=>handleClickEvent(e)} />
                                     <button onClick={() => { setisOpen(!isOpen); setisEdit(false); resetInputfields() }}>{isOpen ? 'Abbrechen' : 'Hinzufügen'}</button>
                                      
