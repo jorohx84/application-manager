@@ -29,6 +29,8 @@ const Watchlist = () => {
     const [prioFilter, setprioFilter] = useState('');
     const [watchlistFiltered, setwatchlistFiltered] = useState(false);
     const [watchlistHeadline, setWatchlistHeadline] = useState('')
+    const [isFilterResp, setisFilterResp] = useState(false);
+    const [slideMenu, setslideMenu]=useState(false);
 
     useEffect(() => {
         if (loading) return;
@@ -41,6 +43,8 @@ const Watchlist = () => {
         };
         loadData();
     }, [loading, user, isUpdated]);
+
+
 
     useEffect(() => {
         const priofilterData = getFromLocalStorage('prioFilter');
@@ -181,6 +185,14 @@ const Watchlist = () => {
         setWatchlistHeadline('Merkliste')
     }
 
+
+
+    const handleClickEvent=(e:React.MouseEvent)=>{
+      e.stopPropagation();
+    }
+
+  
+
     return (
         <section className="applications">
             <section className="main">
@@ -188,16 +200,22 @@ const Watchlist = () => {
 
                     <div className="component">
                         <div className="componentContent">
-                            <div className="watchlistMenu">
-                                <div className="watchlistFilterBtns">
+                            <div className={`watchlistMenuPlaceholder ${!slideMenu? 'height':''}`}>
+                                <button onClick={()=>setslideMenu(true)}>Menu</button>
+                            </div>
+                            <div className="respMenuBtn"></div>
+                            <div className={`watchlistMenu ${slideMenu ? 'transform' : ''}`} onClick={()=>{setslideMenu(false)}}>
+                                <div className={`watchlistFilterBtns ${isFilterResp? 'transform':''}`}>
                                     <button className={`highBtn ${prioFilter === 'hoch' ? 'btnHighActive' : ''}`} onClick={() => { filterAdvertisements('hoch') }}>Hoch</button>
                                     <button className={`mediumBtn ${prioFilter === 'mittel' ? 'btnMediumActive' : ''}`} onClick={() => { filterAdvertisements('mittel') }}>Mittel</button>
                                     <button className={`lowBtn ${prioFilter === 'niedrig' ? 'btnLowActive' : ''}`} onClick={() => { filterAdvertisements('niedrig') }}>Niedrig</button>
+                                   
                                 </div>
                                 <div className="watchlistBtns">
                                     <button className="reloadBtn" onClick={() => { removeFilter() }}> <img src="./img/reload_blue.svg" alt="" /></button>
-                                    <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findAdvertisement(e.target.value) }} />
+                                    <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findAdvertisement(e.target.value) }} onClick={(e)=>handleClickEvent(e)} />
                                     <button onClick={() => { setisOpen(!isOpen); setisEdit(false); resetInputfields() }}>{isOpen ? 'Abbrechen' : 'Hinzufügen'}</button>
+                                     
                                 </div>
                             </div>
 
@@ -273,7 +291,7 @@ const Watchlist = () => {
                                 </div>
                                 <input type="text" value={link} placeholder="Link" onChange={(e) => setlink(e.target.value)} />
                                 <div className="saveBtn">
-                                      <button onClick={()=>{setisOpen(false)}} className="respCloseBtn" type="button">Abbrechen</button>
+                                    <button onClick={() => { setisOpen(false) }} className="respCloseBtn" type="button">Abbrechen</button>
                                     <button type="submit">Speichern</button>
                                 </div>
                             </form>
@@ -282,7 +300,7 @@ const Watchlist = () => {
                 </div>
 
             </section>
-
+            <button className="respAddBtn" onClick={() => { navigate('/createapplication') }}><img src="./img/add_white.svg" alt="" /></button>
         </section>
     )
 }

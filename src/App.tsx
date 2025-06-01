@@ -19,6 +19,7 @@ function App() {
     <UserProvider>
       <Router basename="/">
       <Header/>
+      <div className='headerPlaceholder'></div>
         <Routes>
           <Route path="/signup" element={<SignUp />} />
           <Route path='/' element={<Login />} />

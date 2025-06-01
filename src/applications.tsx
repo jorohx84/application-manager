@@ -284,6 +284,7 @@ export const Applications = () => {
 
                     <div className="component">
                         <div className="componentContent">
+                            <div className="filterPlaceholder"></div>
                             <div className="filter">
                                 <div className="filterBtns">
                                     <button className={currentFilter === 'Bewerbung gesendet' ? 'btnHighlight' : ''} onClick={() => { filterApps('Bewerbung gesendet'); setdetailsOpen(false) }}>Gesendet</button>

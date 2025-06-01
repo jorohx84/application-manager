@@ -27,10 +27,11 @@ section {
 }
 
 button {
-  width: 200px;
+  width: 100%;
+  max-width: 200px;
   height: 50px;
   border: none;
-  padding: 0;
+  padding: 0 16px;
   border-radius: 6px;
   background-color: transparent;
   color: var(--main);
@@ -39,6 +40,10 @@ button {
   font-size: 14px;
   font-weight: 500;
   border: solid 1px var(--main);
+
+  >img {
+    width: 25px;
+  }
 
   &:active {
     transform: scale(0.95);
@@ -50,6 +55,11 @@ button {
 
     ;
   }
+}
+
+.headerPlaceholder {
+  width: 100%;
+  height: 120px;
 }
 
 .main {
@@ -142,11 +152,11 @@ input:focus::placeholder {
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 32px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
 
 }
 
@@ -159,41 +169,48 @@ form {
 }
 
 @media(max-width:680px) {
-  input{
+  input {
     height: 40px;
     padding: 8px;
   }
-  form{
+
+  form {
     gap: 16px;
   }
 
-  button{
+  button {
     height: 40px;
   }
-  section{
+
+  section {
     height: calc(100vh - 200px);
 
   }
 
-  .componentContent{
+  .componentContent {
     padding: 16px;
   }
 
-.componentHeadline{
-  min-height: unset;
-  margin-top: 8px;
-  display: flex;
-  justify-content: center;
-  >h2{
-    font-size: 32px;
+  .componentHeadline {
+    min-height: unset;
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+
+    >h2 {
+      font-size: 32px;
+    }
+  }
+  .headerPlaceholder{
+    height: 80px;
   }
 }
-}
+
 @media(max-width:370px) {
-  .componentHeadline{
-    
-  >h2{
-    font-size: 28px;
+  .componentHeadline {
+
+    >h2 {
+      font-size: 28px;
+    }
   }
-}
 }

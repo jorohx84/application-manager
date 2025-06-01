@@ -11,13 +11,25 @@
 
 .filter {
     width: 100%;
+    max-width: 1920px;
+    position: fixed;
+    top: 120px;
+    box-sizing: border-box;
+    padding: 24px 56px;
     height: fit-content;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 16px;
     flex-wrap: wrap;
+    background-color: white;
 
+}
+
+.filterPlaceholder{
+    width: 100%;
+    height: 74px;
+  
 }
 
 
@@ -161,13 +173,12 @@
 
 
 .filterSidebar {
-    position: absolute;
+    position: fixed;
     top: 120px;
     right: 0;
     width: 300px;
     transform: translateX(100vw);
     background-color: white;
-
     box-sizing: border-box;
     padding: 32px;
     display: flex;
@@ -608,8 +619,12 @@ p {
 }
 @media(max-width: 750px) {
     .applicationDetails {
-        position: absolute;
+        position: fixed;
         background-color: white;
+        margin-top: 0;
+    }
+    .applicationList{
+        height: fit-content;
     }
 }
 
@@ -627,9 +642,9 @@ p {
 
 @media(max-width:640px) {
     .applicationDetails {
-        top: -120px;
+      top: 100px;
         left: 0;
-        margin-top: 4;
+       box-shadow: unset;
         max-width: 100%;
         height: 100vh;
         transform: translateY(-100%);
@@ -657,12 +672,14 @@ p {
 
 @media(max-width: 620px) {
     .filterSidebar {
-        top: -100px;
+        top: 100px;
         width: 100%;
-        height: 100vh;
+        height: fit-content;
         transform: translateY(-300vw);
         justify-content: center;
         gap: 16px;
+        box-shadow: unset;
+        border-bottom: solid 1px var(--main);
     }
    
 }
