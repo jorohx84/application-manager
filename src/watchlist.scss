@@ -1,7 +1,4 @@
-
-
 .watchlistBtns {
-    width: 100%;
     display: flex;
     justify-content: flex-end;
     gap: 16px;
@@ -29,20 +26,24 @@
     transform: translateX(0) !important;
 }
 
-.watchlistMenu{
+.watchlistMenu {
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
 
 
-.watchlistFilterBtns{
+.watchlistFilterBtns {
     display: flex;
     justify-content: center;
     gap: 16px;
+
+    >button {
+        width: 192px;
+    }
 }
 
-.reloadBtn{
+.reloadBtn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -64,28 +65,31 @@
     }
 }
 
-.highBtn{
+.highBtn {
     border-color: red;
     color: red;
-    &:hover{
+
+    &:hover {
         background-color: red;
         color: white;
     }
 }
 
-.mediumBtn{
+.mediumBtn {
     border-color: orange;
     color: orange;
-    &:hover{
+
+    &:hover {
         background-color: orange;
         color: white;
     }
 }
 
-.lowBtn{
+.lowBtn {
     border-color: gray;
     color: gray;
-    &:hover{
+
+    &:hover {
         background-color: gray;
         color: white;
     }
@@ -129,7 +133,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    flex-wrap: wrap;
+    gap: 16px;
     border-top: solid 1px;
     box-sizing: border-box;
     padding: 32px 16px;
@@ -138,6 +143,7 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        flex-wrap: wrap;
         gap: 16px;
 
         >span {
@@ -154,32 +160,32 @@
 
     >img {
         width: 25px;
-      
+
     }
 
     &:hover {
         >img {
-           content: url(./../public/img/trash-white.svg);
+            content: url(./../public/img/trash-white.svg);
         }
 
     }
 }
 
-.editBtn{
-       width: 50px;
+.editBtn {
+    width: 50px;
     height: 50px;
 
     >img {
         width: 25px;
-      
+
     }
 
     &:hover {
         >img {
-           content: url(./../public/img/edit_white.svg);
+            content: url(./../public/img/edit_white.svg);
         }
 
-    } 
+    }
 }
 
 .prioHigh {
@@ -262,7 +268,7 @@
     background-color: var(--low);
 }
 
-.infoLink{
+.infoLink {
     text-decoration: none;
     color: black;
     border: solid 1px var(--main);
@@ -275,18 +281,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-     transition: background-color 0.3s ease-in-out, color 0.5s ease-in-out;
-    &:hover{
+    transition: background-color 0.3s ease-in-out, color 0.5s ease-in-out;
+
+    &:hover {
         border: none;
         background-color: var(--main);
         color: white;
     }
 }
 
-.watchlistRowBtns{
-    >button{
+.watchlistRowBtns {
+    >button {
         width: fit-content;
         box-sizing: border-box;
+        height: 50px;
         padding: 16px;
         display: flex;
         justify-content: center;
@@ -294,16 +302,94 @@
     }
 }
 
-.searchInput{
+.searchInput {
     width: 100%;
     min-width: 300px;
     max-width: 300px;
 }
 
-@media(max-width:500px){
-    .searchInput{
+.respCloseBtn{
+    display: none;
+}
+
+@media(max-width: 1390px) {
+    .watchlistMenu {
+        flex-direction: column-reverse;
+        align-items: center;
+        gap: 32px;
+    }
+}
+
+@media(max-width:670px) {
+    .watchlistBtns {
+        justify-content:center;
+        flex-wrap: wrap;
+
+        >:nth-child(1) {
+            order: 2;
+        }
+
+        >:nth-child(2) {
+            order: 1;
+        }
+
+        >:nth-child(3) {
+            order: 3;
+        }
+    }
+
+    .watchlistFilterBtns {
+        flex-wrap: wrap;
+    }
+
+    .watchlistBtns {
+        >button:not(.reloadBtn) {
+            width: 150px;
+        }
+    }
+
+    .watchlistFilterBtns {
+        >button {
+            width: 80px;
+        }
+    }
+
+    .inputfieldSlider{
+        top: 120px;
+    }
+}
+
+
+@media(max-width: 500px) {
+    .searchInput {
         max-width: 100%;
         min-width: 260px;
     }
 }
 
+@media(max-width: 400px) {
+    .inputfieldSlider{
+
+        transform: translate(0);
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 100px);
+        box-shadow: unset;
+        border-radius: 0;
+        display: none;
+    }
+
+    .transform{
+        display: flex;
+   
+    }
+
+    .respCloseBtn{
+        display: block;
+    }
+
+    .saveBtn{
+        gap: 8px;
+    }
+}

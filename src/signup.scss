@@ -84,3 +84,12 @@
         }
     }
 }
+
+@media(max-width: 400px) {
+.signupContainer{
+    box-shadow: unset;
+    >h2{
+        margin-bottom: 32px;
+    }
+}
+}

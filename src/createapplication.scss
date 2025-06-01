@@ -12,12 +12,17 @@
 
 .headline {
     width: 100%;
+    >h2{
+    font-size: 32px;
+
+    }
+
 }
 
 
 .inputfields {
     width: 100%;
-max-width: 1256px;
+
     height: fit-content;
     display: flex;
     justify-content: space-between;
@@ -27,7 +32,7 @@ max-width: 1256px;
 
 .companyData {
     width: 100%;
-    min-width: 400px;
+    min-width: 300px;
     max-width: 600px;
     display: flex;
     flex-direction: column;
@@ -37,6 +42,7 @@ max-width: 1256px;
 
 .applicationData {
     width: 100%;
+     min-width: 300px;
     max-width: 600px;
     display: flex;
     flex-direction: column;
@@ -57,12 +63,19 @@ max-width: 1256px;
     flex-direction: column;
     gap: 8px;
     margin-block: 16px;
-
+>span{
+    font-size: 18px;
+    font-weight: bold;
+}
     >div {
         width: 100%;
         display: flex;
         justify-content: flex-start;
-        gap: 8px;
+        flex-wrap: wrap;
+        gap: 15px;
+        >button{
+            max-width: 190px;
+        }
      
     }
 }
@@ -97,4 +110,20 @@ max-width: 1256px;
         padding: 16px;
 
     }
+}
+
+@media(max-width: 860px){
+    .headline{
+        display: flex;
+        justify-content: center;
+    }
+    .inputfields{
+        flex-direction: column;
+        align-items: center;
+    }
+    .applicationBtnContainer{
+        justify-content: center;
+    }
+
+
 }

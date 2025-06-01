@@ -95,3 +95,12 @@
     }
 
 }
+
+@media(max-width: 400px) {
+.loginContainer{
+    box-shadow: unset;
+        >h2{
+        margin-bottom: 32px;
+    }
+}
+}

@@ -208,7 +208,7 @@ const Watchlist = () => {
                             <div className="advertisementsList">
                                 {advertisements ? advertisements.map((adv, index) => (
                                     <div className="listRow" key={index}>
-                                        <div>
+                                        <div className="infoRow">
                                             <div className={`prioFlag ${adv.prio === 'hoch' ? 'flagHigh' : adv.prio === 'mittel' ? 'flagMedium' : 'flagLow'}`}>
                                                 {/* <span>{adv.prio}</span> */}
                                             </div>
@@ -273,6 +273,7 @@ const Watchlist = () => {
                                 </div>
                                 <input type="text" value={link} placeholder="Link" onChange={(e) => setlink(e.target.value)} />
                                 <div className="saveBtn">
+                                      <button onClick={()=>{setisOpen(false)}} className="respCloseBtn" type="button">Abbrechen</button>
                                     <button type="submit">Speichern</button>
                                 </div>
                             </form>
