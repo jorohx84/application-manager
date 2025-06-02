@@ -45,7 +45,7 @@ export const Applications = () => {
     const [currentFilter, setcurrentFilter] = useState('');
     const [detailsOpen, setdetailsOpen] = useState(false);
     const navigate = useNavigate();
-
+    const [slideMenu, setslideMenu] = useState(false);
 
 
 
@@ -273,7 +273,10 @@ export const Applications = () => {
         }
     }
 
-
+ const handleClickEvent=(e:React.MouseEvent)=>{
+      e.stopPropagation();
+    }
+    
     return (
         <section className="applications">
             <section className="main">
@@ -284,8 +287,10 @@ export const Applications = () => {
 
                     <div className="component">
                         <div className="componentContent">
-                            <div className="filterPlaceholder"></div>
-                            <div className="filter">
+                            <div className={`filterPlaceholder ${!slideMenu? 'height':''}`}>
+                                <button onClick={() => setslideMenu(true)}>Menu</button>
+                            </div>
+                            <div className={`filter ${slideMenu ? 'transform' : ''}`} onClick={()=>setslideMenu(false)}>
                                 <div className="filterBtns">
                                     <button className={currentFilter === 'Bewerbung gesendet' ? 'btnHighlight' : ''} onClick={() => { filterApps('Bewerbung gesendet'); setdetailsOpen(false) }}>Gesendet</button>
                                     <button className={currentFilter === 'Eingang bestätigt' ? 'btnHighlight' : ''} onClick={() => { filterApps('Eingang bestätigt'); setdetailsOpen(false) }}>Eingang bestätigt</button>
@@ -295,7 +300,7 @@ export const Applications = () => {
                                 </div>
                                 <div className="menubar">
                                     <button disabled={!isfiltered} className={`resetBtn ${isfiltered ? '' : 'opacity'}`} onClick={() => removeFilter()}><img src="./img/reload_blue.svg" alt="" /></button>
-                                    <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findApplications(e.target.value) }} />
+                                    <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findApplications(e.target.value) }} onClick={(e)=>handleClickEvent(e)} />
                                     {showFilter ? (
                                         <button className="filterBtnClose" onClick={() => setshowFilter(!showFilter)}><img src="./img/close_blue.svg" alt="" /></button>
                                     ) : (

@@ -23,19 +23,32 @@
     gap: 16px;
     flex-wrap: wrap;
     background-color: white;
+    transition: transform 0.5s ease-in-out;
 
 }
 
-.filterPlaceholder{
+.filterPlaceholder {
     width: 100%;
     height: 74px;
-  
+      transition: height 0.5s ease-in-out;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    >button {
+        width: fit-content;
+        background-color: var(--main);
+        color: white;
+        position: fixed;
+    }
+
 }
 
 
 .applicationBoard {
     width: 100%;
     height: calc(100vh - 320px);
+    min-height: fit-content;
     display: flex;
     gap: 56px;
 }
@@ -582,53 +595,66 @@ p {
     background-color: var(--main);
     border-radius: 20px;
 }
-.sidebarCloseBtn{
+
+.sidebarCloseBtn {
     position: absolute;
     top: 16px;
-    right:16px;
-    >button{
+    right: 16px;
+
+    >button {
         width: 40px;
         height: 40px;
         display: flex;
         justify-content: center;
         align-items: center;
-        >img{
+
+        >img {
             width: 25px;
             height: 25px;
-            &:hover{
+
+            &:hover {
                 content: url(./../public/img/close_white.svg);
             }
         }
     }
 }
 
-.detailsCloseBtn{
+.detailsCloseBtn {
     border: none;
 }
 
-.respAddBtn{
+.respAddBtn {
     position: fixed;
     bottom: 50px;
     right: 20px;
     width: 50px;
     height: 50px;
-    border-radius:100px;
-    background-color:var(--main);
+    border-radius: 100px;
+    background-color: var(--main);
     display: flex;
     justify-content: center;
     align-items: center;
-    >img{
+
+    >img {
         width: 45px;
     }
 }
+
+@media(max-width: 1381px) {
+    .filterPlaceholder{
+        height: 164px;
+    }
+}
+
+
 @media(max-width: 750px) {
     .applicationDetails {
         position: fixed;
-       
         background-color: white;
         margin-top: 0;
     }
-    .applicationList{
+
+    .applicationList {
         height: fit-content;
     }
 }
@@ -636,6 +662,16 @@ p {
 @media(max-width: 680px) {
     .filterBtns {
         display: none;
+    }
+
+    .filter {
+        padding: 16px 24px;
+        top: 80px;
+        transform: translateY(-100%);
+
+    }
+    .filterSidebar{
+        top:80px;
     }
 }
 
@@ -647,16 +683,18 @@ p {
 
 @media(max-width:640px) {
     .applicationDetails {
-      top: 80px;
+        top: 80px;
         left: 0;
-       box-shadow: unset;
+        box-shadow: unset;
         max-width: 100%;
         height: calc(100vh - 80px);
         transform: translateY(-100%);
-overflow-y: scroll;
-gap: 4px;
-padding: 16px;
+        overflow-y: scroll;
+        gap: 4px;
+        padding: 16px;
     }
+
+
 }
 
 @media(max-width:600px) {
@@ -679,7 +717,6 @@ padding: 16px;
 
 @media(max-width: 620px) {
     .filterSidebar {
-        top: 100px;
         width: 100%;
         height: fit-content;
         transform: translateY(-300vw);
@@ -688,11 +725,11 @@ padding: 16px;
         box-shadow: unset;
         border-bottom: solid 1px var(--main);
     }
-   
+
 }
 
 @media(min-width: 620px) {
-     .sidebarCloseBtn{
+    .sidebarCloseBtn {
         display: none !important;
     }
 }
