@@ -13,6 +13,7 @@ import Header from './header';
 import { Imprint } from './imprint';
 import { Legalnotice } from './legalnotice';
 const basename = window.location.hostname === 'localhost' ? '' : '/applications';
+
 function App() {
   return (
     <UserProvider>

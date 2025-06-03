@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './createapplication.scss';
 import Header from "./header";
 import Sidebar from "./sidebar";
@@ -29,6 +29,10 @@ const CreateApplication = () => {
     const userID = user?.uid;
     const firestore = getFirestore(firebase);
     const navigate = useNavigate();
+
+       useEffect(() => {
+            window.scrollTo(0, 0)
+        }, []);
 
     const createNewApplication = async (e: React.FormEvent) => {
         e.preventDefault();

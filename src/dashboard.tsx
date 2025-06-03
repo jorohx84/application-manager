@@ -23,6 +23,10 @@ const Dashboard = () => {
     const [advertisements, setadvertisements] = useState<any[] | null>(null);
 
     useEffect(() => {
+        window.scrollTo(0, 0)
+    }, []);
+
+    useEffect(() => {
         if (loading) return
         if (!user) return
         const userID = user?.uid;
@@ -117,12 +121,12 @@ const Dashboard = () => {
                 <Sidebar />
             </div> */}
             <div className="content">
-    {/* <Header/> */}
+                {/* <Header/> */}
 
                 <div className="component">
-                   
+
                     <div className="componentContent">
-                     
+
                         {applications ? (
                             <div className="dashboard">
 
@@ -211,7 +215,7 @@ const Dashboard = () => {
                 </div>
 
             </div>
- <button className="respAddBtn" onClick={() => { navigate('/createapplication') }}><img src="./img/add_white.svg" alt="" /></button>
+            <button className="respAddBtn" onClick={() => { navigate('/createapplication') }}><img src="./img/add_white.svg" alt="" /></button>
         </section>
 
     )

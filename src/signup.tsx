@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createUserWithEmailAndPassword, getAuth, updateProfile } from "firebase/auth";
 import firebase from "./firebase";
 import './signup.scss';
@@ -16,6 +16,11 @@ const SignUp = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
+
+       useEffect(() => {
+            window.scrollTo(0, 0)
+        }, [])
+
     const createUser = async (e: React.FormEvent) => {
         e.preventDefault();
         console.log(name);

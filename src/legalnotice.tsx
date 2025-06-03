@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './legalnotice.scss';
 
 export const Legalnotice = () => {
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, []);
+
+    
     return (
         <section className="legalNotice">
             <div className="legalNoticeContent">
@@ -15,7 +20,7 @@ export const Legalnotice = () => {
 
                 <h2>2. Verantwortliche Stelle</h2>
                 <p>
-                   Johannes Roth<br />
+                    Johannes Roth<br />
                     Max-Seither-Ring 32<br />
                     76863 Herxheim<br />
                     E-Mail: info@maple-websolutions.de

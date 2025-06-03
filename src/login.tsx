@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './login.scss';
 import { Link, useNavigate } from "react-router-dom";
 import firebase from "./firebase";
@@ -10,6 +10,10 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
 
     const loginUser = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -46,10 +50,10 @@ const Login = () => {
                 <form onSubmit={loginUser}>
                     <input type="email" value={email} placeholder="E-Mail-Adresse" onChange={(e) => setEmail(e.target.value)} required />
                     <input type="password" value={password} placeholder="Passwort" onChange={(e) => setPassword(e.target.value)} required />
-                 <div className="signupLinkContainer">
-                    <span>Noch keinen Account?</span>
-                    <button onClick={()=>navigate('/signup')}>Registrieren</button>
-                 </div>
+                    <div className="signupLinkContainer">
+                        <span>Noch keinen Account?</span>
+                        <button onClick={() => navigate('/signup')}>Registrieren</button>
+                    </div>
                     <div className="loginBtns">
                         <button type="submit">Einloggen</button>
                         <button type="button" onClick={guestLogin}>Gäste-Login</button>

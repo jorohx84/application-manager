@@ -390,13 +390,16 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
+    padding: 24px;
 
 }
 
 .editContainer {
     width: 100%;
-    max-width: fit-content;
-    height: fit-content;
+    max-width: 1200px;
+    height: 100%;
+    max-height: fit-content;
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -406,6 +409,7 @@ p {
     padding: 32px;
     box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
+    overflow-y: scroll;
 }
 
 .statusBtnContainer {
@@ -646,6 +650,22 @@ p {
     }
 }
 
+@media(max-width: 860px) {
+.overlay{
+    top: 120px;
+    padding: 0;
+    position: fixed;
+
+}
+.editContainer{
+    border-radius: 0;
+    margin-bottom: 100px;
+}
+.applicationForm{
+   margin-top: 50px;
+    margin-bottom: 100px;
+}
+}
 
 @media(max-width: 750px) {
     .applicationDetails {
@@ -673,6 +693,10 @@ p {
     .filterSidebar{
         top:80px;
     }
+
+    .overlay{
+    top: 80px;
+}
 }
 
 @media(min-width: 680px) {

@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Überprüfen, ob die angeforderte Datei oder das Verzeichnis existiert
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Alle Anfragen auf /index.html weiterleiten, damit React das Routing übernimmt
+RewriteRule ^ /applications/index.html [L]

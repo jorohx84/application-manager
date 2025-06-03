@@ -32,6 +32,10 @@ const Watchlist = () => {
     const [isFilterResp, setisFilterResp] = useState(false);
     const [slideMenu, setslideMenu]=useState(false);
 
+   useEffect(() => {
+        window.scrollTo(0, 0)
+    }, []);
+
     useEffect(() => {
         if (loading) return;
         if (!user) return;
