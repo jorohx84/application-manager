@@ -1,11 +1,18 @@
 .imprint {
+    width: 100%;
     display: flex;
-    flex-direction: column;
     align-items: flex-start;
-    justify-content: flex-start;
+    justify-content: center;
+    min-height: fit-content;
+}
+
+.imprintContent {
+    width: 100%;
+    max-width: 1920px;
+    height: 100%;
+    min-height: fit-content;
     box-sizing: border-box;
     padding: 24px 56px;
-    min-height: fit-content;
 }
 
 a {
@@ -18,8 +25,12 @@ a {
     }
 }
 
-@media(max-width: 450px){
-    .imprint{
+.backBtn{
+   
+}
+
+@media(max-width: 450px) {
+    .imprint {
         padding: 24px;
     }
 

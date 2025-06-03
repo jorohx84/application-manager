@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { basename } from 'path';
 import SignUp from './signup';
 import Login from './login';
 import Dashboard from './dashboard';
@@ -13,11 +12,11 @@ import Footer from './footer';
 import Header from './header';
 import { Imprint } from './imprint';
 import { Legalnotice } from './legalnotice';
-
+const basename = window.location.hostname === 'localhost' ? '' : '/applications';
 function App() {
   return (
     <UserProvider>
-      <Router basename="/">
+      <Router basename={basename}>
         <Header />
         <div className='headerPlaceholder'></div>
         <Routes>

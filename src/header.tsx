@@ -8,14 +8,18 @@ import { saveToLocalStorage } from "./services/applicationService";
 const Header = () => {
     const { user, firestoreUser, loading } = useUser();
     const navigate = useNavigate();
-
-
     const location = useLocation();
     const userID = user?.uid
     const currentUser = firestoreUser;
     const auth = getAuth();
     const [burgerOpen, setburgerOpen] = useState(false);
-
+    const navigateBack = () => {
+        if (location.state?.from) {
+            navigate(location.state.from);
+        } else {
+            navigate(-1);
+        }
+    }
     const navigateTo = (path: string) => {
         setburgerOpen(false);
         navigate(path);
@@ -52,7 +56,7 @@ const Header = () => {
             <div className="headerInner">
                 <span>Bewerbungsmanager</span>
                 <div className="linkContainer">
-                    {(location.pathname !== '/login' && location.pathname !== '/signup') && (
+                    {(location.pathname !== `/login` && location.pathname !== '/signup' && location.pathname !== '/' && location.pathname !== '/imprint' && location.pathname !== '/legalnotice') && (
                         <nav >
                             <button className="logoutBtn" onClick={() => { navigateTo('/dashboard') }}>Dashboard</button>
                             <button className="logoutBtn" onClick={() => navigateAndSaveKey()} >Bewerbungen</button>
@@ -62,7 +66,7 @@ const Header = () => {
                         </nav>
                     )}
 
-                    {location.pathname === '/login' && (
+                    {(location.pathname === '/login' || location.pathname === '/') && (
                         <div className="signupLinkHeader">
                             <span>Noch keinen Account?</span>
                             <button onClick={() => navigate('/signup')}>Registrieren</button>
@@ -75,7 +79,7 @@ const Header = () => {
 
 
                 </div>
-                {(location.pathname !== '/login' && location.pathname !== '/signup') && (
+                {(location.pathname !== '/login' && location.pathname !== '/signup' && location.pathname !== '/imprint' && location.pathname !== '/legalnotice') && (
                     <div onClick={() => setburgerOpen(!burgerOpen)} className={`burger ${burgerOpen ? 'transformBurger' : 'resetBurger'}`}>
                         <div></div>
                         <div></div>
@@ -92,7 +96,9 @@ const Header = () => {
                     </div>
 
                 </div>
-
+                {(location.pathname === '/imprint' || location.pathname === '/legalnotice') && (
+                    <button className="backBtn" onClick={navigateBack}>zurück</button>
+                )}
             </div>
         </section>
     );
