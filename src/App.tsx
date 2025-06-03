@@ -7,19 +7,19 @@ import Login from './login';
 import Dashboard from './dashboard';
 import { UserProvider } from './userContext';
 import CreateApplication from './createapplication';
-
 import { Applications } from './applications';
 import Watchlist from './watchlist';
 import Footer from './footer';
 import Header from './header';
-
+import { Imprint } from './imprint';
+import { Legalnotice } from './legalnotice';
 
 function App() {
   return (
     <UserProvider>
       <Router basename="/">
-      <Header/>
-      <div className='headerPlaceholder'></div>
+        <Header />
+        <div className='headerPlaceholder'></div>
         <Routes>
           <Route path="/signup" element={<SignUp />} />
           <Route path='/' element={<Login />} />
@@ -28,8 +28,10 @@ function App() {
           <Route path='/createapplication' element={<CreateApplication />} />
           <Route path='/applications' element={<Applications />} />
           <Route path='/watchlist' element={<Watchlist />} />
+          <Route path='/imprint' element={<Imprint />} />
+          <Route path='/legalnotice' element={<Legalnotice />} />
         </Routes>
-        <Footer/>
+        <Footer />
       </Router>
     </UserProvider>
 

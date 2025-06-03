@@ -1,0 +1,26 @@
+.imprint {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding: 24px 56px;
+    min-height: fit-content;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+        color: var(--main);
+    }
+}
+
+@media(max-width: 450px){
+    .imprint{
+        padding: 24px;
+    }
+
+}
