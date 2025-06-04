@@ -1,8 +1,10 @@
 .applications {
     width: 100%;
     min-height: fit-content;
-    height: 100vh;
+    height: 100% !important;
     display: flex;
+    flex: 1;
+
 }
 
 .appHeadline {
@@ -24,13 +26,14 @@
     flex-wrap: wrap;
     background-color: white;
     transition: transform 0.5s ease-in-out;
+    z-index: 3;
 
 }
 
 .filterPlaceholder {
     width: 100%;
-    height: 74px;
-      transition: height 0.5s ease-in-out;
+    height: 50px;
+    transition: height 0.5s ease-in-out;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -47,8 +50,9 @@
 
 .applicationBoard {
     width: 100%;
-    height: calc(100vh - 320px);
-    min-height: fit-content;
+    // height: calc(100vh - 320px);
+    // min-height: fit-content;
+    height: 100%;
     display: flex;
     gap: 56px;
 }
@@ -156,10 +160,18 @@
 }
 
 .menubar {
+    width: fit-content;
     display: flex;
     justify-content: flex-start;
     gap: 16px;
     flex-wrap: wrap;
+    background-color: white;
+}
+
+.searchInputApp {
+    width: 100%;
+    min-width: 300px;
+    max-width: 300px;
 }
 
 .resetBtn {
@@ -187,7 +199,7 @@
 
 .filterSidebar {
     position: fixed;
-    top: 120px;
+    top: 200px;
     right: 0;
     width: 300px;
     transform: translateX(100vw);
@@ -201,6 +213,7 @@
     box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
     transition: transform 0.5s ease-in-out;
+    z-index: 1;
 }
 
 
@@ -213,7 +226,7 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 32px;
+    margin-bottom: 8px;
 }
 
 .closeBtn {
@@ -392,7 +405,7 @@ p {
     align-items: center;
     box-sizing: border-box;
     padding: 24px;
-
+z-index: 4;
 }
 
 .editContainer {
@@ -645,26 +658,38 @@ p {
 }
 
 @media(max-width: 1381px) {
-    .filterPlaceholder{
-        height: 164px;
+    // .filterPlaceholder {
+    //     height: 164px;
+    // }
+
+    .filterBtns {
+        display: none;
+    }
+}
+
+@media(min-width: 1381px) {
+    .filterBtn {
+        display: none;
     }
 }
 
 @media(max-width: 860px) {
-.overlay{
-    top: 120px;
-    padding: 0;
-    position: fixed;
+    .overlay {
+        top: 120px;
+        padding: 0;
+        position: fixed;
 
-}
-.editContainer{
-    border-radius: 0;
-    margin-bottom: 100px;
-}
-.applicationForm{
-   margin-top: 50px;
-    margin-bottom: 100px;
-}
+    }
+
+    .editContainer {
+        border-radius: 0;
+        margin-bottom: 100px;
+    }
+
+    .applicationForm {
+        margin-top: 50px;
+        margin-bottom: 100px;
+    }
 }
 
 @media(max-width: 750px) {
@@ -672,11 +697,12 @@ p {
         position: fixed;
         background-color: white;
         margin-top: 0;
+
     }
 
-    .applicationList {
-        height: fit-content;
-    }
+    // .applicationList {
+    //     height: fit-content;
+    // }
 }
 
 @media(max-width: 680px) {
@@ -687,23 +713,20 @@ p {
     .filter {
         padding: 16px 24px;
         top: 80px;
-        transform: translateY(-100%);
+        
 
     }
-    .filterSidebar{
-        top:80px;
+
+    .filterSidebar {
+        top: 150px;
     }
 
-    .overlay{
-    top: 80px;
-}
-}
-
-@media(min-width: 680px) {
-    .filterBtn {
-        display: none;
+    .overlay {
+        top: 80px;
     }
 }
+
+
 
 @media(max-width:640px) {
     .applicationDetails {
@@ -712,10 +735,11 @@ p {
         box-shadow: unset;
         max-width: 100%;
         height: calc(100vh - 80px);
-        transform: translateY(-100%);
+        transform: translateY(-130%);
         overflow-y: scroll;
         gap: 4px;
         padding: 16px;
+        z-index: 4;
     }
 
 
@@ -723,7 +747,8 @@ p {
 
 @media(max-width:600px) {
     .menubar {
-        justify-content: space-between;
+        width: 100%;
+        justify-content: center;
 
         >:nth-child(1) {
             order: 2;
@@ -737,26 +762,16 @@ p {
             order: 3;
         }
     }
-}
-
-@media(max-width: 620px) {
-    .filterSidebar {
-        width: 100%;
-        height: fit-content;
-        transform: translateY(-300vw);
-        justify-content: center;
-        gap: 16px;
-        box-shadow: unset;
-        border-bottom: solid 1px var(--main);
+    .searchInputApp{
+        min-width: unset;
+        max-width: unset;
+        flex: 1;
     }
 
+   
 }
 
-@media(min-width: 620px) {
-    .sidebarCloseBtn {
-        display: none !important;
-    }
-}
+
 
 @media(max-width: 540px) {
     .topper {
@@ -772,5 +787,14 @@ p {
 
     .cardContent {
         gap: 20px;
+    }
+    .applicationCard{
+        position: relative;
+    }
+
+     .location{
+        position: absolute;
+        top:-8px;
+        right:-8px
     }
 }

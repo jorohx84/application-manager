@@ -2,6 +2,37 @@
     display: flex;
     justify-content: flex-end;
     gap: 16px;
+    background-color: white;
+}
+
+.addBtnClose {
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+        >img {
+            content: url(./../public/img/close_white.svg);
+        }
+    }
+}
+
+.addBtn {
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    >img {
+        width: 40px;
+    }
+
+    &:hover {
+        >img {
+            content: url(./../public/img/add_white.svg);
+        }
+    }
 }
 
 .inputfieldSlider {
@@ -20,6 +51,8 @@
     right: 0;
     transform: translateX(100vw);
     transition: transform 0.5s ease-in-out;
+    overflow-y: scroll;
+    margin-bottom: 100px;
 }
 
 .transform {
@@ -39,6 +72,7 @@
     transition: transform 0.5s ease-in-out;
     flex-wrap: wrap-reverse;
     background-color: white;
+    z-index: 3;
 }
 
 .watchlistMenuPlaceholder {
@@ -49,12 +83,6 @@
     justify-content: flex-end;
     align-items: center;
 
-    >button {
-        width: fit-content;
-        background-color: var(--main);
-        color: white;
-        position: fixed;
-    }
 }
 
 
@@ -62,6 +90,9 @@
     display: flex;
     justify-content: center;
     gap: 16px;
+    transition: transform 0.5s ease-in-out;
+    background-color: white;
+    z-index: 6;
 
     >button {
         width: 100px;
@@ -69,12 +100,13 @@
 }
 
 .reloadBtn {
+    width: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
     font-size: 18px;
-    width: fit-content;
+
     box-sizing: border-box;
     padding: 0 24px;
     gap: 8px;
@@ -86,6 +118,29 @@
     &:hover {
         >img {
             content: url(./../public/img/reload_white.svg);
+        }
+    }
+}
+
+.watchFilterBtn {
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+
+    box-sizing: border-box;
+    padding: 0 24px;
+    gap: 8px;
+
+    >img {
+        width: 25px;
+    }
+
+    &:hover {
+        >img {
+            content: url(./../public/img/filter_white.svg);
         }
     }
 }
@@ -150,33 +205,95 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    border-bottom: solid 1px;
+    gap: 16px;
+
 
 }
 
 .listRow {
+    position: relative;
+    width: 100%;
+    height: 150px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    justify-content: flex-start;
     gap: 16px;
-    border-top: solid 1px;
+    box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
     box-sizing: border-box;
-    padding: 32px 16px;
+    padding: 16px 32px;
 
-    >div {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 16px;
+    // >div {
+    //     display: flex;
+    //     justify-content: flex-start;
+    //     align-items: center;
+    //     flex-wrap: wrap;
+    //     gap: 16px;
 
-        >span {
-            font-size: 20px;
+    //     >span {
+    //         font-size: 20px;
 
-        }
+    //     }
+    // }
+
+}
+
+.infoRow {
+    width: 100%;
+    height: 150px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 32px;
+    box-sizing: border-box;
+    padding: 12px 0px;
+}
+
+.infoRowDetails {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+}
+
+.advertisementInfo {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 8px;
+    padding-block: 16px;
+
+    >h2 {
+        margin: 0;
+        margin-bottom: 8px;
+    }
+}
+
+.jobDetails {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    >span {
+        font-size: 20px;
     }
 
+    >p {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80px;
+
+        border-radius: 6px;
+        background-color: var(--main);
+        color: white;
+        padding: 8px;
+    }
 }
 
 .trashBtn {
@@ -271,13 +388,17 @@
 }
 
 .prioFlag {
-    width: 40px;
-    height: 40px;
+    position: absolute;
+    left: 0;
+    width: 10px;
+    min-width: 10px;
+    height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 6px;
+
     box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 6px 0 0  6px  ;
     color: white;
 }
 
@@ -298,7 +419,7 @@
     color: black;
     border: solid 1px var(--main);
     color: var(--main);
-    width: fit-content;
+    width: 50px;
     box-sizing: border-box;
     padding: 16px;
     height: 50px;
@@ -307,17 +428,40 @@
     justify-content: center;
     align-items: center;
     transition: background-color 0.3s ease-in-out, color 0.5s ease-in-out;
-
+>img{
+    width: 25px;
+}
     &:hover {
         border: none;
         background-color: var(--main);
-        color: white;
+        >img{
+            content: url(./../public/img/description_white.svg);
+        }
+
+    }
+}
+
+.nextBtn{
+    &:hover{
+        >img{
+            content:url(./../public/img/arrow_white.svg) ;
+        }
     }
 }
 
 .watchlistRowBtns {
+    width: fit-content;
+    height: 100%;
+    min-height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
+    box-sizing: border-box;
+    padding-block: 16px;
+
     >button {
-        width: fit-content;
+        width: 50px;
         box-sizing: border-box;
         height: 50px;
         padding: 16px;
@@ -338,7 +482,7 @@
 }
 
 .height {
-    height: 50px !important;
+    height: 100px !important;
 }
 
 // @media(max-width: 1390px) {
@@ -349,22 +493,83 @@
 //     }
 // }
 
+@media(max-width:1040px) {
+    .listRow {
+        height: 250px;
+    }
 
-@media(max-width:1020px) {
+    .infoRow {
+        height: 250px;
+    }
+
+    .prioFlag {
+        height: 250px;
+    }
+
+    .infoRowDetails {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .watchlistRowBtns {
+        min-height: unset;
+    }
+
+    .advertisementInfo {
+        min-height: unset;
+    }
+
+    .infoRowDetails {
+        gap: 0;
+    }
+
+    .watchlistRowBtns {
+        align-items: flex-end;
+        >button {
+            height: 40px;
+        }
+
+        >a {
+            height: 40px;
+        }
+    }
+}
+
+@media(max-width:980px) {
+    .watchlistFilterBtns {
+        position: fixed;
+        top: 150px;
+        left: 0;
+        transform: translateX(-120%);
+        width: 100%;
+        box-sizing: border-box;
+        padding: 16px;
+    }
+
     .watchlistMenu {
-        transform: translateY(-100%);
+        justify-content: flex-end;
     }
 }
 
 @media(max-width:680px) {
-    .watchlistMenuPlaceholder {
-        height: 144px;
-    }
-
     .watchlistMenu {
         top: 80px;
     }
+
+    .watchlistRowBtns {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 8px;
+    }
+
+    .jobDetails {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
 }
+
 
 @media(max-width:670px) {
     .watchlistBtns {
@@ -388,35 +593,54 @@
         }
     }
 
-    .watchlistFilterBtns {
-        flex-wrap: wrap;
+    .watchlistMenu {
+        padding: 24px 24px;
     }
 
     .watchlistBtns {
-        >button:not(.reloadBtn) {
-            width: 150px;
-        }
-    }
-
-    .watchlistFilterBtns {
         width: 100%;
-        justify-content: space-between;
 
-        >button {
-            width: 80px;
-        }
     }
+
+
 
     .inputfieldSlider {
-        top: 120px;
+        top: 80px;
+    }
+
+    .searchInput {
+        min-width: unset;
+        max-width: unset;
+        flex: 1;
     }
 }
 
+@media(max-width: 600px) {
+    .advertisementInfo {
+        >h2 {
+            font-size: 20px;
+        }
+    }
 
-@media(max-width: 500px) {
-    .searchInput {
-        max-width: 100%;
-        min-width: 260px;
+    .listRow {
+        position: relative;
+    }
+
+    .jobDetails {
+        >span {
+            font-size: 18px;
+        }
+
+        >p {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+        }
+    }
+
+
+    .infoLink {
+        font-size: 14px;
     }
 }
 
@@ -424,21 +648,14 @@
     .inputfieldSlider {
         position: fixed;
         transform: translateY(-100vh);
-        top: 80px;
+        top: 140px;
         left: 0;
         width: 100%;
-        height: calc(100vh - 80px);
+        height: calc(100vh - 140px);
         box-shadow: unset;
         border-radius: 0;
 
     }
-
-    .watchlistMenu {
-        padding: 24px 24px;
-    }
-
-
-
     .respCloseBtn {
         display: block;
     }
@@ -447,9 +664,17 @@
         gap: 8px;
     }
 
-    .watchlistBtns {
-        >button:not(.reloadBtn) {
-            width: 100px;
+
+}
+
+@media(max-width: 360px) {
+    .watchlistRowBtns{
+        >button{
+            width: 40px;
         }
+
+    }
+    .listRow{
+        height: 250px;
     }
 }

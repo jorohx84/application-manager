@@ -291,10 +291,8 @@ export const Applications = () => {
 
                     <div className="component">
                         <div className="componentContent">
-                            <div className={`filterPlaceholder ${!slideMenu ? 'height' : ''}`}>
-                                <button onClick={() => setslideMenu(true)}>Menu</button>
-                            </div>
-                            <div className={`filter ${slideMenu ? 'transform' : ''}`} onClick={() => setslideMenu(false)}>
+                            <div className="filterPlaceholder"></div>
+                            <div className="filter">
                                 <div className="filterBtns">
                                     <button className={currentFilter === 'Bewerbung gesendet' ? 'btnHighlight' : ''} onClick={() => { filterApps('Bewerbung gesendet'); setdetailsOpen(false) }}>Gesendet</button>
                                     <button className={currentFilter === 'Eingang bestätigt' ? 'btnHighlight' : ''} onClick={() => { filterApps('Eingang bestätigt'); setdetailsOpen(false) }}>Eingang bestätigt</button>
@@ -304,7 +302,7 @@ export const Applications = () => {
                                 </div>
                                 <div className="menubar">
                                     <button disabled={!isfiltered} className={`resetBtn ${isfiltered ? '' : 'opacity'}`} onClick={() => removeFilter()}><img src="./img/reload_blue.svg" alt="" /></button>
-                                    <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findApplications(e.target.value) }} onClick={(e) => handleClickEvent(e)} />
+                                    <input className="searchInputApp" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findApplications(e.target.value) }} onClick={(e) => handleClickEvent(e)} />
                                     {showFilter ? (
                                         <button className="filterBtnClose" onClick={() => setshowFilter(!showFilter)}><img src="./img/close_blue.svg" alt="" /></button>
                                     ) : (
@@ -318,9 +316,9 @@ export const Applications = () => {
 
                             <div className={`filterSidebar ${showFilter ? 'transform' : ''} `}>
 
-                                <div className="sidebarCloseBtn">
+                                {/* <div className="sidebarCloseBtn">
                                     <button onClick={() => setshowFilter(false)}><img src="./img/close_blue.svg" alt="" /></button>
-                                </div>
+                                </div> */}
                                 <h2>Filtern</h2>
                                 <button className={currentFilter === 'Bewerbung gesendet' ? 'btnHighlight' : ''} onClick={() => { filterApps('Bewerbung gesendet'); setdetailsOpen(false) }}>Gesendet</button>
                                 <button className={currentFilter === 'Eingang bestätigt' ? 'btnHighlight' : ''} onClick={() => { filterApps('Eingang bestätigt'); setdetailsOpen(false) }}>Eingang bestätigt</button>
@@ -541,7 +539,7 @@ export const Applications = () => {
                     </div>
                 </div>
             )}
-            <button className="respAddBtn" onClick={() => { navigate('/createapplication') }}><img src="./img/add_white.svg" alt="" /></button>
+            {/* <button className="respAddBtn" onClick={() => { navigate('/createapplication') }}><img src="./img/add_white.svg" alt="" /></button> */}
         </section>
     )
 }

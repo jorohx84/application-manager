@@ -88,6 +88,8 @@ const Header = () => {
                 )}
                 <div className={`respMenu ${burgerOpen ? 'transform' : ''}`}>
                     <div>
+                        <button className="newBtn" onClick={()=>navigateTo('createapplication')}>Neue Bewerbung</button>
+                    
                         <button className="logoutBtn" onClick={() => { navigateTo('/dashboard') }}>Dashboard</button>
                         <button className="logoutBtn" onClick={() => { navigateAndSaveKey() }} >Bewerbungen</button>
                         <button className="logoutBtn" onClick={() => { navigateTo('/watchlist') }}>Merkliste</button>

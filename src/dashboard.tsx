@@ -215,7 +215,7 @@ const Dashboard = () => {
                 </div>
 
             </div>
-            <button className="respAddBtn" onClick={() => { navigate('/createapplication') }}><img src="./img/add_white.svg" alt="" /></button>
+            {/* <button className="respAddBtn" onClick={() => { navigate('/createapplication') }}><img src="./img/add_white.svg" alt="" /></button> */}
         </section>
 
     )

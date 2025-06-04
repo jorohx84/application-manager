@@ -1,7 +1,7 @@
 .header {
     position: fixed;
   background-color: white;
-  z-index: 1;
+  z-index: 8;
     width: 100%;
     min-height: 120px;
     max-height: 120px;
@@ -92,13 +92,13 @@ nav {
     position: absolute;
     top: 120px;
     right: 0;
-    width: 200px;
+    width: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
     padding: 32px 0px;
-    border: solid 1px;
+       box-shadow: 12px 0px 6px 2px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
     transform: translateX(100vw);
     transition: transform 0.5s ease-in-out;
@@ -228,6 +228,10 @@ nav {
     width: 150px;
 }
 
+.newBtn{
+    margin-bottom: 32px;
+}
+
 
 @media(max-width: 1160px) {
     .linkContainer {
@@ -257,10 +261,6 @@ nav {
         top: 80px;
         width: 100%;
         height: 300px;
-        transform: translateY(-130%);
-        border: none;
-        border-bottom: solid 1px var(--main);
-        border-radius: unset;
        >div{
         align-items: center;
        }

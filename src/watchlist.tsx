@@ -30,11 +30,11 @@ const Watchlist = () => {
     const [watchlistFiltered, setwatchlistFiltered] = useState(false);
     const [watchlistHeadline, setWatchlistHeadline] = useState('')
     const [isFilterResp, setisFilterResp] = useState(false);
-    const [slideMenu, setslideMenu]=useState(false);
+    const [slideMenu, setslideMenu] = useState(false);
 
-   useEffect(() => {
+    useEffect(() => {
         window.scrollTo(0, 0)
-    }, []);
+    }, [prioFilter]);
 
     useEffect(() => {
         if (loading) return;
@@ -191,11 +191,11 @@ const Watchlist = () => {
 
 
 
-    const handleClickEvent=(e:React.MouseEvent)=>{
-      e.stopPropagation();
+    const handleClickEvent = (e: React.MouseEvent) => {
+        e.stopPropagation();
     }
 
-  
+
 
     return (
         <section className="applications">
@@ -204,22 +204,29 @@ const Watchlist = () => {
 
                     <div className="component">
                         <div className="componentContent">
-                            <div className={`watchlistMenuPlaceholder ${!slideMenu? 'height':''}`}>
-                                <button onClick={()=>setslideMenu(true)}>Menu</button>
-                            </div>
+                            <div className={`watchlistMenuPlaceholder ${isFilterResp ? 'height' : ''}`}></div>
                             <div className="respMenuBtn"></div>
-                            <div className={`watchlistMenu ${slideMenu ? 'transform' : ''}`} onClick={()=>{setslideMenu(false)}}>
-                                <div className={`watchlistFilterBtns ${isFilterResp? 'transform':''}`}>
+                            <div className="watchlistMenu">
+                                <div className={`watchlistFilterBtns ${isFilterResp ? 'transform' : ''}`}>
                                     <button className={`highBtn ${prioFilter === 'hoch' ? 'btnHighActive' : ''}`} onClick={() => { filterAdvertisements('hoch') }}>Hoch</button>
                                     <button className={`mediumBtn ${prioFilter === 'mittel' ? 'btnMediumActive' : ''}`} onClick={() => { filterAdvertisements('mittel') }}>Mittel</button>
                                     <button className={`lowBtn ${prioFilter === 'niedrig' ? 'btnLowActive' : ''}`} onClick={() => { filterAdvertisements('niedrig') }}>Niedrig</button>
-                                   
+
                                 </div>
                                 <div className="watchlistBtns">
-                                    <button className="reloadBtn" onClick={() => { removeFilter();setsearch('') }}> <img src="./img/reload_blue.svg" alt="" /></button>
-                                    <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findAdvertisement(e.target.value) }} onClick={(e)=>handleClickEvent(e)} />
-                                    <button onClick={() => { setisOpen(!isOpen); setisEdit(false); resetInputfields() }}>{isOpen ? 'Abbrechen' : 'Hinzufügen'}</button>
-                                     
+                                    <button className="reloadBtn" onClick={() => { removeFilter(); setsearch('') }}> <img src="./img/reload_blue.svg" alt="" /></button>
+                                    <input className="searchInput" type="text" value={search} placeholder="Firmaname eingeben" onChange={(e) => { setsearch(e.target.value); findAdvertisement(e.target.value) }} onClick={(e) => handleClickEvent(e)} />
+                                    {isFilterResp ? (
+                                        <button className="addBtnClose" onClick={() => setisFilterResp(!isFilterResp)}><img src="./img/close_blue.svg" alt="" /></button>
+                                    ) : (
+                                        <button className="watchFilterBtn" onClick={() => setisFilterResp(!isFilterResp)}><img src="./img/filter_blue.svg" alt="" /></button>
+                                    )}
+
+                                    {isOpen ? (
+                                        <button className="addBtnClose" onClick={() => { setisOpen(!isOpen); setisEdit(false); resetInputfields() }}><img src="./img/close_blue.svg" alt="" /></button>
+                                    ) : (
+                                        <button className="addBtn" onClick={() => { setisOpen(!isOpen); setisEdit(false); resetInputfields() }}><img src="./img/add_blue.svg" alt="" /></button>
+                                    )}
                                 </div>
                             </div>
 
@@ -234,28 +241,35 @@ const Watchlist = () => {
                                             <div className={`prioFlag ${adv.prio === 'hoch' ? 'flagHigh' : adv.prio === 'mittel' ? 'flagMedium' : 'flagLow'}`}>
                                                 {/* <span>{adv.prio}</span> */}
                                             </div>
-                                            <span>{adv.name}, {adv.town}</span>
-                                            <span>|</span>
-                                            <span>{adv.position}</span>
-                                            <span>|</span>
-                                            <span>{adv.location}</span>
-                                            <span>|</span>
-                                            {adv.posted !== '' ? (
-                                                <b>Ausschreibung vom: {formatDateGermanShort(adv.posted, 'notime')}</b>
-                                            ) : (
-                                                <span></span>
-                                            )}
-                                            {/* <div className={`prioFlag ${adv.prio === 'hoch' ? 'flagHigh' : adv.prio === 'mittel' ? 'flagMedium' : 'flagLow'}`}>
-                                                <span>{adv.prio}</span>
-                                            </div> */}
+                                            <div className="infoRowDetails">
+                                                <div className="advertisementInfo">
+                                                    <h2>{adv.name}, {adv.town}</h2>
+                                                    <div className="jobDetails">
+                                                        <span>{adv.position}</span>
+                                                        <p>{adv.location}</p>
+                                                    </div>
+
+
+
+
+                                                    {adv.posted !== '' ? (
+                                                        <span>Ausschreibung vom: {formatDateGermanShort(adv.posted, 'notime')}</span>
+                                                    ) : (
+                                                        <span></span>
+                                                    )}
+                                                </div>
+
+                                                <div className="watchlistRowBtns">
+                                                    <a className="infoLink" href={adv.link} target="_blank"><img src="./img/description_blue.svg" alt="" /></a>
+                                                    <button className="nextBtn" onClick={() => { exportAdvertisement(index) }}><img src="./img/arrow_blue.svg" alt="" /></button>
+                                                    <button className="editBtn" onClick={() => { editAdvertisement(index) }}><img src="./img/edit_blue.svg" alt="" /></button>
+                                                    <button onClick={() => { deleteAdvertisement(index) }} className="trashBtn"><img src="./img/trash_blue.svg" alt="" /></button>
+                                                </div>
+                                            </div>
+
                                         </div>
 
-                                        <div className="watchlistRowBtns">
-                                            <a className="infoLink" href={adv.link} target="_blank">Stellenbeschreibung</a>
-                                            <button onClick={() => { exportAdvertisement(index) }}>bewerben</button>
-                                            <button className="editBtn" onClick={() => { editAdvertisement(index) }}><img src="./img/edit_blue.svg" alt="" /></button>
-                                            <button onClick={() => { deleteAdvertisement(index) }} className="trashBtn"><img src="./img/trash_blue.svg" alt="" /></button>
-                                        </div>
+
 
 
                                     </div>
@@ -268,7 +282,7 @@ const Watchlist = () => {
 
                             <form className={`inputfieldSlider ${isOpen ? 'transform' : ''}`} onSubmit={newAdvertisement}>
                                 {/* <div className="closeBtnContainer">
-                                    <button type="button" className="closeBtn" onClick={() => setisOpen(false)}><img src="./img/close_white.svg" alt="" /></button>
+                                    <button type="button" className="closeBtn" onClick={() => setisOpen(false)}><img src="./img/close_blue.svg" alt="" /></button>
                                 </div> */}
                                 <input type="text" value={name} placeholder="Name" onChange={(e) => setName(e.target.value)} />
                                 <input type="text" value={town} placeholder="Stadt" onChange={(e) => settown(e.target.value)} />
@@ -304,7 +318,7 @@ const Watchlist = () => {
                 </div>
 
             </section>
-            <button className="respAddBtn" onClick={() => { navigate('/createapplication') }}><img src="./img/add_white.svg" alt="" /></button>
+            {/* <button className="respAddBtn" onClick={() => { navigate('/createapplication') }}><img src="./img/add_white.svg" alt="" /></button> */}
         </section>
     )
 }
