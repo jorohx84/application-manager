@@ -3,10 +3,10 @@ import './imprint.scss';
 
 
 export const Imprint = () => {
-   
-     useEffect(() => {
-          window.scrollTo(0, 0)
-      }, []);
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, []);
 
     return (
         <section className="imprint">
@@ -47,7 +47,11 @@ export const Imprint = () => {
                     Beiträge Dritter sind als solche gekennzeichnet. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der
                     Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.
                 </p>
-           
+                <h2>Bildnachweise</h2>
+                <p>
+                    Einige der verwendeten Icons stammen von <a href="https://www.svgrepo.com/" target="_blank" rel="noopener noreferrer">SVG Repo</a> und stehen unter einer freien Lizenz (z. B. Creative Commons oder Public Domain).
+                </p>
+
             </div>
         </section>
     );
