@@ -396,7 +396,7 @@ export const Applications = () => {
                                             <span>Telefon: {currentApplicaton?.company.phone}</span>
                                             <span>E-Mail: {currentApplicaton?.company.email}</span>
                                             <span>Homepage</span>
-                                            <a href={currentApplicaton?.company.website} target="_blank">{currentApplicaton?.company.website}</a>
+                                            <a className="link" href={currentApplicaton?.company.website} target="_blank"><img src="./img/website_blue.svg" alt="" /></a>
                                         </div>
                                         <div className="appPosition">
 
@@ -405,7 +405,7 @@ export const Applications = () => {
                                             <span>Gehaltsvorstellung: {currentApplicaton?.position.salary}</span>
                                             <div>
                                                 <b>Stellenbeschreibung:</b>
-                                                <a href={currentApplicaton?.position.link} target="_blank">{currentApplicaton?.position.link}</a>
+                                                <a className="link" href={currentApplicaton?.position.link} target="_blank"><img src="./img/website_blue.svg" alt="" /></a>
 
                                             </div>
                                         </div>

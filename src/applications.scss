@@ -405,7 +405,7 @@ p {
     align-items: center;
     box-sizing: border-box;
     padding: 24px;
-z-index: 4;
+    z-index: 4;
 }
 
 .editContainer {
@@ -534,6 +534,30 @@ z-index: 4;
         display: flex;
         flex-direction: column;
     }
+
+}
+
+.link {
+    width: 100px;
+    height: 40px;
+    border-radius: 6px;
+    border: solid 1px var(--main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    >img {
+        width: 25px;
+    }
+
+    &:hover {
+        background-color: var(--main);
+
+        >img {
+            content: url(./../public/img/website_white.svg);
+        }
+    }
+
 }
 
 .statusContainer {
@@ -713,7 +737,7 @@ z-index: 4;
     .filter {
         padding: 16px 24px;
         top: 80px;
-        
+
 
     }
 
@@ -732,9 +756,11 @@ z-index: 4;
     .applicationDetails {
         top: 80px;
         left: 0;
+        bottom: 0;
+        height: unset;
         box-shadow: unset;
         max-width: 100%;
-        height: calc(100vh - 80px);
+
         transform: translateY(-130%);
         overflow-y: scroll;
         gap: 4px;
@@ -762,13 +788,14 @@ z-index: 4;
             order: 3;
         }
     }
-    .searchInputApp{
+
+    .searchInputApp {
         min-width: unset;
         max-width: unset;
         flex: 1;
     }
 
-   
+
 }
 
 
@@ -788,13 +815,14 @@ z-index: 4;
     .cardContent {
         gap: 20px;
     }
-    .applicationCard{
+
+    .applicationCard {
         position: relative;
     }
 
-     .location{
+    .location {
         position: absolute;
-        top:-8px;
-        right:-8px
+        top: -8px;
+        right: -8px
     }
 }
