@@ -41,7 +41,7 @@ const CreateApplication = () => {
         const appCollaction = collection(firestore, `users/${userID}/applications`);
         await addDoc(appCollaction, application);
         setTimeout(() => {
-            navigate('/applications', { state: { key: 'all', trigger: false } });
+            navigate('/applications');
         }, 200);
         if (currentAdvertisement) {
             console.log(currentAdvertisement.id);

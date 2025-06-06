@@ -395,8 +395,8 @@ export const Applications = () => {
                                             <span>Kontakt: {currentApplicaton?.company.contactperson}</span>
                                             <span>Telefon: {currentApplicaton?.company.phone}</span>
                                             <span>E-Mail: {currentApplicaton?.company.email}</span>
-                                            <span>Homepage</span>
-                                            <a className="link" href={currentApplicaton?.company.website} target="_blank"><img src="./img/website_blue.svg" alt="" /></a>
+                                           
+                                            <a className="link" href={currentApplicaton?.company.website} target="_blank">Homepage</a>
                                         </div>
                                         <div className="appPosition">
 
@@ -404,8 +404,8 @@ export const Applications = () => {
                                             <span>Ort: {currentApplicaton?.position.location}</span>
                                             <span>Gehaltsvorstellung: {currentApplicaton?.position.salary}</span>
                                             <div>
-                                                <b>Stellenbeschreibung:</b>
-                                                <a className="link" href={currentApplicaton?.position.link} target="_blank"><img src="./img/website_blue.svg" alt="" /></a>
+                                            
+                                                <a className="link" href={currentApplicaton?.position.link} target="_blank">Stellenbeschreibung</a>
 
                                             </div>
                                         </div>

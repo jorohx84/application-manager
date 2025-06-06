@@ -538,20 +538,23 @@ p {
 }
 
 .link {
-    width: 100px;
+    width: fit-content;
     height: 40px;
     border-radius: 6px;
     border: solid 1px var(--main);
     display: flex;
     justify-content: center;
     align-items: center;
-
+    color: var(--main) !important;
+    padding: 0 8px;
+transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
     >img {
         width: 25px;
     }
 
     &:hover {
         background-color: var(--main);
+        color: white !important;
 
         >img {
             content: url(./../public/img/website_white.svg);
