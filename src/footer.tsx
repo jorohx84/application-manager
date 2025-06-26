@@ -8,8 +8,8 @@ const Footer = () => {
             <div className="footerContent">
                 <span>© Johannes Roth, 2025</span>
                 <div className="legal">
-                    <Link className="link" to='/imprint'>Impressum</Link>
-                    <Link className="link" to='/legalnotice'>Datenschutz</Link>
+                    <Link className="footerLink" to='/imprint'>Impressum</Link>
+                    <Link className="footerLink" to='/legalnotice'>Datenschutz</Link>
                 </div>
             </div>
         </section>
